@@ -1,0 +1,12 @@
+langchain
+langgraph
+langchain-community
+psycopg2-binary
+pgvector
+sentence-transformers
+fastapi
+uvicorn
+streamlit
+python-dotenv
+pandas
+sqlalchemy

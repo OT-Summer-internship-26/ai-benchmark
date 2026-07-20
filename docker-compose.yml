@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: ankane/pgvector
+    container_name: ooredoo_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ooredoo_user
+      POSTGRES_PASSWORD: ooredoo_pass
+      POSTGRES_DB: ai_benchmark
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
