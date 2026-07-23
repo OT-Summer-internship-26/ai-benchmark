@@ -11,3 +11,7 @@ python-dotenv
 pandas
 sqlalchemy
 pypdf
+anthropic
+openai
+google-genai
+groq
