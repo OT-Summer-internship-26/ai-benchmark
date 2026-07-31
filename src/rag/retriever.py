@@ -1,37 +1,38 @@
 from src.rag.document_loader import chunk_text
 from src.rag.pdf_loader import extract_text_from_pdf
+from src.rag.txt_loader import extract_text_from_txt
 from src.rag.vector_store import add_document_chunk
 from src.database.connection import engine
 from sqlalchemy import text
 
 def departement_deja_indexe(departement: str) -> bool:
-    """Vérifie si un département a déjà des données vectorisées en base."""
     with engine.connect() as conn:
         result = conn.execute(
             text("SELECT COUNT(*) FROM documents_vectorises WHERE departement = :dep"),
             {"dep": departement}
         )
-        count = result.scalar()
-        return count > 0
+        return result.scalar() > 0
 
-def index_pdf(filepath: str, departement: str):
-    """Charge un PDF, extrait son texte, le découpe, et stocke chaque morceau vectorisé."""
-    text_content = extract_text_from_pdf(filepath)
+def index_document(filepath: str, departement: str):
+    """Charge un document (PDF ou TXT), l'indexe."""
+    if filepath.lower().endswith(".pdf"):
+        text_content = extract_text_from_pdf(filepath)
+    elif filepath.lower().endswith(".txt"):
+        text_content = extract_text_from_txt(filepath)
+    else:
+        print(f"Format non supporté : {filepath}")
+        return
 
     if not text_content.strip():
-        print(f"Attention : aucun texte extrait de {filepath}.")
+        print(f"Attention : fichier vide ou aucun texte extrait de {filepath}.")
         return
 
     chunks = chunk_text(text_content)
-
     for chunk in chunks:
         add_document_chunk(departement, chunk)
 
     print(f"{len(chunks)} chunks indexés depuis '{filepath}' pour le département '{departement}'.")
 
-def index_pdf_safe(filepath: str, departement: str):
-    """Version sécurisée : vérifie d'abord si le département est déjà indexé."""
-    if departement_deja_indexe(departement):
-        print(f"⚠️ '{departement}' est déjà indexé en base. Utilisez index_pdf() pour forcer la réindexation.")
-        return
-    index_pdf(filepath, departement)
+# garde index_pdf comme alias pour compatibilité avec ton code existant
+def index_pdf(filepath: str, departement: str):
+    index_document(filepath, departement)

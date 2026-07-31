@@ -15,3 +15,4 @@ anthropic
 openai
 google-genai
 groq
+langdetect==1.0.9

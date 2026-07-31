@@ -1,3 +1,10 @@
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from src.rag.vector_store import search_similar
 from src.models_clients.groq_client import generate_response
 
@@ -18,7 +25,7 @@ for departement, question in demos:
     print(f"MÉTIER : {departement}")
     print(f"QUESTION : {question}")
     print(f"{'-'*70}")
-    chunks = search_similar(question, departement, top_k=3)
+    chunks = search_similar(question, departement, top_k=8)
     reponse = generate_response(question, chunks)
     print(f"\nRÉPONSE GÉNÉRÉE :\n{reponse}\n")
 
