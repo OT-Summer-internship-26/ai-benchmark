@@ -3,7 +3,7 @@ from src.models_clients.ollama_client import generate_response
 
 if __name__ == "__main__":
     
-    question = "كيف يمكنني توثيق واجهة برمجة التطبيقات للمطورين؟"
+    question = "كيفاش نوثق واجهة برمجة التطبيقات للمطورين؟"
 
     chunks = search_similar(question, "IT & Architecture", top_k=8)
     reponse = generate_response(question, chunks)

@@ -4,13 +4,6 @@ from src.translation.translator import traduire_depuis_francais, detecter_arabe_
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
 
-LANGUES_CIBLES = {
-    "fr": "français",
-    "en": "english",
-    "ar": "العربية",
-    "tn": "تونسية/دارجة",
-}
-
 
 def _detecter_langue(question: str) -> str:
     try:
@@ -22,12 +15,14 @@ def _detecter_langue(question: str) -> str:
         return "fr"
 
 
-def _build_prompt(question: str, context: str, langue: str) -> str:
-    nom_langue = LANGUES_CIBLES.get(langue, LANGUES_CIBLES["fr"])
-    return f"""Tu es un assistant professionnel pour Ooredoo.
+def generate_response(question: str, context_chunks: list[str], model_name: str = "llama3.1:8b") -> str:
+    context = "\n\n---\n\n".join(context_chunks)
+    langue_de_la_question = _detecter_langue(question)
 
-RÈGLE OBLIGATOIRE : Réponds UNIQUEMENT dans la langue suivante : {nom_langue}.
-Même si le contexte fourni est dans une autre langue, tu dois formuler ta réponse dans cette langue.
+    # Le LLM genere TOUJOURS en francais
+    # C'est une etape interne — NLLB s'occupe de la traduction apres
+    prompt = f"""Tu es un assistant professionnel pour Ooredoo.
+Reponds en FRANCAIS a la question suivante, en te basant UNIQUEMENT sur le contexte fourni.
 
 Question : {question}
 
@@ -35,18 +30,11 @@ Contexte :
 {context}
 
 INSTRUCTIONS :
-1. Réponds directement, sans introduction ni préambule.
-2. N'utilise jamais une autre langue que {nom_langue}.
-3. Structure la réponse en points numérotés ou à puces si nécessaire.
-4. Si l'information demandée n'est pas dans le contexte, dis-le clairement en une phrase courte.
-5. Si la réponse nécessite un terme technique, garde-le dans la langue cible et évite les mélanges."""
-
-
-def generate_response(question: str, context_chunks: list[str], model_name: str = "llama3.1:8b") -> str:
-    context = "\n\n---\n\n".join(context_chunks)
-    langue_de_la_question = _detecter_langue(question)
-
-    prompt = _build_prompt(question, context, langue_de_la_question)
+1. Reponds en francais uniquement.
+2. Va directement au contenu, sans introduction ni preambule.
+3. Ne repete JAMAIS la question dans ta reponse.
+4. Structure la reponse en points numerotes ou a puces si necessaire.
+5. Si l'information n'est pas dans le contexte, dis-le en une phrase courte."""
 
     response = requests.post(OLLAMA_URL, json={
         "model": model_name,
@@ -54,9 +42,11 @@ def generate_response(question: str, context_chunks: list[str], model_name: str 
         "stream": False
     })
 
-    contenu_brouillon = response.json()["message"]["content"]
+    reponse_francaise = response.json()["message"]["content"]
 
+    # Si la question est en francais, pas besoin de traduire
     if langue_de_la_question == "fr":
-        return contenu_brouillon
+        return reponse_francaise
 
-    return traduire_depuis_francais(contenu_brouillon, langue_de_la_question)
+    # NLLB-200 traduit le francais vers la langue de la question
+    return traduire_depuis_francais(reponse_francaise, langue_de_la_question)
