@@ -47,11 +47,12 @@ def agent_executeur(state: dict) -> dict:
 
                     print(f"     ✓ Réponse générée en {latence:.2f}s")
 
-                    conn.execute(
+                    result = conn.execute(
                         text("""
                             INSERT INTO executions 
                             (scenario_id, modele_id, reponse_generee, latence_secondes, cout_estime, date_execution)
                             VALUES (:scenario_id, :modele_id, :reponse, :latence, :cout, NOW())
+                            RETURNING id
                         """),
                         {
                             "scenario_id": scenario["id"],
@@ -61,9 +62,11 @@ def agent_executeur(state: dict) -> dict:
                             "cout": 0.0,
                         }
                     )
+                    execution_id = result.fetchone()[0]
                     conn.commit()
 
                     executions.append({
+                        "execution_id": execution_id,
                         "scenario_id": scenario["id"],
                         "scenario_nom": scenario["nom_cas_usage"],
                         "modele": nom_modele,

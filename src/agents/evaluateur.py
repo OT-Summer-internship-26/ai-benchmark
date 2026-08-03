@@ -92,46 +92,33 @@ def agent_evaluateur(state: dict) -> dict:
             print(f"     Honnêteté  : {scores['honnetete']}/5")
             print(f"     Global     : {scores['score_global']}/5")
 
-            # Récupère l'id de la dernière exécution correspondante
-            result = conn.execute(
-                text("""
-                    SELECT id FROM executions
-                    WHERE scenario_id = :sid
-                    ORDER BY date_execution DESC
-                    LIMIT 1
-                """),
-                {"sid": scenario_id}
-            )
-            exec_row = result.fetchone()
-
-            if exec_row:
-                execution_id = exec_row[0]
-                try:
-                    criteres = {
-                        "completude": scores["completude"],
-                        "structure": scores["structure"],
-                        "fidelite_rag": scores["fidelite_rag"],
-                        "honnetete": scores["honnetete"],
-                        "score_global": scores["score_global"],
-                    }
-                    for critere, note in criteres.items():
-                        conn.execute(
-                            text("""
-                                INSERT INTO scores (execution_id, critere, note, commentaire)
-                                VALUES (:exec_id, :critere, :note, :commentaire)
-                            """),
-                            {
-                                "exec_id": execution_id,
-                                "critere": critere,
-                                "note": float(note),
-                                "commentaire": f"Évaluation automatique — {critere}",
-                            }
-                        )
-                    conn.commit()
-                    print(f"     ✓ {len(criteres)} scores enregistrés (execution_id={execution_id})")
-                except Exception as e:
-                    erreurs.append(f"Erreur insertion score: {str(e)}")
-                    print(f"     ✗ Erreur: {str(e)}")
+            execution_id = execution["execution_id"]
+            try:
+                criteres = {
+                    "completude": scores["completude"],
+                    "structure": scores["structure"],
+                    "fidelite_rag": scores["fidelite_rag"],
+                    "honnetete": scores["honnetete"],
+                    "score_global": scores["score_global"],
+                }
+                for critere, note in criteres.items():
+                    conn.execute(
+                        text("""
+                            INSERT INTO scores (execution_id, critere, note, commentaire)
+                            VALUES (:exec_id, :critere, :note, :commentaire)
+                        """),
+                        {
+                            "exec_id": execution_id,
+                            "critere": critere,
+                            "note": float(note),
+                            "commentaire": f"Évaluation automatique — {critere}",
+                        }
+                    )
+                conn.commit()
+                print(f"     ✓ {len(criteres)} scores enregistrés (execution_id={execution_id})")
+            except Exception as e:
+                erreurs.append(f"Erreur insertion score: {str(e)}")
+                print(f"     ✗ Erreur: {str(e)}")
 
             scores_list.append({**execution, "scores": scores})
 
