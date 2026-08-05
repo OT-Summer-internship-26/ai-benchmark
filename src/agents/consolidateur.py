@@ -4,7 +4,11 @@ from sqlalchemy import text
 
 def agent_consolidateur(state: dict) -> dict:
     """
-    Agrège les scores par modèle et produit un rapport de synthèse.
+    Agrège les scores Ragas par modèle et produit un rapport de synthèse.
+
+    Note d'échelle : les 4 métriques Ragas (faithfulness, answer_relevancy,
+    context_precision, context_recall) et le score_global sont notés entre
+    0.0 et 1.0 — PAS sur 5 comme l'ancienne évaluation heuristique du Sprint 3.
     """
     print(f"\n[CONSOLIDATEUR] Génération du rapport de synthèse...")
 
@@ -23,10 +27,10 @@ def agent_consolidateur(state: dict) -> dict:
                 "nb_executions": 0,
                 "latence_totale": 0.0,
                 "scores_par_critere": {
-                    "completude": [],
-                    "structure": [],
-                    "fidelite_rag": [],
-                    "honnetete": [],
+                    "faithfulness": [],
+                    "answer_relevancy": [],
+                    "context_precision": [],
+                    "context_recall": [],
                     "score_global": [],
                 },
                 "scenarios_testes": [],
@@ -36,9 +40,15 @@ def agent_consolidateur(state: dict) -> dict:
         synthese_modeles[modele]["latence_totale"] += item["latence"]
         synthese_modeles[modele]["scenarios_testes"].append(item["scenario_nom"])
 
-        for critere, note in scores.items():
-            if critere in synthese_modeles[modele]["scores_par_critere"]:
-                synthese_modeles[modele]["scores_par_critere"][critere].append(note)
+        for critere in ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]:
+            detail = scores.get(critere)
+            # Chaque critère Ragas est un dict {"note": float|None, "justification": str}
+            if detail and detail.get("note") is not None:
+                synthese_modeles[modele]["scores_par_critere"][critere].append(detail["note"])
+
+        # score_global est un float direct (ou None), pas un dict imbriqué
+        if scores.get("score_global") is not None:
+            synthese_modeles[modele]["scores_par_critere"]["score_global"].append(scores["score_global"])
 
     # Calcul des moyennes
     rapport = {}
@@ -46,7 +56,7 @@ def agent_consolidateur(state: dict) -> dict:
         moyennes = {}
         for critere, notes in data["scores_par_critere"].items():
             if notes:
-                moyennes[critere] = round(sum(notes) / len(notes), 2)
+                moyennes[critere] = round(sum(notes) / len(notes), 3)
 
         rapport[modele] = {
             "modele": modele,
@@ -56,7 +66,7 @@ def agent_consolidateur(state: dict) -> dict:
             "scenarios_testes": data["scenarios_testes"],
         }
 
-    # Classement par score global
+    # Classement par score global (échelle 0-1)
     classement = sorted(
         rapport.values(),
         key=lambda x: x["moyennes"].get("score_global", 0),
@@ -66,24 +76,25 @@ def agent_consolidateur(state: dict) -> dict:
     # Affichage du rapport
     print(f"\n{'='*60}")
     print(f"RAPPORT DE BENCHMARK — {len(classement)} modèle(s) testé(s)")
+    print(f"(métriques Ragas, échelle 0.0 à 1.0)")
     print(f"{'='*60}")
 
     for rang, modele_data in enumerate(classement, 1):
         print(f"\n#{rang} {modele_data['modele']}")
-        print(f"   Exécutions     : {modele_data['nb_executions']}")
-        print(f"   Latence moy.   : {modele_data['latence_moyenne']}s")
-        print(f"   Score global   : {modele_data['moyennes'].get('score_global', 'N/A')}/5")
-        print(f"   Complétude     : {modele_data['moyennes'].get('completude', 'N/A')}/5")
-        print(f"   Structure      : {modele_data['moyennes'].get('structure', 'N/A')}/5")
-        print(f"   Fidélité RAG   : {modele_data['moyennes'].get('fidelite_rag', 'N/A')}/5")
-        print(f"   Honnêteté      : {modele_data['moyennes'].get('honnetete', 'N/A')}/5")
-        print(f"   Scénarios      : {', '.join(modele_data['scenarios_testes'])}")
+        print(f"   Exécutions         : {modele_data['nb_executions']}")
+        print(f"   Latence moy.       : {modele_data['latence_moyenne']}s")
+        print(f"   Score global       : {modele_data['moyennes'].get('score_global', 'N/A')}/1.0")
+        print(f"   Faithfulness       : {modele_data['moyennes'].get('faithfulness', 'N/A')}/1.0")
+        print(f"   Answer relevancy   : {modele_data['moyennes'].get('answer_relevancy', 'N/A')}/1.0")
+        print(f"   Context precision  : {modele_data['moyennes'].get('context_precision', 'N/A')}/1.0")
+        print(f"   Context recall     : {modele_data['moyennes'].get('context_recall', 'N/A')}/1.0")
+        print(f"   Scénarios          : {', '.join(modele_data['scenarios_testes'])}")
 
     print(f"\n{'='*60}")
     if classement:
         meilleur = classement[0]
         print(f"RECOMMANDATION : {meilleur['modele']} est le modèle le plus performant")
-        print(f"avec un score global moyen de {meilleur['moyennes'].get('score_global', 0)}/5")
+        print(f"avec un score global moyen de {meilleur['moyennes'].get('score_global', 0)}/1.0")
         print(f"et une latence moyenne de {meilleur['latence_moyenne']}s")
     print(f"{'='*60}\n")
 

@@ -1,8 +1,17 @@
-import requests
+﻿import requests
 from langdetect import detect
+from langdetect.lang_detect_exception import LangDetectException
 from src.translation.translator import traduire_depuis_francais, detecter_arabe_tunisien
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
+
+LANGUES_SUPPORTEES = {"fr", "en", "ar", "tn"}
+LANGUE_LABELS = {
+    "fr": "français",
+    "en": "English",
+    "ar": "arabe",
+    "tn": "tunisien",
+}
 
 
 def _detecter_langue(question: str) -> str:
@@ -10,19 +19,18 @@ def _detecter_langue(question: str) -> str:
         langue = detect(question)
         if langue == "ar" and detecter_arabe_tunisien(question):
             return "tn"
-        return langue
-    except Exception:
+        return langue if langue in LANGUES_SUPPORTEES else "en"
+    except (Exception, LangDetectException):
         return "fr"
 
 
 def generate_response(question: str, context_chunks: list[str], model_name: str = "llama3.1:8b") -> str:
     context = "\n\n---\n\n".join(context_chunks)
     langue_de_la_question = _detecter_langue(question)
+    label_langue = LANGUE_LABELS.get(langue_de_la_question, "anglais")
 
-    # Le LLM genere TOUJOURS en francais
-    # C'est une etape interne — NLLB s'occupe de la traduction apres
     prompt = f"""Tu es un assistant professionnel pour Ooredoo.
-Reponds en FRANCAIS a la question suivante, en te basant UNIQUEMENT sur le contexte fourni.
+Réponds en {label_langue} à la question suivante, en te basant UNIQUEMENT sur le contexte fourni.
 
 Question : {question}
 
@@ -30,23 +38,32 @@ Contexte :
 {context}
 
 INSTRUCTIONS :
-1. Reponds en francais uniquement.
-2. Va directement au contenu, sans introduction ni preambule.
-3. Ne repete JAMAIS la question dans ta reponse.
-4. Structure la reponse en points numerotes ou a puces si necessaire.
+1. Réponds en {label_langue} uniquement.
+2. Va directement au contenu, sans introduction ni préambule.
+3. Ne répète JAMAIS la question dans ta réponse.
+4. Structure la réponse en points numérotés ou à puces si nécessaire.
 5. Si l'information n'est pas dans le contexte, dis-le en une phrase courte."""
 
     response = requests.post(OLLAMA_URL, json={
         "model": model_name,
         "messages": [{"role": "user", "content": prompt}],
-        "stream": False
+        "stream": False,
     })
+    response.raise_for_status()
 
-    reponse_francaise = response.json()["message"]["content"]
+    content = response.json().get("message", {}).get("content")
+    if content is None:
+        raise ValueError("La réponse OLLAMA ne contient pas de contenu valide.")
 
-    # Si la question est en francais, pas besoin de traduire
     if langue_de_la_question == "fr":
-        return reponse_francaise
+        return content
 
-    # NLLB-200 traduit le francais vers la langue de la question
-    return traduire_depuis_francais(reponse_francaise, langue_de_la_question)
+    try:
+        langue_reponse = detect(content)
+    except (Exception, LangDetectException):
+        langue_reponse = "fr"
+
+    if langue_reponse == "fr" and langue_de_la_question in {"en", "ar", "tn"}:
+        return traduire_depuis_francais(content, langue_de_la_question)
+
+    return content

@@ -24,6 +24,7 @@ DEPARTEMENTS = {
         "data/documents_departements/support_b2b/guide-operateurs-declaration-incidents-reseaux.pdf",
         "data/documents_departements/support_b2b/tr1907.pdf",
         "data/documents_departements/support_b2b/ITSM-Incident-Process-Guide.pdf",
+        "data/documents_departements/support_b2b/tr1915.pdf",
     ],
     "Productivité Personnelle": [
         "data/documents_departements/productivite/Comment-rediger-un-compte-rendu-de-reunion.pdf",

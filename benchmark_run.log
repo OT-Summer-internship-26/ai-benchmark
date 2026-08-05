@@ -1,0 +1,64 @@
+﻿.\.venv\Scripts\python.exe : Warning: You are sending unauthenticated requests 
+to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster 
+downloads.
+Au caractère Ligne:1 : 59
++ ... benchmark'; .\.venv\Scripts\python.exe -m scripts.run_benchmark_graph ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Warning: You ar...ster downloads. 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]
+Loading weights: 100%|##########| 199/199 [00:00<00:00, 5451.06it/s]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\scripts\run_benchma
+rk_graph.py", line 22, in <module>
+    resultat = benchmark_graph.invoke(config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\.venv\Lib\site-pack
+ages\langgraph\pregel\main.py", line 3913, in invoke
+    for chunk in self.stream(
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\.venv\Lib\site-pack
+ages\langgraph\pregel\main.py", line 2967, in stream
+    for _ in runner.tick(
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\.venv\Lib\site-pack
+ages\langgraph\pregel\_runner.py", line 207, in tick
+    run_with_retry(
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\.venv\Lib\site-pack
+ages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\.venv\Lib\site-pack
+ages\langgraph\_internal\_runnable.py", line 684, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\.venv\Lib\site-pack
+ages\langgraph\_internal\_runnable.py", line 426, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File 
+"C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\src\agents\executeur.py", 
+line 37, in agent_executeur
+    print(f"\n  \u2192 ScÚnario [{scenario['id']}] {scenario['nom_cas_usage']} 
+| ModÞle : {nom_modele}")
+  File "C:\Users\ranim\AppData\Local\Programs\Python\Python312\Lib\encodings\cp
+1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in 
+position 4: character maps to <undefined>
+During task with name 'executeur' and id '4fd3fff4-e65a-0080-e2a8-afed859b6690'
+D╔MARRAGE DU BENCHMARK VIA LANGGRAPH
+ScÚnarios : [1, 11]
+ModÞles   : ['llama3.1:8b', 'mistral:7b']
+Total     : 4 exÚcutions
+
+
+[COLLECTEUR] RÚcupÚration de 2 scÚnarios...
+[COLLECTEUR] 2 scÚnarios collectÚs.
+
+[EXECUTEUR] Lancement du benchmark...
+  2 scÚnarios Î 2 modÞles = 4 exÚcutions

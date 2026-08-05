@@ -1,8 +1,14 @@
 from src.database.connection import engine
 from sqlalchemy import text
+from src.evaluation.deepeval_runner import evaluer_execution_ragas
 
 
 def _evaluer_reponse(reponse: str, chunks_rag: list[str], prompt: str) -> dict:
+    """
+    Évaluation heuristique (Sprint 3) — conservée dans le code pour comparaison
+    et pour le rapport de stage, mais N'EST PLUS l'évaluation par défaut depuis
+    le Sprint 4 (remplacée par evaluer_execution_ragas, voir agent_evaluateur).
+    """
     scores = {}
 
     # 1. COMPLÉTUDE (1-5)
@@ -68,40 +74,59 @@ def _evaluer_reponse(reponse: str, chunks_rag: list[str], prompt: str) -> dict:
 
 
 def agent_evaluateur(state: dict) -> dict:
-    """Évalue chaque exécution et enregistre les scores en base."""
-    print(f"\n[EVALUATEUR] Évaluation de {len(state['executions'])} exécutions...")
+    """
+    Évalue chaque exécution avec les métriques Ragas (Sprint 4) et enregistre
+    les scores en base. L'évaluation heuristique (_evaluer_reponse, Sprint 3)
+    reste disponible dans ce fichier mais n'est plus utilisée par défaut.
+    """
+    print(f"\n[EVALUATEUR] Évaluation de {len(state['executions'])} exécutions (Ragas)...")
 
     scores_list = []
     erreurs = state.get("erreurs", [])
 
-    index_chunks = {s["id"]: s["chunks_rag"] for s in state["scenarios"]}
-    index_prompt = {s["id"]: s["prompt"] for s in state["scenarios"]}
+    # Index sur le scénario complet (pas juste chunks/prompt) pour accéder
+    # aussi à sortie_attendue, nécessaire pour context_recall.
+    index_scenarios = {s["id"]: s for s in state["scenarios"]}
 
     with engine.connect() as conn:
         for execution in state["executions"]:
             scenario_id = execution["scenario_id"]
-            chunks_rag = index_chunks.get(scenario_id, [])
-            prompt = index_prompt.get(scenario_id, "")
-
-            scores = _evaluer_reponse(execution["reponse"], chunks_rag, prompt)
+            scenario = index_scenarios.get(scenario_id, {})
+            chunks_rag = scenario.get("chunks_rag", [])
+            prompt = scenario.get("prompt", "")
+            sortie_attendue = scenario.get("sortie_attendue")
 
             print(f"\n  → [{execution['scenario_nom']}] | {execution['modele']}")
-            print(f"     Complétude : {scores['completude']}/5")
-            print(f"     Structure  : {scores['structure']}/5")
-            print(f"     Fidélité   : {scores['fidelite_rag']}/5")
-            print(f"     Honnêteté  : {scores['honnetete']}/5")
-            print(f"     Global     : {scores['score_global']}/5")
+
+            resultat = evaluer_execution_ragas(
+                reponse=execution["reponse"],
+                question=prompt,
+                contexte_chunks=chunks_rag,
+                sortie_attendue=sortie_attendue,
+            )
+
+            print(f"     Faithfulness      : {resultat['faithfulness']['note']}")
+            print(f"     Answer relevancy  : {resultat['answer_relevancy']['note']}")
+            print(f"     Context precision : {resultat['context_precision']['note']}")
+            print(f"     Context recall    : {resultat['context_recall']['note']}")
+            print(f"     Score global      : {resultat['score_global']}")
 
             execution_id = execution["execution_id"]
             try:
-                criteres = {
-                    "completude": scores["completude"],
-                    "structure": scores["structure"],
-                    "fidelite_rag": scores["fidelite_rag"],
-                    "honnetete": scores["honnetete"],
-                    "score_global": scores["score_global"],
+                criteres_a_inserer = {
+                    "faithfulness": resultat["faithfulness"],
+                    "answer_relevancy": resultat["answer_relevancy"],
+                    "context_precision": resultat["context_precision"],
+                    "context_recall": resultat["context_recall"],
                 }
-                for critere, note in criteres.items():
+
+                nb_inseres = 0
+                for critere, detail in criteres_a_inserer.items():
+                    if detail["note"] is None:
+                        # Métrique non calculable (ex: pas de sortie_attendue
+                        # pour context_recall, ou erreur du juge) -> on ne
+                        # pollue pas la base avec une note fictive.
+                        continue
                     conn.execute(
                         text("""
                             INSERT INTO scores (execution_id, critere, note, commentaire)
@@ -110,17 +135,34 @@ def agent_evaluateur(state: dict) -> dict:
                         {
                             "exec_id": execution_id,
                             "critere": critere,
-                            "note": float(note),
-                            "commentaire": f"Évaluation automatique — {critere}",
+                            "note": float(detail["note"]),
+                            "commentaire": detail["justification"][:500],  # sécurité longueur
                         }
                     )
+                    nb_inseres += 1
+
+                if resultat["score_global"] is not None:
+                    conn.execute(
+                        text("""
+                            INSERT INTO scores (execution_id, critere, note, commentaire)
+                            VALUES (:exec_id, :critere, :note, :commentaire)
+                        """),
+                        {
+                            "exec_id": execution_id,
+                            "critere": "score_global",
+                            "note": float(resultat["score_global"]),
+                            "commentaire": "Moyenne des 4 métriques Ragas disponibles",
+                        }
+                    )
+                    nb_inseres += 1
+
                 conn.commit()
-                print(f"     ✓ {len(criteres)} scores enregistrés (execution_id={execution_id})")
+                print(f"     ✓ {nb_inseres} scores enregistrés (execution_id={execution_id})")
             except Exception as e:
                 erreurs.append(f"Erreur insertion score: {str(e)}")
                 print(f"     ✗ Erreur: {str(e)}")
 
-            scores_list.append({**execution, "scores": scores})
+            scores_list.append({**execution, "scores": resultat})
 
     print(f"\n[EVALUATEUR] {len(scores_list)} évaluations terminées.")
 
