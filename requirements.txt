@@ -15,4 +15,5 @@ anthropic
 openai
 google-genai
 groq
+passlib[bcrypt]
 langdetect==1.0.9

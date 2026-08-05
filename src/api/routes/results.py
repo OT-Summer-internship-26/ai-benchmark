@@ -53,6 +53,10 @@ def get_results(
         LIMIT :limit
     """)
 
+    # RAGAS criteria (0.0-1.0 scale)
+    raga_criteria = ("faithfulness", "answer_relevancy", "context_precision", "context_recall")
+    legacy_criteria = ("completude", "structure", "fidelite_rag", "honnetete")
+
     with engine.connect() as conn:
         executions = [dict(row) for row in conn.execute(query_executions, params).mappings()]
 
@@ -60,13 +64,27 @@ def get_results(
             return {"count": 0, "results": []}
 
         execution_ids = [row["execution_id"] for row in executions]
+
+        # Fetch only RAGAS scores for computing score_global
         query_scores = text(
             "SELECT execution_id, critere, note, commentaire "
-            "FROM scores WHERE execution_id IN :ids"
-        ).bindparams(bindparam("ids", expanding=True))
+            "FROM scores WHERE execution_id IN :ids AND critere IN :criteria"
+        ).bindparams(bindparam("ids", expanding=True), bindparam("criteria", expanding=True))
 
         scores_rows = [
-            dict(row) for row in conn.execute(query_scores, {"ids": execution_ids}).mappings()
+            dict(row)
+            for row in conn.execute(query_scores, {"ids": execution_ids, "criteria": raga_criteria}).mappings()
+        ]
+
+        # Also fetch legacy-score markers so UI can warn / export accordingly
+        query_legacy = text(
+            "SELECT execution_id, critere, note "
+            "FROM scores WHERE execution_id IN :ids AND (critere IN :legacy OR (critere='score_global' AND note > 1.0))"
+        ).bindparams(bindparam("ids", expanding=True), bindparam("legacy", expanding=True))
+
+        legacy_rows = [
+            dict(row)
+            for row in conn.execute(query_legacy, {"ids": execution_ids, "legacy": legacy_criteria}).mappings()
         ]
 
     # Regrouper les scores par execution_id
@@ -83,9 +101,13 @@ def get_results(
     results = []
     for exe in executions:
         exe["scores"] = scores_par_execution.get(exe["execution_id"], [])
+        # has legacy scores?
+        exe_legacy = [r for r in legacy_rows if r["execution_id"] == exe["execution_id"]]
+        exe["has_legacy_scores"] = bool(exe_legacy)
+
         if exe["scores"]:
             notes = [s["note"] for s in exe["scores"] if s["note"] is not None]
-            exe["score_global"] = round(sum(notes) / len(notes), 2) if notes else None
+            exe["score_global"] = round(sum(notes) / len(notes), 3) if notes else None
         else:
             exe["score_global"] = None
         results.append(exe)

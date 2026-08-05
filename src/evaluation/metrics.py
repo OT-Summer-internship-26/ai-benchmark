@@ -29,6 +29,7 @@ dans les limites connues du rapport de stage.
 import json
 import re
 import statistics
+import time
 from groq import Groq
 from src.config.settings import GROQ_API_KEY
 
@@ -39,28 +40,44 @@ REPETITIONS_JUGE = 2  # nombre d'appels par métrique pour lisser l'instabilité
 
 
 def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> float | None:
-    """Un seul appel au juge, retourne juste la note (ou None si échec)."""
-    try:
-        response = client.chat.completions.create(
-            model=MODELE_JUGE,
-            messages=[
-                {"role": "system", "content": prompt_systeme},
-                {"role": "user", "content": prompt_utilisateur},
-            ],
-            max_tokens=500,
-            temperature=0,  # déterminisme : on veut un jugement stable, pas créatif
-            seed=42,  # tentative de reproductibilité côté Groq (best-effort, non garanti à 100%)
-        )
-        contenu = response.choices[0].message.content.strip()
+    """Un seul appel au juge, avec retry/backoff si l'API échoue.
 
-        # Le juge répond parfois avec des ```json ... ``` autour du JSON -> on nettoie
-        contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
+    Tente jusqu'à 3 appels côté Groq avec backoff exponentiel (5s,15s,45s).
+    Retourne la note float ou None si toutes les tentatives échouent.
+    """
+    backoffs = [5, 15, 45]
+    last_exc = None
+    for attempt, wait in enumerate(backoffs, start=1):
+        try:
+            response = client.chat.completions.create(
+                model=MODELE_JUGE,
+                messages=[
+                    {"role": "system", "content": prompt_systeme},
+                    {"role": "user", "content": prompt_utilisateur},
+                ],
+                max_tokens=500,
+                temperature=0,
+                seed=42,
+            )
+            contenu = response.choices[0].message.content.strip()
 
-        resultat = json.loads(contenu_nettoye)
-        note = float(resultat.get("note", 0.0))
-        return max(0.0, min(1.0, note))  # clamp de sécurité dans [0, 1]
-    except Exception:
-        return None
+            # Le juge répond parfois avec des ```json ... ``` autour du JSON -> on nettoie
+            contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
+
+            resultat = json.loads(contenu_nettoye)
+            note = float(resultat.get("note", 0.0))
+            return max(0.0, min(1.0, note))
+        except Exception as e:
+            last_exc = e
+            # Si ce n'est pas la dernière tentative, attendre puis retry
+            if attempt < len(backoffs):
+                try:
+                    time.sleep(wait)
+                except Exception:
+                    pass
+            else:
+                # toutes les tentatives ont échoué -> on retourne None
+                return None
 
 
 def _appeler_juge(prompt_systeme: str, prompt_utilisateur: str) -> dict:
