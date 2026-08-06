@@ -117,8 +117,8 @@ ROLE_DISPLAY = {
 def login_form():
     st.title("Connexion — Benchmark IA Ooredoo")
     with st.form("login_form"):
-        email = st.text_input("Adresse e-mail")
-        password = st.text_input("Mot de passe", type="password")
+        email = st.text_input("Adresse e-mail").strip()
+        password = st.text_input("Mot de passe", type="password").strip()
         submitted = st.form_submit_button("Se connecter")
 
     if submitted:
