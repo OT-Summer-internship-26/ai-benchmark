@@ -6,7 +6,7 @@ from src.models_clients.ollama_client import generate_response
 def test_generate_response_uses_target_language_prompt_for_english(monkeypatch):
     captured = {}
 
-    def fake_post(url, json):
+    def fake_post(url, json, timeout=None):
         captured["payload"] = json
         return SimpleNamespace(
             status_code=200,
@@ -30,7 +30,7 @@ def test_generate_response_uses_target_language_prompt_for_english(monkeypatch):
 
 
 def test_translate_french_answer_to_english_when_model_returns_french(monkeypatch):
-    def fake_post(url, json):
+    def fake_post(url, json, timeout=None):
         return SimpleNamespace(
             status_code=200,
             json=lambda: {"message": {"content": "La politique autorise le travail à distance."}},

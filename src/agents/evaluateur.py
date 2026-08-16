@@ -1,6 +1,10 @@
 from src.database.connection import engine
 from sqlalchemy import text
 from src.evaluation.deepeval_runner import evaluer_execution_ragas
+from src.utils.logger import setup_logger
+from src.utils.exceptions import DatabaseException, EvaluationException
+
+logger = setup_logger(__name__)
 
 
 def _evaluer_reponse(reponse: str, chunks_rag: list[str], prompt: str) -> dict:
@@ -79,7 +83,7 @@ def agent_evaluateur(state: dict) -> dict:
     les scores en base. L'évaluation heuristique (_evaluer_reponse, Sprint 3)
     reste disponible dans ce fichier mais n'est plus utilisée par défaut.
     """
-    print(f"\n[EVALUATEUR] Évaluation de {len(state['executions'])} exécutions (Ragas)...")
+    logger.info(f"[EVALUATEUR] Évaluation de {len(state['executions'])} exécutions (Ragas)...")
 
     scores_list = []
     erreurs = state.get("erreurs", [])
@@ -88,83 +92,96 @@ def agent_evaluateur(state: dict) -> dict:
     # aussi à sortie_attendue, nécessaire pour context_recall.
     index_scenarios = {s["id"]: s for s in state["scenarios"]}
 
-    with engine.connect() as conn:
-        for execution in state["executions"]:
-            scenario_id = execution["scenario_id"]
-            scenario = index_scenarios.get(scenario_id, {})
-            chunks_rag = scenario.get("chunks_rag", [])
-            prompt = scenario.get("prompt", "")
-            sortie_attendue = scenario.get("sortie_attendue")
+    try:
+        with engine.begin() as conn:  # Automatic transaction management
+            for execution in state["executions"]:
+                scenario_id = execution["scenario_id"]
+                scenario = index_scenarios.get(scenario_id, {})
+                chunks_rag = scenario.get("chunks_rag", [])
+                prompt = scenario.get("prompt", "")
+                sortie_attendue = scenario.get("sortie_attendue")
 
-            print(f"\n  → [{execution['scenario_nom']}] | {execution['modele']}")
+                logger.info(f"\n  → [{execution['scenario_nom']}] | {execution['modele']}")
 
-            resultat = evaluer_execution_ragas(
-                reponse=execution["reponse"],
-                question=prompt,
-                contexte_chunks=chunks_rag,
-                sortie_attendue=sortie_attendue,
-            )
-
-            print(f"     Faithfulness      : {resultat['faithfulness']['note']}")
-            print(f"     Answer relevancy  : {resultat['answer_relevancy']['note']}")
-            print(f"     Context precision : {resultat['context_precision']['note']}")
-            print(f"     Context recall    : {resultat['context_recall']['note']}")
-            print(f"     Score global      : {resultat['score_global']}")
-
-            execution_id = execution["execution_id"]
-            try:
-                criteres_a_inserer = {
-                    "faithfulness": resultat["faithfulness"],
-                    "answer_relevancy": resultat["answer_relevancy"],
-                    "context_precision": resultat["context_precision"],
-                    "context_recall": resultat["context_recall"],
-                }
-
-                nb_inseres = 0
-                for critere, detail in criteres_a_inserer.items():
-                    if detail["note"] is None:
-                        # Métrique non calculable (ex: pas de sortie_attendue
-                        # pour context_recall, ou erreur du juge) -> on ne
-                        # pollue pas la base avec une note fictive.
-                        continue
-                    conn.execute(
-                        text("""
-                            INSERT INTO scores (execution_id, critere, note, commentaire)
-                            VALUES (:exec_id, :critere, :note, :commentaire)
-                        """),
-                        {
-                            "exec_id": execution_id,
-                            "critere": critere,
-                            "note": float(detail["note"]),
-                            "commentaire": detail["justification"][:500],  # sécurité longueur
-                        }
+                try:
+                    resultat = evaluer_execution_ragas(
+                        reponse=execution["reponse"],
+                        question=prompt,
+                        contexte_chunks=chunks_rag,
+                        sortie_attendue=sortie_attendue,
                     )
-                    nb_inseres += 1
 
-                if resultat["score_global"] is not None:
-                    conn.execute(
-                        text("""
-                            INSERT INTO scores (execution_id, critere, note, commentaire)
-                            VALUES (:exec_id, :critere, :note, :commentaire)
-                        """),
-                        {
-                            "exec_id": execution_id,
-                            "critere": "score_global",
-                            "note": float(resultat["score_global"]),
-                            "commentaire": "Moyenne des 4 métriques Ragas disponibles",
-                        }
-                    )
-                    nb_inseres += 1
+                    logger.info(f"     Faithfulness      : {resultat['faithfulness']['note']}")
+                    logger.info(f"     Answer relevancy  : {resultat['answer_relevancy']['note']}")
+                    logger.info(f"     Context precision : {resultat['context_precision']['note']}")
+                    logger.info(f"     Context recall    : {resultat['context_recall']['note']}")
+                    logger.info(f"     Score global      : {resultat['score_global']}")
 
-                conn.commit()
-                print(f"     ✓ {nb_inseres} scores enregistrés (execution_id={execution_id})")
-            except Exception as e:
-                erreurs.append(f"Erreur insertion score: {str(e)}")
-                print(f"     ✗ Erreur: {str(e)}")
+                    execution_id = execution["execution_id"]
+                    
+                    criteres_a_inserer = {
+                        "faithfulness": resultat["faithfulness"],
+                        "answer_relevancy": resultat["answer_relevancy"],
+                        "context_precision": resultat["context_precision"],
+                        "context_recall": resultat["context_recall"],
+                    }
 
-            scores_list.append({**execution, "scores": resultat})
+                    nb_inseres = 0
+                    for critere, detail in criteres_a_inserer.items():
+                        if detail["note"] is None:
+                            # Métrique non calculable (ex: pas de sortie_attendue
+                            # pour context_recall, ou erreur du juge) -> on ne
+                            # pollue pas la base avec une note fictive.
+                            logger.debug(f"Skipping {critere} (not computable)")
+                            continue
+                        conn.execute(
+                            text("""
+                                INSERT INTO scores (execution_id, critere, note, commentaire)
+                                VALUES (:exec_id, :critere, :note, :commentaire)
+                            """),
+                            {
+                                "exec_id": execution_id,
+                                "critere": critere,
+                                "note": float(detail["note"]),
+                                "commentaire": detail["justification"][:500],  # sécurité longueur
+                            }
+                        )
+                        nb_inseres += 1
 
-    print(f"\n[EVALUATEUR] {len(scores_list)} évaluations terminées.")
+                    if resultat["score_global"] is not None:
+                        conn.execute(
+                            text("""
+                                INSERT INTO scores (execution_id, critere, note, commentaire)
+                                VALUES (:exec_id, :critere, :note, :commentaire)
+                            """),
+                            {
+                                "exec_id": execution_id,
+                                "critere": "score_global",
+                                "note": float(resultat["score_global"]),
+                                "commentaire": "Moyenne des 4 métriques Ragas disponibles",
+                            }
+                        )
+                        nb_inseres += 1
+
+                    logger.info(f"     ✓ {nb_inseres} scores enregistrés (execution_id={execution_id})")
+                except EvaluationException as e:
+                    msg = f"Evaluation error for execution {execution['execution_id']}: {str(e)}"
+                    erreurs.append(msg)
+                    logger.error(msg)
+                except Exception as e:
+                    msg = f"Erreur insertion score: {str(e)}"
+                    erreurs.append(msg)
+                    logger.error(msg)
+
+                scores_list.append({**execution, "scores": resultat})
+
+    except Exception as e:
+        msg = f"Critical error in evaluateur: {str(e)}"
+        erreurs.append(msg)
+        logger.error(msg)
+        raise DatabaseException(msg)
+
+    logger.info(f"[EVALUATEUR] {len(scores_list)} évaluations terminées.")
 
     return {
         **state,
