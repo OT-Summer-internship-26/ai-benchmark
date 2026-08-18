@@ -17,3 +17,7 @@ google-genai
 groq
 passlib[bcrypt]
 langdetect==1.0.9
+plotly
+requests
+pydantic
+transformers

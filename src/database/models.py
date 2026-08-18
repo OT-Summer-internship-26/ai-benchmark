@@ -62,4 +62,5 @@ class Utilisateur(Base):
     email = Column(String, unique=True, nullable=False)
     mot_de_passe_hash = Column(String, nullable=False)
     role = Column(String, nullable=False)
+    departement = Column(String, nullable=True)  # For client role: which department they can access
     date_creation = Column(DateTime, default=datetime.utcnow)

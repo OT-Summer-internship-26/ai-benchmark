@@ -1,12 +1,16 @@
 """
 Route GET /benchmark/results
 Retourne les dernières exécutions avec leurs scores associés depuis executions + scores.
-Avec pagination, filtrage et validation appropriée.
+Avec pagination, filtrage, validation et QUERY-LEVEL GATING pour les clients.
+
+SECURITY: Clients can ONLY query their assigned department.
+This is enforced at the query level (SQL WHERE clause), not UI-level filtering.
 """
 
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException, Depends
 from sqlalchemy import text, bindparam
 from src.database.connection import engine
+from src.api.auth import get_current_user
 from src.utils.logger import setup_logger
 from src.utils.validation import validate_positive_int
 
@@ -20,10 +24,14 @@ def get_results(
     offset: int = Query(default=0, ge=0, description="Décalage pour la pagination"),
     scenario_id: int | None = Query(default=None, ge=1, description="Filtrer par scénario"),
     modele_id: int | None = Query(default=None, ge=1, description="Filtrer par modèle"),
+    user: dict = Depends(get_current_user),
 ):
     """
     Retourne les exécutions avec leurs scores associés (RAGAS et legacy).
     Inclut pagination avec limit/offset pour éviter les surcharges mémoire.
+    
+    SECURITY: Clients can ONLY access their assigned department.
+    Query is enforced at database level (WHERE clause), not client-side filtering.
     
     Retourne:
         {
@@ -35,6 +43,27 @@ def get_results(
         }
     """
     try:
+        # === QUERY-LEVEL GATING FOR CLIENT ROLE ===
+        # If user is a client, enforce department isolation at query level
+        department_filter = None
+        if user.get("role") == "client":
+            # Get client's assigned department
+            with engine.connect() as check_conn:
+                dept_query = text("""
+                    SELECT departement FROM utilisateurs WHERE id = :user_id
+                """)
+                dept_result = check_conn.execute(dept_query, {"user_id": user.get("id")}).fetchone()
+                
+                if not dept_result or not dept_result[0]:
+                    logger.error(f"Client {user.get('email')} has no department assigned")
+                    raise HTTPException(
+                        status_code=403,
+                        detail="Your account is not assigned to a department. Contact admin."
+                    )
+                
+                department_filter = dept_result[0]
+                logger.info(f"Client {user.get('email')} querying department: {department_filter}")
+        
         # Validate pagination parameters
         is_valid, error, limit = validate_positive_int(limit, "limit")
         if not is_valid:
@@ -52,6 +81,11 @@ def get_results(
         filtres = []
         params: dict = {"limit": limit, "offset": offset}
 
+        # === ADD DEPARTMENT FILTER FOR CLIENTS ===
+        if department_filter:
+            filtres.append("s.departement = :department")
+            params["department"] = department_filter
+
         if scenario_id is not None:
             if scenario_id <= 0:
                 raise HTTPException(status_code=400, detail="scenario_id must be positive")
@@ -66,9 +100,10 @@ def get_results(
 
         where_clause = f"WHERE {' AND '.join(filtres)}" if filtres else ""
 
-        # Query to get total count (with filters applied)
+        # Query to get total count (with filters applied, INCLUDING department filter)
         count_query = text(f"""
             SELECT COUNT(*) FROM executions e
+            JOIN scenarios s ON s.id = e.scenario_id
             {where_clause}
         """)
 

@@ -4,6 +4,7 @@ Structured logging configuration for the benchmark pipeline.
 
 import logging
 import sys
+import pathlib
 from logging.handlers import RotatingFileHandler
 
 def setup_logger(name: str) -> logging.Logger:
@@ -37,15 +38,20 @@ def setup_logger(name: str) -> logging.Logger:
     
     # File handler (DEBUG and above, rotating)
     try:
+        # Ensure logs directory exists
+        root_dir = pathlib.Path(__file__).resolve().parents[2]
+        logs_dir = root_dir / "logs"
+        logs_dir.mkdir(parents=True, exist_ok=True)
+        
         file_handler = RotatingFileHandler(
-            'logs/benchmark.log',
+            str(logs_dir / 'benchmark.log'),
             maxBytes=10 * 1024 * 1024,  # 10MB
             backupCount=5
         )
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
-    except (OSError, IOError):
-        logger.warning("Could not create log file handler")
+    except (OSError, IOError) as e:
+        logger.warning(f"Could not create log file handler: {e}")
     
     return logger

@@ -32,6 +32,10 @@ from src.auth.utils import verify_password, hash_password
 # d'environnement si tu déploies un jour au-delà de ta machine locale.
 API_BASE_URL = "http://localhost:8000"
 
+# Nombre de scénarios attendu par département — utilisé pour le contrôle
+# de complétude affiché dans l'onglet Administration.
+SCENARIOS_CIBLE_PAR_DEPARTEMENT = 16
+
 
 # ---------------------------------------------------------------------------
 # Page config — called exactly ONCE, as the very first Streamlit command in
@@ -45,6 +49,34 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
+
+
+# ---------------------------------------------------------------------------
+# Helpers pédagogiques pour les graphiques (ajout)
+# ---------------------------------------------------------------------------
+
+def chart_caption(quoi: str, comment_lire: str, conclusion: str) -> None:
+    """Affiche une légende pédagogique sous un graphique.
+    À appeler juste après chaque st.vega_lite_chart / st.table / st.dataframe
+    pour rendre le dashboard compréhensible même pour un public non-technique.
+    """
+    st.caption(
+        f"📊 **Ce graphique montre** : {quoi}  \n"
+        f"👀 **Comment le lire** : {comment_lire}  \n"
+        f"✅ **À retenir** : {conclusion}"
+    )
+
+
+def score_to_label(score) -> str:
+    """Convertit un score brut (0-1) en label qualitatif compréhensible
+    pour un public non-technique (utilisé côté Client)."""
+    if score is None or pd.isna(score):
+        return "N/A"
+    if score >= 0.75:
+        return "🟢 Excellent"
+    if score >= 0.5:
+        return "🟡 Correct"
+    return "🔴 À améliorer"
 
 
 @st.cache_data
@@ -131,20 +163,87 @@ def load_executions(limit: int | None = 200) -> pd.DataFrame:
     return df
 
 
+
+@st.cache_data
+def load_scenario_catalog() -> pd.DataFrame:
+    """Charge tous les scénarios existants (avec ou sans exécutions), triés par département."""
+    with engine.connect() as conn:
+        return pd.read_sql(
+            text("SELECT departement, nom_cas_usage FROM scenarios ORDER BY departement, nom_cas_usage"),
+            conn,
+        )
+
 def format_datetime(df: pd.DataFrame) -> pd.DataFrame:
     if "date_execution" in df.columns:
         df["date_execution"] = pd.to_datetime(df["date_execution"])
     return df
 
 
-def build_metric_cards(df: pd.DataFrame) -> None:
+def build_metric_cards(df: pd.DataFrame, client_mode: bool = False) -> None:
+    """Affiche les 4 cartes de métriques clés.
+    En mode client (client_mode=True), le score brut (ex: 0.410) est
+    remplacé par un label qualitatif (🟢/🟡/🔴) plus lisible pour un
+    public non-technique — conformément à la demande de simplification.
+    """
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Exécutions", len(df))
     col2.metric("Modèles", df["modele_nom"].nunique())
     col3.metric("Scénarios", df["nom_cas_usage"].nunique())
-    col4.metric(
-        "Score global moyen",
-        f"{round(df['score_global_auto'].mean(), 3):.3f}" if "score_global_auto" in df.columns else "N/A",
+    if "score_global_auto" in df.columns:
+        moyenne = df["score_global_auto"].mean()
+        if client_mode:
+            col4.metric("Qualité globale", score_to_label(moyenne))
+        else:
+            col4.metric("Score global moyen", f"{round(moyenne, 3):.3f}" if pd.notna(moyenne) else "N/A")
+    else:
+        col4.metric("Qualité globale" if client_mode else "Score global moyen", "N/A")
+
+
+def build_client_department_comparison(filtered: pd.DataFrame) -> None:
+    """Vue orientée décision métier : pour chaque département, quel est
+    le modèle le plus performant ? Remplace la table technique de modèles
+    dans l'interface Client."""
+    st.markdown("## Quel modèle IA pour quel besoin ?")
+    st.write(
+        "Cette vue vous aide à choisir le modèle IA le plus adapté selon le "
+        "département ou le type de besoin métier."
+    )
+
+    if "departement" not in filtered.columns or filtered.empty:
+        st.info("Pas assez de données pour établir une recommandation par département.")
+        return
+
+    dept_summary = (
+        filtered.dropna(subset=["score_global_auto"])
+        .groupby(["departement", "modele_nom"])["score_global_auto"]
+        .mean()
+        .reset_index()
+    )
+
+    if dept_summary.empty:
+        st.info("Pas assez de données pour établir une recommandation par département.")
+        return
+
+    best_per_dept = (
+        dept_summary.sort_values("score_global_auto", ascending=False)
+        .groupby("departement")
+        .first()
+        .reset_index()
+    )
+    best_per_dept["Recommandation"] = best_per_dept["score_global_auto"].apply(score_to_label)
+
+    st.table(
+        best_per_dept.rename(columns={
+            "departement": "Département",
+            "modele_nom": "Modèle recommandé",
+        })[["Département", "Modèle recommandé", "Recommandation"]]
+    )
+    chart_caption(
+        quoi="le modèle IA le plus performant pour chaque département métier.",
+        comment_lire="chaque ligne correspond à un département ; la colonne "
+        "'Modèle recommandé' indique le modèle qui obtient le meilleur score sur ce département.",
+        conclusion="c'est le modèle à privilégier si vous déployez une solution IA "
+        "pour ce département spécifique.",
     )
 
 
@@ -196,7 +295,20 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
     st.session_state["login_error"] = None
     st.session_state["auth_email"] = user.email
     st.session_state["auth_role"] = ROLE_DISPLAY.get(user.role, user.role)
+
+    try:
+        resp = requests.post(
+            f"{API_BASE_URL}/auth/login",
+            json={"email": email.strip(), "password": password.strip()},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        st.session_state["api_token"] = resp.json()["token"]
+    except Exception:
+        st.session_state["api_token"] = None  # pilotage indisponible si l'API est down
+
     return True
+    
 
 
 def do_signup(email: str, password: str, confirm_password: str) -> bool:
@@ -344,19 +456,17 @@ def trigger_benchmark_run(
     model_names: list[str] | None,
     timeout: int = 900,
 ) -> tuple[bool, dict | str]:
-    """
-    Appelle POST /benchmark/run sur l'API FastAPI (Sprint 3) pour déclencher
-    une nouvelle exécution du pipeline LangGraph.
-
-    Retourne (True, réponse_json) en cas de succès, ou (False, message_erreur)
-    sinon — jamais d'exception qui remonterait jusqu'à l'UI Streamlit.
-    """
     payload = {
         "scenario_ids": scenario_ids if scenario_ids else None,
         "model_names": model_names if model_names else None,
     }
+    token = st.session_state.get("api_token")
+    headers = {"Authorization": f"Bearer {token}"} if token else {}
+
     try:
-        response = requests.post(f"{API_BASE_URL}/benchmark/run", json=payload, timeout=timeout)
+        response = requests.post(
+            f"{API_BASE_URL}/benchmark/run", json=payload, headers=headers, timeout=timeout
+        )
         response.raise_for_status()
         return True, response.json()
     except requests.exceptions.ConnectionError:
@@ -371,7 +481,7 @@ def trigger_benchmark_run(
         )
     except requests.exceptions.HTTPError:
         return False, f"Erreur API ({response.status_code}) : {response.text}"
-    except Exception as exc:  # filet de sécurité générique
+    except Exception as exc:
         return False, f"Erreur inattendue lors de l'appel à l'API : {exc}"
 
 
@@ -387,6 +497,26 @@ def admin_list_scenarios():
         )
     finally:
         db.close()
+
+
+def admin_scenarios_completeness() -> pd.DataFrame:
+    """Compare le nombre de scénarios en base par département à la cible
+    (16 par département). Utilisé dans l'onglet Administration pour
+    garantir la complétude du catalogue."""
+    scenarios = admin_list_scenarios()
+    if not scenarios:
+        return pd.DataFrame(columns=["Département", "Nb scénarios", "Statut"])
+
+    counts: dict[str, int] = {}
+    for s in scenarios:
+        counts[s.departement] = counts.get(s.departement, 0) + 1
+
+    rows = []
+    for dep, count in sorted(counts.items()):
+        statut = "✅ complet" if count >= SCENARIOS_CIBLE_PAR_DEPARTEMENT else f"❌ manque {SCENARIOS_CIBLE_PAR_DEPARTEMENT - count}"
+        rows.append({"Département": dep, "Nb scénarios": count, "Statut": statut})
+
+    return pd.DataFrame(rows)
 
 
 def admin_create_scenario(
@@ -879,6 +1009,7 @@ def main() -> None:
     role = st.session_state["auth_role"]
     is_admin = role in ["Admin", "Super Admin"]
     is_super_admin = role == "Super Admin"
+    is_client = role == "Client"
 
     render_sidebar_identity(email, role)
 
@@ -926,6 +1057,7 @@ def main() -> None:
         )
 
     df = load_executions(limit=limit)
+    
     df = format_datetime(df)
 
     # Vérifier la présence de scores heuristiques anciens et prévenir
@@ -949,25 +1081,45 @@ def main() -> None:
         st.warning("Aucune exécution disponible dans la base de données.")
         return
 
-    modeles = df["modele_nom"].unique().tolist()
-    scenarios = df["nom_cas_usage"].unique().tolist()
+    if is_admin:
+        modeles = df["modele_nom"].unique().tolist()
 
-    selected_modeles = st.sidebar.multiselect("Modèles", modeles, default=modeles)
-    selected_scenarios = st.sidebar.multiselect("Scénarios", scenarios, default=scenarios)
+        scenario_catalog = load_scenario_catalog()
+        scenarios = scenario_catalog["nom_cas_usage"].tolist()
+        departement_par_scenario = dict(zip(scenario_catalog["nom_cas_usage"], scenario_catalog["departement"]))
 
-    min_date = df["date_execution"].min().date()
-    max_date = df["date_execution"].max().date()
-    date_range = st.sidebar.date_input(
-        "Période d'exécution",
-        value=(min_date, max_date),
-        min_value=min_date,
-        max_value=max_date,
+        selected_modeles = st.sidebar.multiselect("Modèles", modeles, default=modeles)
+        selected_scenarios = st.sidebar.multiselect(
+           "Scénarios",
+          scenarios,
+          default=scenarios,
+          format_func=lambda nom: f"{nom} ({departement_par_scenario.get(nom, '?')})",
     )
-    if isinstance(date_range, tuple) and len(date_range) == 2:
-        start_date, end_date = date_range
-    else:
-        start_date, end_date = min_date, max_date
+  
+        min_date = df["date_execution"].min().date()
+        max_date = df["date_execution"].max().date()
+        date_range = st.sidebar.date_input(
+           "Période d'exécution",
+          value=(min_date, max_date),
+          min_value=min_date,
+          max_value=max_date,
+    )
+        if isinstance(date_range, tuple) and len(date_range) == 2:
 
+             start_date, end_date = date_range
+        else:
+
+            start_date, end_date = min_date, max_date
+
+
+    else:
+
+        # Client : pas de filtres avancés, vue simplifiée sur toutes les données disponibles
+        selected_modeles = df["modele_nom"].unique().tolist()
+        selected_scenarios = df["nom_cas_usage"].unique().tolist()
+        start_date = df["date_execution"].min().date()
+        end_date = df["date_execution"].max().date()
+        
     filtered = df[
         df["modele_nom"].isin(selected_modeles)
         & df["nom_cas_usage"].isin(selected_scenarios)
@@ -1054,13 +1206,19 @@ def main() -> None:
     best_model = summary_model.iloc[0] if not summary_model.empty else None
     best_scenario = summary_scenario.iloc[0] if not summary_scenario.empty else None
 
+    # ------------------------------------------------------------------
+    # Construction des onglets : le Client n'a plus "Détails des
+    # exécutions" (données brutes/techniques) ni "Pilotage".
+    # ------------------------------------------------------------------
     tabs = ["Vue d'ensemble", "Comparaison modèles", "Comparaison scénarios", "Détails des exécutions"]
+
     if is_admin:
         tabs.append("Pilotage")
     if is_super_admin:
         tabs.append("Administration")
 
     tab_objects = st.tabs(tabs)
+
     overview_tab, models_tab, scenarios_tab, details_tab = tab_objects[:4]
     extra_tabs = list(tab_objects[4:])
 
@@ -1070,12 +1228,14 @@ def main() -> None:
     with overview_tab:
         if role == "Client":
             st.markdown("## Vue d'ensemble")
-            build_metric_cards(filtered)
+            
+
             st.markdown("#### Top 3 modèles")
             top3 = summary_model.head(3).copy()
             if not top3.empty:
                 top3 = top3.reset_index(drop=True)
                 top3.index = top3.index + 1
+                top3["Qualité"] = top3["score_global_display"].apply(score_to_label)
                 top3["score_global_display"] = top3["score_global_display"].map(lambda v: f"{v:.3f}")
                 st.table(
                     top3.rename(
@@ -1084,7 +1244,13 @@ def main() -> None:
                             "score_global_display": "Score global",
                             "latence_secondes": "Latence (s)",
                         }
-                    )[["Modèle", "Score global", "Latence (s)"]]
+                    )[["Modèle", "Qualité", "Latence (s)"]]
+                )
+                chart_caption(
+                    quoi="les 3 modèles IA les plus performants, tous départements confondus.",
+                    comment_lire="le classement va du plus performant (ligne 1) au moins performant (ligne 3) ; "
+                    "la colonne 'Qualité' résume le niveau de performance avec un code couleur.",
+                    conclusion="privilégiez le modèle en tête de liste pour vos besoins IA généraux.",
                 )
             else:
                 st.info("Pas de modèles à afficher pour le Top 3.")
@@ -1094,6 +1260,7 @@ def main() -> None:
             if not top3_scenarios.empty:
                 top3_scenarios = top3_scenarios.reset_index(drop=True)
                 top3_scenarios.index = top3_scenarios.index + 1
+                top3_scenarios["Qualité"] = top3_scenarios["score_global_display"].apply(score_to_label)
                 top3_scenarios["score_global_display"] = top3_scenarios["score_global_display"].map(lambda v: f"{v:.3f}")
                 st.table(
                     top3_scenarios.rename(
@@ -1102,12 +1269,20 @@ def main() -> None:
                             "score_global_display": "Score global",
                             "latence_secondes": "Latence (s)",
                         }
-                    )[["Scénario", "Score global", "Latence (s)"]]
+                    )[["Scénario", "Qualité", "Latence (s)"]]
+                )
+                chart_caption(
+                    quoi="les 3 cas d'usage métier où l'IA obtient les meilleurs résultats.",
+                    comment_lire="chaque ligne est un scénario métier, classé du plus réussi au moins réussi.",
+                    conclusion="ce sont les cas d'usage à déployer en priorité, l'IA y est la plus fiable.",
                 )
             else:
                 st.info("Pas de scénarios à afficher pour le Top 3.")
+
+            st.divider()
+            build_client_department_comparison(filtered)
         else:
-            build_metric_cards(filtered)
+            build_metric_cards(filtered, client_mode=False)
             daily_mean = (
                 filtered.dropna(subset=["score_global_display"])
                 .groupby(pd.Grouper(key="date_execution", freq="D"))["score_global_display"]
@@ -1126,6 +1301,13 @@ def main() -> None:
                         },
                     },
                     use_container_width=True,
+                )
+                chart_caption(
+                    quoi="l'évolution du score global moyen (toutes exécutions) au fil des jours.",
+                    comment_lire="l'axe horizontal est la date, l'axe vertical le score moyen (0 à 1) ; "
+                    "une courbe qui monte signifie une amélioration globale de la qualité des réponses IA.",
+                    conclusion="une tendance stable ou croissante est bon signe ; une chute soudaine "
+                    "mérite d'être investiguée (changement de modèle, panne RAG, etc.).",
                 )
             st.divider()
 
@@ -1186,6 +1368,13 @@ def main() -> None:
             if not best_per_scenario.empty:
                 best_per_scenario["score_global_display"] = best_per_scenario["score_global_display"].map(lambda v: f"{v:.3f}")
                 st.table(best_per_scenario.rename(columns={"nom_cas_usage": "Scénario", "modele_nom": "Meilleur modèle", "score_global_display": "Score"}))
+                chart_caption(
+                    quoi="pour chaque scénario métier, le modèle qui obtient le meilleur score.",
+                    comment_lire="chaque ligne = un scénario ; la colonne 'Meilleur modèle' indique quel "
+                    "modèle choisir spécifiquement pour ce cas d'usage.",
+                    conclusion="utile pour affiner le choix de modèle scénario par scénario plutôt que "
+                    "d'utiliser un seul modèle partout.",
+                )
             else:
                 st.info("Pas assez de données pour déterminer le meilleur modèle par scénario.")
             st.divider()
@@ -1236,6 +1425,14 @@ def main() -> None:
                 if normalize_stacked:
                     stacked_spec["encoding"]["x"]["stack"] = "normalize"
                 st.vega_lite_chart(data=stacked_df, spec=stacked_spec, use_container_width=True)
+                chart_caption(
+                    quoi="la contribution de chaque critère RAGAS (fidélité, pertinence, précision, "
+                    "rappel du contexte) au score de chaque modèle.",
+                    comment_lire="chaque barre horizontale représente un modèle, divisée en segments colorés "
+                    "(un par critère) ; plus la barre est longue, meilleur est le modèle globalement.",
+                    conclusion="privilégiez le modèle avec la barre la plus longue ET la plus équilibrée "
+                    "entre les couleurs (pas de segment anormalement petit).",
+                )
             else:
                 st.info("Aucune donnée RAGAS disponible pour le stacked chart.")
 
@@ -1270,6 +1467,13 @@ def main() -> None:
                     },
                 }
                 st.vega_lite_chart(data=heat_df, spec=heat_spec, use_container_width=True)
+                chart_caption(
+                    quoi="le score global obtenu par chaque combinaison modèle × scénario.",
+                    comment_lire="chaque case croise un modèle (colonne) et un scénario (ligne) ; "
+                    "plus la couleur est foncée/intense, meilleur est le score à cet endroit.",
+                    conclusion="repérez les zones claires (score faible) : ce sont les combinaisons "
+                    "modèle/scénario à éviter ou à améliorer en priorité.",
+                )
             else:
                 st.info("Aucune donnée de score global pour produire la heatmap.")
 
@@ -1300,19 +1504,35 @@ def main() -> None:
                 )
             else:
                 hist_col2.info("Pas de latences pour l'histogramme.")
+            chart_caption(
+                quoi="à gauche, la répartition des exécutions par tranche de score ; à droite, par tranche de latence (temps de réponse).",
+                comment_lire="chaque barre montre combien d'exécutions tombent dans une tranche donnée ; "
+                "une distribution concentrée à droite pour le score = bon signe, une distribution concentrée "
+                "à gauche pour la latence = réponses rapides.",
+                conclusion="un pic de score autour de valeurs basses ou un pic de latence à droite (lent) "
+                "signale un problème à investiguer.",
+            )
             st.divider()
 
     with scenarios_tab:
+
         if role == "Client":
             st.markdown("## Comparaison scénarios")
             st.write("Vue simplifiée des scénarios les plus performants.")
+            simple_scenarios = summary_scenario[["nom_cas_usage", "score_global_display"]].head(5).copy()
+            simple_scenarios["Qualité"] = simple_scenarios["score_global_display"].apply(score_to_label)
             st.table(
-                summary_scenario[["nom_cas_usage", "score_global_display"]].head(5).rename(
+                simple_scenarios.rename(
                     columns={
                         "nom_cas_usage": "Scénario",
                         "score_global_display": "Score global",
                     }
-                )
+                )[["Scénario", "Qualité"]]
+            )
+            chart_caption(
+                quoi="les 5 cas d'usage métier les plus performants avec l'IA actuellement testée.",
+                comment_lire="chaque ligne est un scénario, avec un niveau de qualité résumé par un code couleur.",
+                conclusion="ce sont les cas d'usage à privilégier pour un déploiement IA immédiat.",
             )
         else:
             st.markdown("## Comparaison des scénarios")
@@ -1334,6 +1554,12 @@ def main() -> None:
                     },
                 },
                 use_container_width=True,
+            )
+            chart_caption(
+                quoi="le classement des 5 meilleurs scénarios par score global moyen.",
+                comment_lire="chaque barre horizontale représente un scénario ; plus la barre est longue, "
+                "meilleur est le score obtenu par l'IA sur ce cas d'usage.",
+                conclusion="les scénarios en haut du classement sont les plus fiables pour un déploiement.",
             )
             st.divider()
             st.markdown("### Comparaison des critères RAGAS par scénario")
@@ -1360,6 +1586,13 @@ def main() -> None:
                 },
                 use_container_width=True,
             )
+            chart_caption(
+                quoi="le détail des 4 critères RAGAS (fidélité, pertinence, précision, rappel) pour chaque scénario.",
+                comment_lire="chaque scénario a 4 barres colorées, une par critère ; comparez les couleurs "
+                "entre scénarios pour voir où l'IA excelle ou faiblit.",
+                conclusion="un scénario avec un critère systématiquement faible (ex: fidélité) indique "
+                "un problème spécifique à corriger (souvent le contexte RAG fourni).",
+            )
             st.divider()
             st.markdown("### Top 3 scénarios")
             st.table(summary_scenario.head(3).rename(
@@ -1374,21 +1607,28 @@ def main() -> None:
                 }
             ))
 
+
     with models_tab:
         if role == "Client":
-            st.markdown("## Comparaison modèles")
-            st.write("Vue simplifiée des modèles et des scores disponibles.")
+            build_client_department_comparison(filtered)
+            st.divider()
+            st.markdown("## Comparaison modèles (vue simplifiée)")
             simple_model_table = summary_model[["modele_nom", "score_global_display", "latence_secondes"]].copy()
-            simple_model_table["score_global_display"] = simple_model_table["score_global_display"].map(lambda v: f"{v:.3f}")
+            simple_model_table["Qualité"] = simple_model_table["score_global_display"].apply(score_to_label)
             simple_model_table["latence_secondes"] = simple_model_table["latence_secondes"].map(lambda v: f"{v:.2f}s")
             st.table(
                 simple_model_table.rename(
                     columns={
                         "modele_nom": "Modèle",
-                        "score_global_display": "Score global",
                         "latence_secondes": "Latence (s)",
                     }
-                )
+                )[["Modèle", "Qualité", "Latence (s)"]]
+            )
+            chart_caption(
+                quoi="l'ensemble des modèles IA testés, classés avec un niveau de qualité et leur vitesse de réponse.",
+                comment_lire="chaque ligne est un modèle ; la couleur indique le niveau de qualité, "
+                "la latence indique le temps de réponse moyen.",
+                conclusion="pour un besoin où la rapidité compte, privilégiez un modèle 🟢 avec une faible latence.",
             )
         else:
             st.markdown("## Comparaison modèles")
@@ -1466,6 +1706,13 @@ def main() -> None:
                         },
                     }
                 st.vega_lite_chart(data=metrics_by_model, spec=spec, use_container_width=True)
+            chart_caption(
+                quoi="le détail des 4 critères RAGAS pour chaque modèle testé.",
+                comment_lire="chaque modèle a 4 valeurs (une par critère) ; comparez les longueurs de "
+                "barres entre modèles pour voir lequel excelle sur quel critère.",
+                conclusion="un modèle globalement fort mais faible sur un seul critère peut suffire "
+                "selon vos priorités métier (ex: la vitesse compte plus que la précision).",
+            )
             st.divider()
             st.markdown("### Distribution des scores par modèle")
             box_df = filtered[["modele_nom", "score_global_display"]].dropna()
@@ -1479,6 +1726,14 @@ def main() -> None:
                     },
                 }
                 st.vega_lite_chart(data=box_df, spec=box_spec, use_container_width=True)
+                chart_caption(
+                    quoi="la dispersion des scores obtenus par chaque modèle (pas seulement la moyenne).",
+                    comment_lire="la boîte représente la majorité des scores obtenus ; plus la boîte est "
+                    "petite et haute, plus le modèle est constant et performant. Les points isolés sont "
+                    "des cas exceptionnels (très bons ou très mauvais).",
+                    conclusion="préférez un modèle avec une boîte compacte et haute : il est fiable "
+                    "et prévisible, pas seulement bon en moyenne.",
+                )
             else:
                 st.info("Pas assez de données pour afficher les distributions par modèle.")
 
@@ -1506,6 +1761,12 @@ def main() -> None:
                     },
                 }
                 st.vega_lite_chart(data=ts_df[ts_df["modele_nom"].isin(top_models[:3])], spec=ts_spec, use_container_width=True)
+                chart_caption(
+                    quoi="l'évolution du score des 3 meilleurs modèles au fil du temps.",
+                    comment_lire="chaque courbe colorée est un modèle ; suivez sa tendance dans le temps.",
+                    conclusion="une courbe stable en haut du graphique = modèle fiable dans la durée ; "
+                    "une courbe qui descend mérite une réévaluation.",
+                )
             else:
                 st.info("Pas de séries temporelles disponibles pour les scores.")
 
@@ -1527,41 +1788,13 @@ def main() -> None:
             else:
                 st.info("Aucun modèle disponible pour le Top 5.")
 
-    with details_tab:
-        st.markdown("## Détail des exécutions")
-        if role == "Client":
-            st.write("Aperçu des exécutions et des scores globaux.")
-            client_columns = [
-                "date_execution",
-                "modele_nom",
-                "nom_cas_usage",
-                "latence_secondes",
-                "score_global_auto",
-                "faithfulness",
-                "answer_relevancy",
-                "context_precision",
-                "context_recall",
-            ]
-            st.dataframe(
-                filtered[client_columns]
-                .sort_values("date_execution", ascending=False)
-                .rename(
-                    columns={
-                        "date_execution": "Date",
-                        "modele_nom": "Modèle",
-                        "nom_cas_usage": "Scénario",
-                        "latence_secondes": "Latence (s)",
-                        "score_global_auto": "Score global",
-                        "faithfulness": "Faithfulness",
-                        "answer_relevancy": "Answer relevancy",
-                        "context_precision": "Context precision",
-                        "context_recall": "Context recall",
-                    }
-                ),
-                use_container_width=True,
-            )
-            st.info("Données sensibles masquées : pas de réponse générée, pas de coût estimé et pas de détails avancés.")
-        else:
+    # ------------------------------------------------------------------
+    # "Détails des exécutions" : réservé Admin / Super Admin uniquement
+    # (données brutes/techniques retirées de l'interface Client).
+    # ------------------------------------------------------------------
+    
+        with details_tab:
+            st.markdown("## Détail des exécutions")
             st.write("Consultez la liste complète des exécutions récentes, puis sélectionnez une entrée pour voir la réponse et les scores détaillés.")
 
             display_columns = [
@@ -1691,6 +1924,22 @@ def main() -> None:
                         st.rerun()
                 else:
                     st.error(result)
+
+            st.divider()
+
+            # -----------------------------------------------------------------
+            # Complétude du catalogue de scénarios (ajout)
+            # -----------------------------------------------------------------
+            st.markdown("### Complétude du catalogue de scénarios")
+            st.caption(
+                f"Cible : {SCENARIOS_CIBLE_PAR_DEPARTEMENT} scénarios par département, "
+                "pour garantir une couverture suffisante des cas d'usage métier."
+            )
+            completeness_df = admin_scenarios_completeness()
+            if not completeness_df.empty:
+                st.table(completeness_df)
+            else:
+                st.info("Aucun scénario en base pour l'instant.")
 
             st.divider()
 

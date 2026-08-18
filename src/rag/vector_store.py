@@ -39,7 +39,7 @@ def add_document_chunk(departement: str, contenu: str):
             conn.execute(
                 text("""
                     INSERT INTO documents_vectorises (departement, contenu, embedding)
-                    VALUES (:departement, :contenu, :embedding::vector)
+                    VALUES (:departement, :contenu, CAST(:embedding AS vector))
                 """),
                 {
                     "departement": departement, 
@@ -61,7 +61,7 @@ def search_similar(query: str, departement: str, top_k: int = 3):
         with engine.connect() as conn:
             result = conn.execute(
                 text("""
-                    SELECT contenu, embedding <-> :embedding::vector AS distance
+                    SELECT contenu, embedding <-> CAST(:embedding AS vector) AS distance
                     FROM documents_vectorises
                     WHERE departement = :departement
                     ORDER BY distance ASC
