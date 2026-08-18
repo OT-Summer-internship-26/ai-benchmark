@@ -989,8 +989,8 @@ def render_sidebar_identity(email: str, role: str) -> None:
         st.rerun()
 
     role_messages = {
-        "Client": "Vue simplifiée : indicateurs clés uniquement.",
-        "Admin": "Accès complet aux données métier et aux exports.",
+        "Utilisateur": "Vue simplifiée : indicateurs clés uniquement.",
+        "Administrateur": "Accès complet aux données métier et aux exports.",
         "Super Admin": "Accès complet + outils d'administration.",
     }
     st.sidebar.caption(role_messages.get(role, ""))
@@ -1007,9 +1007,9 @@ def main() -> None:
 
     email = st.session_state["auth_email"]
     role = st.session_state["auth_role"]
-    is_admin = role in ["Admin", "Super Admin"]
+    is_admin = role in ["Administrateur", "Super Admin"]
     is_super_admin = role == "Super Admin"
-    is_client = role == "Client"
+    is_client = role == "Utilisateur"
 
     render_sidebar_identity(email, role)
 
@@ -1226,7 +1226,7 @@ def main() -> None:
     admin_tab = extra_tabs.pop(0) if is_super_admin else None
 
     with overview_tab:
-        if role == "Client":
+        if role == "Utilisateur":
             st.markdown("## Vue d'ensemble")
             
 
@@ -1516,7 +1516,7 @@ def main() -> None:
 
     with scenarios_tab:
 
-        if role == "Client":
+        if role == "Utilisateur":
             st.markdown("## Comparaison scénarios")
             st.write("Vue simplifiée des scénarios les plus performants.")
             simple_scenarios = summary_scenario[["nom_cas_usage", "score_global_display"]].head(5).copy()
@@ -1609,7 +1609,7 @@ def main() -> None:
 
 
     with models_tab:
-        if role == "Client":
+        if role == "Utilisateur":
             build_client_department_comparison(filtered)
             st.divider()
             st.markdown("## Comparaison modèles (vue simplifiée)")
