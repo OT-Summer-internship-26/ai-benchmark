@@ -7,6 +7,7 @@ import sys
 import pathlib
 from logging.handlers import RotatingFileHandler
 
+
 def setup_logger(name: str) -> logging.Logger:
     """
     Configure and return a logger with both console and file output.
@@ -31,7 +32,9 @@ def setup_logger(name: str) -> logging.Logger:
     )
     
     # Console handler (INFO and above)
-    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler = logging.StreamHandler(
+        open(sys.stdout.fileno(), mode="w", encoding="utf-8", errors="replace", buffering=1, closefd=False)
+)
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)

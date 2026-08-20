@@ -1,6 +1,7 @@
 import time
 import requests
-from src.models_clients.ollama_client import generate_response
+from src.models_clients.ollama_client import generate_response as generate_response_ollama
+from src.models_clients.gemini_client import generate_response as generate_response_gemini
 from src.database.connection import engine
 from sqlalchemy import text
 from src.utils.logger import setup_logger
@@ -9,12 +10,24 @@ from src.utils.exceptions import DatabaseException, LLMException, ModelNotFoundE
 
 logger = setup_logger(__name__)
 
-# Mapping nom Ollama → id en base (table modeles)
+# ---------------------------------------------------------------------------
+# Registre des modèles supportés par le pipeline.
+#
+# Chaque entrée précise :
+#   - "id"       : id en base (table modeles)
+#   - "provider" : "ollama" (LLM local) ou "gemini" (appel API)
+#
+# Ollama nécessite un service local qui tourne (health check avant appel).
+# Gemini est un appel API distant, pas de health check préalable nécessaire —
+# les erreurs API sont gérées directement par le retry/backoff.
+# ---------------------------------------------------------------------------
 MAPPING_MODELES = {
-    "llama3.1:8b": 9,
-    "mistral:7b": 10,
-    "gemma2:9b": 11,
-    "qwen2.5:7b": 12,
+    "llama3.1:8b": {"id": 9, "provider": "ollama"},
+    "mistral:7b": {"id": 10, "provider": "ollama"},
+    "gemma2:9b": {"id": 11, "provider": "ollama"},
+    "qwen2.5:7b": {"id": 12, "provider": "ollama"},
+    "qwen3:8b": {"id": 13, "provider": "ollama"},
+    "gemini-3.1-flash-lite": {"id": 14, "provider": "gemini"},
 }
 
 
@@ -35,19 +48,33 @@ def _check_model_available(model_name: str) -> bool:
     initial_delay=2.0,
     exceptions=(requests.Timeout, requests.ConnectionError)
 )
-def _generate_response_with_retry(question: str, context_chunks: list[str], model_name: str) -> str:
-    """Generate response with retry logic for transient failures."""
-    return generate_response(
+def _generate_response_ollama_with_retry(question: str, context_chunks: list[str], model_name: str) -> str:
+    """Generate response with retry logic for transient network failures (Ollama)."""
+    return generate_response_ollama(
         question=question,
         context_chunks=context_chunks,
         model_name=model_name
     )
 
 
+@retry_with_backoff(
+    max_attempts=3,
+    initial_delay=2.0,
+    exceptions=(Exception,)  # les erreurs API Gemini (quota, 5xx, réseau) sont génériques côté SDK
+)
+def _generate_response_gemini_with_retry(question: str, context_chunks: list[str]) -> str:
+    """Generate response with retry logic for transient failures (Gemini API)."""
+    return generate_response_gemini(
+        question=question,
+        context_chunks=context_chunks,
+    )
+
+
 def agent_executeur(state: dict) -> dict:
     """
     Pour chaque scénario × chaque modèle :
-    - Valide que le modèle existe
+    - Valide que le modèle existe dans MAPPING_MODELES
+    - Route vers le bon provider (Ollama local ou API Gemini)
     - Génère une réponse via le pipeline RAG + LLM
     - Mesure la latence
     - Enregistre dans la table executions avec gestion appropriée des erreurs
@@ -70,30 +97,49 @@ def agent_executeur(state: dict) -> dict:
         with engine.begin() as conn:  # Automatic transaction management
             for scenario in state["scenarios"]:
                 for nom_modele in state["model_names"]:
-                    
+
                     if nom_modele not in MAPPING_MODELES:
                         continue
-                    
-                    modele_id = MAPPING_MODELES[nom_modele]
-                    logger.info(f"\n  → Scénario [{scenario['id']}] {scenario['nom_cas_usage']} | Modèle : {nom_modele}")
+
+                    modele_info = MAPPING_MODELES[nom_modele]
+                    modele_id = modele_info["id"]
+                    provider = modele_info["provider"]
+                    logger.info(f"\n  -> Scenario [{scenario['id']}] {scenario['nom_cas_usage']} | Modele : {nom_modele} ({provider})")
 
                     try:
-                        # Verify model is available before attempting
-                        if not _check_model_available(nom_modele):
-                            msg = f"Modèle {nom_modele} n'est pas disponible dans Ollama"
-                            logger.warning(msg)
+                        if provider == "ollama":
+                            # Verify Ollama model is available before attempting
+                            if not _check_model_available(nom_modele):
+                                msg = f"Modèle {nom_modele} n'est pas disponible dans Ollama"
+                                logger.warning(msg)
+                                erreurs.append(msg)
+                                continue
+
+                            debut = time.time()
+                            reponse = _generate_response_ollama_with_retry(
+                                question=scenario["prompt"],
+                                context_chunks=scenario["chunks_rag"],
+                                model_name=nom_modele
+                            )
+                            latence = time.time() - debut
+
+                        elif provider == "gemini":
+                            # Pas de health check préalable : on tente l'appel directement,
+                            # les erreurs (clé API invalide, quota, réseau) sont gérées par le retry.
+                            debut = time.time()
+                            reponse = _generate_response_gemini_with_retry(
+                                question=scenario["prompt"],
+                                context_chunks=scenario["chunks_rag"],
+                            )
+                            latence = time.time() - debut
+
+                        else:
+                            msg = f"Provider inconnu '{provider}' pour le modèle {nom_modele}"
                             erreurs.append(msg)
+                            logger.error(msg)
                             continue
 
-                        debut = time.time()
-                        reponse = _generate_response_with_retry(
-                            question=scenario["prompt"],
-                            context_chunks=scenario["chunks_rag"],
-                            model_name=nom_modele
-                        )
-                        latence = time.time() - debut
-
-                        logger.info(f"     ✓ Réponse générée en {latence:.2f}s")
+                        logger.info(f"     OK - Reponse generee en {latence:.2f}s")
 
                         # Use proper parameterized query
                         result = conn.execute(
@@ -131,7 +177,7 @@ def agent_executeur(state: dict) -> dict:
                         erreurs.append(msg)
                         logger.error(msg)
                     except Exception as e:
-                        msg = f"Erreur scénario {scenario['id']} / modèle {nom_modele}: {str(e)}"
+                        msg = f"Erreur scénario {scenario['id']} / modèle {nom_modele} ({provider}): {str(e)}"
                         erreurs.append(msg)
                         logger.error(msg)
 

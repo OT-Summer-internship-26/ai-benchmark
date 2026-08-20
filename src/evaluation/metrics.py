@@ -35,10 +35,8 @@ from src.config.settings import GROQ_API_KEY
 
 client = Groq(api_key=GROQ_API_KEY)
 
-MODELE_JUGE = "llama-3.1-8b-instant"  # séparé du modèle de génération (llama-3.3-70b-versatile)
-REPETITIONS_JUGE = 2  # nombre d'appels par métrique pour lisser l'instabilité du juge
-
-
+MODELE_JUGE = "qwen/qwen3.6-27b"  # gpt-oss-20b : quota TPD epuise, gemma2-9b-it decommissionne - qwen3.6-27b a un quota separe
+REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> float | None:
     """Un seul appel au juge, avec retry/backoff si l'API échoue.
 
@@ -55,22 +53,28 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> floa
                     {"role": "system", "content": prompt_systeme},
                     {"role": "user", "content": prompt_utilisateur},
                 ],
-                max_tokens=500,
+                max_tokens=1200,
                 temperature=0,
                 seed=42,
             )
             contenu = response.choices[0].message.content.strip()
 
+            # Qwen3 et autres modèles "reasoning" entourent leur raisonnement de
+            # balises <think>...</think> avant la réponse finale -> on les retire.
+            contenu = re.sub(r"<think>.*?</think>", "", contenu, flags=re.DOTALL).strip()
+
             # Le juge répond parfois avec des ```json ... ``` autour du JSON -> on nettoie
             contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
 
-            resultat = json.loads(contenu_nettoye)
+            resultat = json.loads(contenu_nettoye)            
             note = float(resultat.get("note", 0.0))
-            return max(0.0, min(1.0, note))
+            time.sleep(1.5)  # throttle pour éviter le rate limit Groq sur les gros batches
+            return max(0.0, min(1.0, note))        
         except Exception as e:
             last_exc = e
+            print(f"[JUGE] tentative {attempt}/{len(backoffs)} échouée : {type(e).__name__} - {e}")
             # Si ce n'est pas la dernière tentative, attendre puis retry
-            if attempt < len(backoffs):
+            if attempt < len(backoffs):                
                 try:
                     time.sleep(wait)
                 except Exception:

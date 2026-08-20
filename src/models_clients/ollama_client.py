@@ -11,7 +11,7 @@ logger = setup_logger(__name__)
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
 OLLAMA_TAGS_URL = "http://localhost:11434/api/tags"
-OLLAMA_TIMEOUT = 60  # seconds
+OLLAMA_TIMEOUT = 180  # seconds
 OLLAMA_CONNECT_TIMEOUT = 5  # seconds
 
 LANGUES_SUPPORTEES = {"fr", "en", "ar", "tn"}
