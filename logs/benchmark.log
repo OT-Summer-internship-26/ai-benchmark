@@ -587,3 +587,57 @@ LINE 2:                     SELECT contenu, embedding <-> :embedding...
   -> Scenario [16] Analyse de sentiment sur appel client | Modele : gemini-3.1-flash-lite (gemini)
 2026-08-20 11:05:35 - src.agents.executeur - INFO -      OK - Reponse generee en 2.71s
 2026-08-20 11:05:35 - src.agents.executeur - INFO - [EXECUTEUR] 16 exécutions terminées, 0 erreurs.
+2026-08-21 13:17:58 - src.api.main - INFO - Benchmark API starting up...
+2026-08-21 13:17:58 - src.api.main - INFO - Environment: development
+2026-08-21 13:42:40 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-21 13:47:49 - src.api.main - INFO - Benchmark API starting up...
+2026-08-21 13:47:49 - src.api.main - INFO - Environment: development
+2026-08-21 13:49:32 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-08-21 13:49:32 - src.api.auth - DEBUG - Token created for user: admin@ooredoo.com
+2026-08-21 13:49:32 - src.api.routes.auth - INFO - User logged in: admin@ooredoo.com
+2026-08-21 13:50:06 - src.api.routes.benchmark - INFO - Benchmark run initiated by admin@ooredoo.com
+2026-08-21 13:50:06 - src.api.routes.benchmark - INFO - Benchmark: 1 scenarios, 1 models by admin@ooredoo.com
+2026-08-21 13:50:06 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 1 scénarios...
+2026-08-21 13:50:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-21 13:50:14 - src.agents.collecteur - INFO - [COLLECTEUR] 1 scénarios collectés.
+2026-08-21 13:50:14 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-21 13:50:14 - src.agents.executeur - INFO -   1 scénarios × 1 modèles = 1 exécutions
+2026-08-21 13:50:14 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : llama3.1:8b (ollama)
+2026-08-21 13:50:19 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-21 13:51:03 - src.models_clients.ollama_client - DEBUG - Ollama response received (1896 chars)
+2026-08-21 13:51:03 - src.agents.executeur - INFO -      OK - Reponse generee en 46.49s
+2026-08-21 13:51:03 - src.agents.executeur - INFO - [EXECUTEUR] 1 exécutions terminées, 0 erreurs.
+2026-08-21 13:51:03 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 1 exécutions (Ragas)...
+2026-08-21 13:53:52 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-08-21 13:53:52 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-08-21 13:53:52 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-21 13:53:52 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-21 13:53:52 - src.agents.evaluateur - INFO -      Score global      : 0.25
+2026-08-21 13:53:52 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-21 13:53:52 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-21 13:53:52 - src.agents.evaluateur - INFO - [EVALUATEUR] 1 évaluations terminées.
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - ============================================================
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Exécutions         : 1
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Latence moy.       : 46.49s
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Score global       : 0.25/1.0
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Faithfulness       : 0.0/1.0
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Answer relevancy   : 0.5/1.0
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Context precision  : N/A/1.0
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Context recall     : N/A/1.0
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO -    Scénarios          : Rédaction de fiche de poste
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - avec un score global moyen de 0.25/1.0
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - et une latence moyenne de 46.49s
+2026-08-21 13:53:52 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-21 13:53:52 - src.api.routes.benchmark - INFO - Benchmark completed: 1 executions, 0 errors
