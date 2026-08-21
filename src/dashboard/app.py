@@ -1085,17 +1085,30 @@ def main() -> None:
         modeles = df["modele_nom"].unique().tolist()
 
         scenario_catalog = load_scenario_catalog()
-        scenarios = scenario_catalog["nom_cas_usage"].tolist()
         departement_par_scenario = dict(zip(scenario_catalog["nom_cas_usage"], scenario_catalog["departement"]))
+
+        # --- Filtre Département (cascade vers Scénarios) ---
+        tous_departements = sorted(scenario_catalog["departement"].unique().tolist())
+        selected_departements = st.sidebar.multiselect(
+            "Départements",
+            tous_departements,
+            default=tous_departements,
+            help="Sélectionne un ou plusieurs départements pour filtrer les scénarios disponibles ci-dessous.",
+        )
+
+        # Les scénarios proposés sont restreints aux départements sélectionnés
+        scenario_catalog_filtre = scenario_catalog[
+            scenario_catalog["departement"].isin(selected_departements)
+        ]
+        scenarios = scenario_catalog_filtre["nom_cas_usage"].tolist()
 
         selected_modeles = st.sidebar.multiselect("Modèles", modeles, default=modeles)
         selected_scenarios = st.sidebar.multiselect(
-           "Scénarios",
-          scenarios,
-          default=scenarios,
-          format_func=lambda nom: f"{nom} ({departement_par_scenario.get(nom, '?')})",
-    )
-  
+            "Scénarios",
+            scenarios,
+            default=scenarios,
+            format_func=lambda nom: f"{nom} ({departement_par_scenario.get(nom, '?')})",
+        )       
         min_date = df["date_execution"].min().date()
         max_date = df["date_execution"].max().date()
         date_range = st.sidebar.date_input(
