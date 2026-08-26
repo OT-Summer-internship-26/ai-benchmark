@@ -26,12 +26,83 @@ from src.database.connection import engine
 from src.database.connection import SessionLocal
 from src.database.models import Utilisateur, Scenario, Modele
 from src.auth.utils import verify_password, hash_password
+from src.utils.logger import setup_logger
+
+# Set up logging
+logger = setup_logger(__name__)
+
+def safe_format_score(value, as_percentage=True, default_text="N/A"):
+    """
+    Safely format score values, handling None, NaN, and numeric values.
+    
+    Args:
+        value: The score value (float, None, or NaN)
+        as_percentage: If True, format as percentage (0.85 -> 85.0%)
+        default_text: Text to show for None/NaN values
+    
+    Returns:
+        Formatted string
+    """
+    if value is None or pd.isna(value):
+        return default_text
+    
+    try:
+        float_val = float(value)
+        if as_percentage:
+            return f"{float_val:.1%}"
+        else:
+            return f"{float_val:.3f}"
+    except (ValueError, TypeError):
+        return default_text
+
+def safe_format_cost(value, default_text="N/A"):
+    """Safely format cost values."""
+    if value is None or pd.isna(value):
+        return default_text
+    
+    try:
+        float_val = float(value)
+        return f"{float_val:.4f}"
+    except (ValueError, TypeError):
+        return default_text
+
+def safe_format_latency(value, default_text="N/A"):
+    """Safely format latency values."""
+    if value is None or pd.isna(value):
+        return default_text
+    
+    try:
+        float_val = float(value)
+        return f"{float_val:.2f}s"
+    except (ValueError, TypeError):
+        return default_text
+
+def format_executions_for_display(df, display_columns):
+    """
+    Format execution DataFrame for display, handling None values properly.
+    """
+    # Create a copy to avoid modifying the original
+    display_df = df[display_columns].copy()
+    
+    # Format score columns (percentages)
+    score_columns = ["score_global_auto", "faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+    for col in score_columns:
+        if col in display_df.columns:
+            display_df[col] = display_df[col].apply(lambda x: safe_format_score(x, as_percentage=True))
+    
+    # Format numeric columns
+    if "latence_secondes" in display_df.columns:
+        display_df["latence_secondes"] = display_df["latence_secondes"].apply(lambda x: safe_format_latency(x))
+    
+    if "cout_estime" in display_df.columns:
+        display_df["cout_estime"] = display_df["cout_estime"].apply(lambda x: safe_format_cost(x))
+    
+    return display_df
 
 # URL de base de l'API FastAPI (Sprint 3). Ajuste si elle tourne ailleurs
 # (autre port, autre machine, etc.) — par exemple via une variable
 # d'environnement si tu déploies un jour au-delà de ta machine locale.
-API_BASE_URL = "http://localhost:8000"
-
+API_BASE_URL = "http://127.0.0.1:8000"
 # Nombre de scénarios attendu par département — utilisé pour le contrôle
 # de complétude affiché dans l'onglet Administration.
 SCENARIOS_CIBLE_PAR_DEPARTEMENT = 16
@@ -69,97 +140,148 @@ def score_to_label(score) -> str:
 
 @st.cache_data
 def load_executions(limit: int | None = 200) -> pd.DataFrame:
-    limit_clause = "LIMIT :limit" if limit is not None else ""
-    with engine.connect() as conn:
-        executions = pd.read_sql(
-            text(
-                f"""
-                SELECT
-                    e.id AS execution_id,
-                    e.scenario_id,
-                    s.nom_cas_usage,
-                    s.departement,
-                    m.id AS modele_id,
-                    m.nom AS modele_nom,
-                    e.reponse_generee,
-                    e.latence_secondes,
-                    e.cout_estime,
-                    e.date_execution
-                FROM executions e
-                JOIN scenarios s ON s.id = e.scenario_id
-                JOIN modeles m ON m.id = e.modele_id
-                ORDER BY e.date_execution DESC
-                {limit_clause}
-                """
-            ),
-            conn,
-            params={"limit": limit} if limit is not None else {},
-        )
+    """Load execution data with comprehensive error handling."""
+    logger.debug(f"Loading executions with limit: {limit}")
+    
+    try:
+        limit_clause = "LIMIT :limit" if limit is not None else ""
+        with engine.connect() as conn:
+            executions = pd.read_sql(
+                text(
+                    f"""
+                    SELECT
+                        e.id AS execution_id,
+                        e.scenario_id,
+                        s.nom_cas_usage,
+                        s.departement,
+                        m.id AS modele_id,
+                        m.nom AS modele_nom,
+                        e.reponse_generee,
+                        e.latence_secondes,
+                        e.cout_estime,
+                        e.date_execution
+                    FROM executions e
+                    JOIN scenarios s ON s.id = e.scenario_id
+                    JOIN modeles m ON m.id = e.modele_id
+                    ORDER BY e.date_execution DESC
+                    {limit_clause}
+                    """
+                ),
+                conn,
+                params={"limit": limit} if limit is not None else {},
+            )
 
-        if executions.empty:
+            if executions.empty:
+                logger.warning("No executions found in database")
+                return executions
+
+            # Fetch only RAGAS criteria (0.0-1.0) to avoid mixing legacy heuristics.
+            # NOTE: "IN :ids" needs an expanding bindparam with SQLAlchemy, otherwise
+            # it can fail (or silently misbehave) depending on the DBAPI/driver.
+            execution_ids = executions["execution_id"].tolist()
+            if not execution_ids:
+                logger.warning("No execution IDs found for score loading")
+                executions["score_global_auto"] = None
+                executions["score_global_display"] = None
+                return executions
+                
+            scores_query = text(
+                "SELECT execution_id, critere, note, commentaire "
+                "FROM scores WHERE execution_id IN :ids "
+                "AND (critere IN ('faithfulness','answer_relevancy','context_precision','context_recall') "
+                "OR (critere='score_global' AND note <= 1.0))"
+            ).bindparams(bindparam("ids", expanding=True))
+
+            scores = pd.read_sql(scores_query, conn, params={"ids": execution_ids})
+
+        if scores.empty:
+            logger.info("No scores found for executions, returning executions without scores")
+            executions["score_global_auto"] = None
+            executions["score_global_display"] = None
             return executions
 
-        # Fetch only RAGAS criteria (0.0-1.0) to avoid mixing legacy heuristics.
-        # NOTE: "IN :ids" needs an expanding bindparam with SQLAlchemy, otherwise
-        # it can fail (or silently misbehave) depending on the DBAPI/driver.
-        execution_ids = executions["execution_id"].tolist()
-        scores_query = text(
-            "SELECT execution_id, critere, note, commentaire "
-            "FROM scores WHERE execution_id IN :ids "
-            "AND (critere IN ('faithfulness','answer_relevancy','context_precision','context_recall') "
-            "OR (critere='score_global' AND note <= 1.0))"
-        ).bindparams(bindparam("ids", expanding=True))
+        pivot_scores = scores.pivot_table(
+            index="execution_id",
+            columns="critere",
+            values="note",
+            aggfunc="first",
+        ).reset_index()
 
-        scores = pd.read_sql(scores_query, conn, params={"ids": execution_ids})
+        pivot_comments = scores.pivot_table(
+            index="execution_id",
+            columns="critere",
+            values="commentaire",
+            aggfunc="first",
+        ).reset_index()
+        pivot_comments = pivot_comments.rename(
+            columns={
+                "faithfulness": "faithfulness_comment",
+                "answer_relevancy": "answer_relevancy_comment",
+                "context_precision": "context_precision_comment",
+                "context_recall": "context_recall_comment",
+                "score_global": "score_global_comment",
+            }
+        )
 
-    if scores.empty:
-        executions["score_global_auto"] = None
-        executions["score_global_display"] = None
-        return executions
-
-    pivot_scores = scores.pivot_table(
-        index="execution_id",
-        columns="critere",
-        values="note",
-        aggfunc="first",
-    ).reset_index()
-
-    pivot_comments = scores.pivot_table(
-        index="execution_id",
-        columns="critere",
-        values="commentaire",
-        aggfunc="first",
-    ).reset_index()
-    pivot_comments = pivot_comments.rename(
-        columns={
-            "faithfulness": "faithfulness_comment",
-            "answer_relevancy": "answer_relevancy_comment",
-            "context_precision": "context_precision_comment",
-            "context_recall": "context_recall_comment",
-            "score_global": "score_global_comment",
-        }
-    )
-
-    df = executions.merge(pivot_scores, on="execution_id", how="left")
-    df = df.merge(pivot_comments, on="execution_id", how="left")
-    df["score_global_auto"] = (
-        df[["faithfulness", "answer_relevancy", "context_precision", "context_recall"]]
-        .mean(axis=1)
-        .round(3)
-    )
-    df["score_global_display"] = df["score_global_auto"]
-    return df
+        df = executions.merge(pivot_scores, on="execution_id", how="left")
+        df = df.merge(pivot_comments, on="execution_id", how="left")
+        
+        # Fill None values with appropriate defaults for score columns
+        score_columns = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+        for col in score_columns:
+            if col in df.columns:
+                # Keep None as is - we'll handle it in display
+                pass  # df[col] = df[col].fillna(0.0)  # Don't fill here, handle in display
+        
+        # Safely calculate global score only if the required columns exist
+        available_score_columns = [col for col in score_columns if col in df.columns]
+        
+        if available_score_columns:
+            # Calculate global score only from available (non-None) values
+            df["score_global_auto"] = (
+                df[available_score_columns]
+                .mean(axis=1, skipna=True)  # skipna=True to ignore None/NaN values
+                .round(3)
+            )
+        else:
+            logger.info("No RAGAS score columns found, setting score_global_auto to None")
+            df["score_global_auto"] = None
+            
+        df["score_global_display"] = df["score_global_auto"]
+        
+        logger.info(f"Successfully loaded {len(df)} executions with scores")
+        return df
+        
+    except Exception as e:
+        logger.error(f"Error loading executions: {e}", exc_info=True)
+        # Return empty DataFrame with expected columns
+        return pd.DataFrame(columns=[
+            "execution_id", "scenario_id", "nom_cas_usage", "departement", 
+            "modele_id", "modele_nom", "reponse_generee", "latence_secondes", 
+            "cout_estime", "date_execution", "score_global_auto", "score_global_display"
+        ])
 
 
 
 @st.cache_data
 def load_scenario_catalog() -> pd.DataFrame:
     """Charge tous les scénarios existants (avec ou sans exécutions), triés par département."""
-    with engine.connect() as conn:
-        return pd.read_sql(
-            text("SELECT departement, nom_cas_usage FROM scenarios ORDER BY departement, nom_cas_usage"),
-            conn,
-        )
+    logger.debug("Loading scenario catalog")
+    
+    try:
+        with engine.connect() as conn:
+            df = pd.read_sql(
+                text("SELECT departement, nom_cas_usage FROM scenarios ORDER BY departement, nom_cas_usage"),
+                conn,
+            )
+        
+        logger.info(f"Successfully loaded {len(df)} scenarios from catalog")
+        return df
+        
+    except Exception as e:
+        logger.error(f"Error loading scenario catalog: {e}", exc_info=True)
+        # Return empty DataFrame with expected columns
+        return pd.DataFrame(columns=["departement", "nom_cas_usage"])
 
 def format_datetime(df: pd.DataFrame) -> pd.DataFrame:
     if "date_execution" in df.columns:
@@ -255,40 +377,83 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
     Vérifie aussi que le rôle réel du compte correspond au profil choisi
     dans le menu déroulant.
     """
+    # Enhanced logging to diagnose login issues
+    logger.info(f"Login attempt for email: {email}, expected_role: {expected_role}")
+    
+    # Clear any existing login error
+    st.session_state["login_error"] = None
+    
+    # Input validation
+    email = email.strip() if email else ""
+    password = password.strip() if password else ""
+    
+    if not email or not password:
+        error_msg = "Merci de renseigner un e-mail et un mot de passe."
+        logger.warning(f"Login failed - empty credentials: {error_msg}")
+        st.session_state["login_error"] = error_msg
+        return False
+    
     db = SessionLocal()
     try:
-        user = db.query(Utilisateur).filter(Utilisateur.email == email.strip()).first()
+        user = db.query(Utilisateur).filter(Utilisateur.email == email).first()
+        logger.debug(f"Database query completed - user found: {user is not None}")
+        
+        if user is None:
+            error_msg = "Adresse e-mail introuvable."
+            logger.warning(f"Login failed - user not found: {email}")
+            st.session_state["login_error"] = error_msg
+            return False
+        
+        logger.debug(f"User role verification: found={user.role}, expected={expected_role}")
+        
+        if not verify_password(password, user.mot_de_passe_hash):
+            error_msg = "Mot de passe incorrect."
+            logger.warning(f"Login failed - incorrect password for user: {email}")
+            st.session_state["login_error"] = error_msg
+            return False
+
+        if user.role != expected_role:
+            error_msg = (
+                f"Ce compte est enregistré comme « {ROLE_DISPLAY.get(user.role, user.role)} », "
+                f"pas « {ROLE_DISPLAY.get(expected_role, expected_role)} ». "
+                "Choisissez le bon profil dans le menu."
+            )
+            logger.warning(f"Login failed - role mismatch: user_role={user.role}, expected={expected_role}")
+            st.session_state["login_error"] = error_msg
+            return False
+
+        # Login successful - set session state
+        st.session_state["login_error"] = None
+        st.session_state["auth_email"] = user.email
+        st.session_state["auth_role"] = ROLE_DISPLAY.get(user.role, user.role)
+        
+        logger.info(f"Login successful for user: {email} with role: {user.role}")
+
+        # Try to get API token (optional - don't fail login if this fails)
+        try:
+            resp = requests.post(
+                f"{API_BASE_URL}/auth/login",
+                json={"email": email, "password": password},
+                timeout=10,
+            )
+            resp.raise_for_status()
+            st.session_state["api_token"] = resp.json()["token"]
+            st.session_state["api_token_error"] = None
+            logger.debug("API token obtained successfully")
+        except Exception as e:
+            st.session_state["api_token"] = None  # pilotage indisponible si l'API est down
+            st.session_state["api_token_error"] = str(e)
+            logger.warning(f"Failed to obtain API token: {e}")
+
+        return True
+        
+    except Exception as e:
+        error_msg = f"Erreur lors de la vérification des identifiants: {str(e)}"
+        logger.error(f"Database error during login: {e}", exc_info=True)
+        st.session_state["login_error"] = "Une erreur technique est survenue. Veuillez réessayer."
+        return False
     finally:
         db.close()
-
-    if user is None or not verify_password(password.strip(), user.mot_de_passe_hash):
-        st.session_state["login_error"] = "Identifiants invalides."
-        return False
-
-    if user.role != expected_role:
-        st.session_state["login_error"] = (
-            f"Ce compte est enregistré comme « {ROLE_DISPLAY.get(user.role, user.role)} », "
-            f"pas « {ROLE_DISPLAY.get(expected_role, expected_role)} ». "
-            "Choisissez le bon profil dans le menu."
-        )
-        return False
-
-    st.session_state["login_error"] = None
-    st.session_state["auth_email"] = user.email
-    st.session_state["auth_role"] = ROLE_DISPLAY.get(user.role, user.role)
-
-    try:
-        resp = requests.post(
-            f"{API_BASE_URL}/auth/login",
-            json={"email": email.strip(), "password": password.strip()},
-            timeout=10,
-        )
-        resp.raise_for_status()
-        st.session_state["api_token"] = resp.json()["token"]
-    except Exception:
-        st.session_state["api_token"] = None  # pilotage indisponible si l'API est down
-
-    return True
     
 
 
@@ -914,19 +1079,73 @@ def login_page():
                         )
                         password = st.text_input("Mot de passe", type="password")
                         submitted = st.form_submit_button("Se connecter", use_container_width=True)
-                    if submitted and do_login(email, password, expected_role=role_key):
-                        st.rerun()
+                    
+                    # Enhanced error handling for login flow
+                    if submitted:
+                        logger.info(f"Login form submitted for email: {email}, role: {role_key}")
+                        
+                        try:
+                            st.info("🔄 Vérification des identifiants...")
+                            login_success = do_login(email, password, expected_role=role_key)
+                            
+                            if login_success:
+                                logger.info(f"Login successful, redirecting user: {email}")
+                                st.success("✅ Connexion réussie ! Redirection...")
+                                # Small delay to show success message
+                                import time
+                                time.sleep(0.5)
+                                st.rerun()
+                            else:
+                                logger.warning(f"Login failed for user: {email}")
+                                # Error message will be displayed below
+                                
+                        except Exception as e:
+                            logger.error(f"Unexpected error during login form processing: {e}", exc_info=True)
+                            st.error("Une erreur inattendue s'est produite. Veuillez réessayer.")
                 else:
                     with st.form("signup_form"):
                         email = st.text_input("Adresse e-mail")
                         password = st.text_input("Mot de passe", type="password")
                         confirm = st.text_input("Confirmer le mot de passe", type="password")
                         submitted = st.form_submit_button("Créer un compte", use_container_width=True)
-                    if submitted and do_signup(email, password, confirm):
-                        st.rerun()
+                    
+                    # Enhanced error handling for signup flow
+                    if submitted:
+                        logger.info(f"Signup form submitted for email: {email}")
+                        
+                        try:
+                            st.info("🔄 Création du compte en cours...")
+                            signup_success = do_signup(email, password, confirm)
+                            
+                            if signup_success:
+                                logger.info(f"Signup successful for user: {email}")
+                                st.success("✅ Compte créé avec succès ! Redirection...")
+                                # Small delay to show success message
+                                import time
+                                time.sleep(0.5)
+                                st.rerun()
+                            else:
+                                logger.warning(f"Signup failed for user: {email}")
+                                # Error message will be displayed below
+                                
+                        except Exception as e:
+                            logger.error(f"Unexpected error during signup form processing: {e}", exc_info=True)
+                            st.error("Une erreur inattendue s'est produite lors de la création du compte.")
 
                 if st.session_state.get("login_error"):
                     st.error(st.session_state["login_error"])
+                
+                # Show debugging information in development
+                if st.session_state.get("login_error"):
+                    with st.expander("🔧 Informations de débogage"):
+                        st.write(f"**Email saisi:** {email if 'email' in locals() else 'N/A'}")
+                        st.write(f"**Rôle attendu:** {role_key}")
+                        st.write(f"**Mode login:** {st.session_state.get('login_mode')}")
+                        st.write(f"**Session auth_email:** {st.session_state.get('auth_email')}")
+                        st.write(f"**Session auth_role:** {st.session_state.get('auth_role')}")
+                        st.write(f"**API token présent:** {bool(st.session_state.get('api_token'))}")
+                        if st.session_state.get('api_token_error'):
+                            st.write(f"**API token error:** {st.session_state.get('api_token_error')}")
 
 
 def render_sidebar_identity(email: str, role: str) -> None:
@@ -982,64 +1201,113 @@ def render_sidebar_identity(email: str, role: str) -> None:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    if "auth_role" not in st.session_state:
-        login_page()
-        st.stop()
+    """Main dashboard application with comprehensive error handling."""
+    try:
+        if "auth_role" not in st.session_state:
+            login_page()
+            st.stop()
 
-    email = st.session_state["auth_email"]
-    role = st.session_state["auth_role"]
-    is_admin = role in ["Admin", "Super Admin"]
-    is_super_admin = role == "Super Admin"
-    is_client = role == "Client"
+        email = st.session_state["auth_email"]
+        role = st.session_state["auth_role"]
+        is_admin = role in ["Admin", "Super Admin"]
+        is_super_admin = role == "Super Admin"
+        is_client = role == "Client"
+        
+        logger.info(f"Dashboard accessed by user: {email} with role: {role}")
 
-    render_sidebar_identity(email, role)
+        render_sidebar_identity(email, role)
 
-    st.markdown(
-        """
-        <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:6px;">
-            <span style="font-family:'Trebuchet MS',sans-serif; font-weight:800; font-size:26px; color:#ED1C29;">ooredoo</span>
-            <span style="font-size:22px; color:#1a1a1a; font-weight:600;">Benchmark IA</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        "Ce dashboard permet de comparer les résultats de benchmark RAG + LLM, "
-        "d'analyser la performance des modèles et de consulter les exécutions détaillées."
-    )
+        if is_admin:
+            if st.session_state.get("api_token"):
+               st.sidebar.caption("API token: ✅ présent")
+            else:
+                st.sidebar.error(f"API token absent — erreur : {st.session_state.get('api_token_error')}")
+                logger.warning(f"Admin user {email} missing API token: {st.session_state.get('api_token_error')}")
 
-    st.markdown(
-        """
-        <style>
-        header {display:none;}
-        h1 {font-size:30px; color:#ED1C29;}
-        h2 {color:#ED1C29;}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.sidebar.header("Filtres")
-    load_all = st.sidebar.checkbox(
-        "Charger toutes les exécutions (ignorer la limite)",
-        value=False,
-        help="Utile pour être sûr de voir tous les scénarios/modèles, même au-delà de la limite ci-dessous.",
-    )
-    if load_all:
-        limit = None
-        st.sidebar.caption("Limite désactivée — toutes les exécutions de la base sont chargées.")
-    else:
-        limit = st.sidebar.slider(
-            "Nombre d'exécutions à charger",
-            min_value=10,
-            max_value=2000,
-            value=300,
-            step=10,
+        st.markdown(
+            """
+            <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:6px;">
+                <span style="font-family:'Trebuchet MS',sans-serif; font-weight:800; font-size:26px; color:#ED1C29;">ooredoo</span>
+                <span style="font-size:22px; color:#1a1a1a; font-weight:600;">Benchmark IA</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            "Ce dashboard permet de comparer les résultats de benchmark RAG + LLM, "
+            "d'analyser la performance des modèles et de consulter les exécutions détaillées."
         )
 
-    df = load_executions(limit=limit)
-    
-    df = format_datetime(df)
+        st.markdown(
+            """
+            <style>
+            header {display:none;}
+            h1 {font-size:30px; color:#ED1C29;}
+            h2 {color:#ED1C29;}
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # Load data with error handling
+        try:
+            st.sidebar.header("Filtres")
+            load_all = st.sidebar.checkbox(
+                "Charger toutes les exécutions (ignorer la limite)",
+                value=False,
+                help="Utile pour être sûr de voir tous les scénarios/modèles, même au-delà de la limite ci-dessous.",
+            )
+            if load_all:
+                limit = None
+                st.sidebar.caption("Limite désactivée — toutes les exécutions de la base sont chargées.")
+            else:
+                limit = st.sidebar.slider(
+                    "Nombre d'exécutions à charger",
+                    min_value=10,
+                    max_value=2000,
+                    value=300,
+                    step=10,
+                )
+
+            # Load data with error handling
+            with st.spinner("Chargement des données..."):
+                df = load_executions(limit=limit)
+                df = format_datetime(df)
+
+            if df.empty:
+                st.warning("Aucune exécution disponible dans la base de données.")
+                st.info("Veuillez vérifier que des benchmarks ont été exécutés ou contactez votre administrateur.")
+                return
+
+            logger.info(f"Loaded {len(df)} executions for dashboard display")
+            
+        except Exception as e:
+            logger.error(f"Error loading dashboard data: {e}", exc_info=True)
+            st.error("Erreur lors du chargement des données. Veuillez réessayer ou contactez votre administrateur.")
+            st.exception(e)
+            return
+
+        # Continue with the rest of the main function...
+        # (The rest remains unchanged for now, but with proper error handling wrapping)
+        
+    except Exception as e:
+        logger.error(f"Critical error in main dashboard: {e}", exc_info=True)
+        st.error("Une erreur critique s'est produite dans le dashboard.")
+        st.error("Détails de l'erreur (pour débogage) :")
+        st.exception(e)
+        
+        # Show recovery options
+        with st.expander("Options de récupération"):
+            if st.button("Réinitialiser la session"):
+                for key in list(st.session_state.keys()):
+                    del st.session_state[key]
+                st.rerun()
+            
+            if st.button("Vider le cache"):
+                st.cache_data.clear()
+                st.success("Cache vidé. Veuillez actualiser la page.")
+                
+        return
 
     # Vérifier la présence de scores heuristiques anciens et prévenir
     try:
@@ -1698,10 +1966,15 @@ def main() -> None:
                 "context_precision",
                 "context_recall",
             ]
+            
+            # Format the data for display with proper None handling
+            formatted_df = format_executions_for_display(
+                filtered.sort_values("date_execution", ascending=False),
+                display_columns
+            )
+            
             st.dataframe(
-                filtered[display_columns]
-                .sort_values("date_execution", ascending=False)
-                .rename(
+                formatted_df.rename(
                     columns={
                         "date_execution": "Date",
                         "modele_nom": "Modèle",
@@ -1734,9 +2007,9 @@ def main() -> None:
                 f"**Département** : {execution_data['departement']}"
             )
             right_col.markdown(
-                f"**Score global** : {execution_data['score_global_auto']}  \n"
-                f"**Latence** : {execution_data['latence_secondes']:.2f}s  \n"
-                f"**Coût estimé** : {execution_data['cout_estime']}"
+                f"**Score global** : {safe_format_score(execution_data['score_global_auto'])}  \n"
+                f"**Latence** : {safe_format_latency(execution_data['latence_secondes'])}  \n"
+                f"**Coût estimé** : {safe_format_cost(execution_data['cout_estime'])}"
             )
 
             with st.expander("Réponse générée"):
@@ -1749,8 +2022,16 @@ def main() -> None:
                 "Context precision": execution_data.get("context_precision"),
                 "Context recall": execution_data.get("context_recall"),
             }
+            
+            # Display scores with proper None handling
             for label, value in score_items.items():
-                st.write(f"- **{label}** : {value}")
+                formatted_value = safe_format_score(value)
+                st.write(f"- **{label}** : {formatted_value}")
+            
+            # Display global score
+            global_score = execution_data.get("score_global_auto")
+            formatted_global = safe_format_score(global_score)
+            st.write(f"- **Score Global** : {formatted_global}")
 
     if is_admin and pilotage_tab is not None:
         with pilotage_tab:

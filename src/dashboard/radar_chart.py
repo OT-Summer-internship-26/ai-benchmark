@@ -57,10 +57,10 @@ def get_radar_chart_data(department: str, max_models: int = 6) -> dict | None:
         models_data.append({
             "name": row['model_name'],
             "metrics": {
-                "faithfulness": float(row['faithfulness']) if row['faithfulness'] else 0.0,
-                "answer_relevancy": float(row['answer_relevancy']) if row['answer_relevancy'] else 0.0,
-                "context_precision": float(row['context_precision']) if row['context_precision'] else 0.0,
-                "context_recall": float(row['context_recall']) if row['context_recall'] else 0.0,
+                "faithfulness": float(row['faithfulness']) if pd.notna(row['faithfulness']) and row['faithfulness'] is not None else 0.0,
+                "answer_relevancy": float(row['answer_relevancy']) if pd.notna(row['answer_relevancy']) and row['answer_relevancy'] is not None else 0.0,
+                "context_precision": float(row['context_precision']) if pd.notna(row['context_precision']) and row['context_precision'] is not None else 0.0,
+                "context_recall": float(row['context_recall']) if pd.notna(row['context_recall']) and row['context_recall'] is not None else 0.0,
             },
             "global_score": float(row['global_score']),
             "execution_count": int(row['execution_count']),

@@ -641,3 +641,2132 @@ LINE 2:                     SELECT contenu, embedding <-> :embedding...
 2026-08-21 13:53:52 - src.agents.consolidateur - INFO - ============================================================
 
 2026-08-21 13:53:52 - src.api.routes.benchmark - INFO - Benchmark completed: 1 executions, 0 errors
+2026-08-24 10:01:40 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:01:40 - src.api.main - INFO - Environment: development
+2026-08-24 10:04:58 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 10:04:58 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 10:04:58 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 10:05:18 - src.api.auth - WARNING - Request without Authorization header
+2026-08-24 10:08:03 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:08:24 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:08:24 - src.api.main - INFO - Environment: development
+2026-08-24 10:08:41 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:09:20 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:09:20 - src.api.main - INFO - Environment: development
+2026-08-24 10:09:45 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:10:20 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:10:20 - src.api.main - INFO - Environment: development
+2026-08-24 10:14:16 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:14:38 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:14:38 - src.api.main - INFO - Environment: development
+2026-08-24 10:14:54 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:15:13 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:15:13 - src.api.main - INFO - Environment: development
+2026-08-24 10:15:45 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:16:23 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:16:23 - src.api.main - INFO - Environment: development
+2026-08-24 10:17:44 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:18:57 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:18:57 - src.api.main - INFO - Environment: development
+2026-08-24 10:19:02 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 10:19:02 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 10:19:02 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 10:19:25 - src.api.auth - WARNING - Request without Authorization header
+2026-08-24 10:29:52 - src.api.main - INFO - Benchmark API shutting down...
+2026-08-24 10:31:11 - src.api.main - INFO - Benchmark API starting up...
+2026-08-24 10:31:11 - src.api.main - INFO - Environment: development
+2026-08-24 10:37:27 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 10:37:27 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 10:37:27 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 10:37:47 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-08-24 10:37:47 - src.api.routes.benchmark - INFO - Benchmark: 16 scenarios, 1 models by superadmin@ooredoo.com
+2026-08-24 10:37:47 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 16 scénarios...
+2026-08-24 10:38:03 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:03 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:04 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:04 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:04 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:05 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:05 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:05 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:05 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:06 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:06 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:06 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:06 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:07 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:07 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:08 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:38:08 - src.agents.collecteur - INFO - [COLLECTEUR] 16 scénarios collectés.
+2026-08-24 10:38:08 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-24 10:38:08 - src.agents.executeur - INFO -   16 scénarios × 1 modèles = 16 exécutions
+2026-08-24 10:38:08 - src.agents.executeur - INFO - 
+  -> Scenario [46] Comparaison de technologies (RAG) | Modele : llama3.1:8b (ollama)
+2026-08-24 10:38:13 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:39:08 - src.models_clients.ollama_client - DEBUG - Ollama response received (1663 chars)
+2026-08-24 10:39:08 - src.agents.executeur - INFO -      OK - Reponse generee en 58.44s
+2026-08-24 10:39:08 - src.agents.executeur - INFO - 
+  -> Scenario [48] Diagnostic d'incident depuis logs serveur | Modele : llama3.1:8b (ollama)
+2026-08-24 10:39:12 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:39:27 - src.models_clients.ollama_client - DEBUG - Ollama response received (858 chars)
+2026-08-24 10:39:27 - src.agents.executeur - INFO -      OK - Reponse generee en 16.71s
+2026-08-24 10:39:27 - src.agents.executeur - INFO - 
+  -> Scenario [52] Explication de pipeline ETL existant | Modele : llama3.1:8b (ollama)
+2026-08-24 10:39:31 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:39:43 - src.models_clients.ollama_client - DEBUG - Ollama response received (609 chars)
+2026-08-24 10:39:43 - src.agents.executeur - INFO -      OK - Reponse generee en 14.32s
+2026-08-24 10:39:43 - src.agents.executeur - INFO - 
+  -> Scenario [49] Génération de cas de test fonctionnels | Modele : llama3.1:8b (ollama)
+2026-08-24 10:39:47 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:40:31 - src.models_clients.ollama_client - DEBUG - Ollama response received (2730 chars)
+2026-08-24 10:40:31 - src.agents.executeur - INFO -      OK - Reponse generee en 45.38s
+2026-08-24 10:40:31 - src.agents.executeur - INFO - 
+  -> Scenario [8] Génération de code | Modele : llama3.1:8b (ollama)
+2026-08-24 10:40:35 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:41:01 - src.models_clients.ollama_client - DEBUG - Ollama response received (1727 chars)
+2026-08-24 10:41:01 - src.agents.executeur - INFO -      OK - Reponse generee en 28.31s
+2026-08-24 10:41:01 - src.agents.executeur - INFO - 
+  -> Scenario [10] Génération de documentation technique | Modele : llama3.1:8b (ollama)
+2026-08-24 10:41:05 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:41:27 - src.models_clients.ollama_client - DEBUG - Ollama response received (1334 chars)
+2026-08-24 10:41:27 - src.agents.executeur - INFO -      OK - Reponse generee en 24.28s
+2026-08-24 10:41:27 - src.agents.executeur - INFO - 
+  -> Scenario [51] Génération de requête SQL complexe | Modele : llama3.1:8b (ollama)
+2026-08-24 10:41:32 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:41:53 - src.models_clients.ollama_client - DEBUG - Ollama response received (1278 chars)
+2026-08-24 10:41:53 - src.agents.executeur - INFO -      OK - Reponse generee en 23.36s
+2026-08-24 10:41:53 - src.agents.executeur - INFO - 
+  -> Scenario [44] Génération de tests unitaires pour code existant | Modele : llama3.1:8b (ollama)
+2026-08-24 10:41:57 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:42:23 - src.models_clients.ollama_client - DEBUG - Ollama response received (1772 chars)
+2026-08-24 10:42:23 - src.agents.executeur - INFO -      OK - Reponse generee en 28.06s
+2026-08-24 10:42:23 - src.agents.executeur - INFO - 
+  -> Scenario [54] Identification de vulnérabilités dans un extrait de code | Modele : llama3.1:8b (ollama)
+2026-08-24 10:42:27 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:42:45 - src.models_clients.ollama_client - DEBUG - Ollama response received (1036 chars)
+2026-08-24 10:42:45 - src.agents.executeur - INFO -      OK - Reponse generee en 19.74s
+2026-08-24 10:42:45 - src.agents.executeur - INFO - 
+  -> Scenario [9] Modernisation de code legacy | Modele : llama3.1:8b (ollama)
+2026-08-24 10:42:49 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:43:26 - src.models_clients.ollama_client - DEBUG - Ollama response received (2027 chars)
+2026-08-24 10:43:26 - src.agents.executeur - INFO -      OK - Reponse generee en 39.36s
+2026-08-24 10:43:26 - src.agents.executeur - INFO - 
+  -> Scenario [45] Proposition d'architecture microservices | Modele : llama3.1:8b (ollama)
+2026-08-24 10:43:30 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:43:51 - src.models_clients.ollama_client - DEBUG - Ollama response received (1356 chars)
+2026-08-24 10:43:51 - src.agents.executeur - INFO -      OK - Reponse generee en 22.93s
+2026-08-24 10:43:51 - src.agents.executeur - INFO - 
+  -> Scenario [50] Rédaction de rapport de bug structuré | Modele : llama3.1:8b (ollama)
+2026-08-24 10:43:55 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:44:08 - src.models_clients.ollama_client - DEBUG - Ollama response received (628 chars)
+2026-08-24 10:44:08 - src.agents.executeur - INFO -      OK - Reponse generee en 15.19s
+2026-08-24 10:44:08 - src.agents.executeur - INFO - 
+  -> Scenario [47] Rédaction de script de déploiement CI/CD | Modele : llama3.1:8b (ollama)
+2026-08-24 10:44:13 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:44:34 - src.models_clients.ollama_client - DEBUG - Ollama response received (1383 chars)
+2026-08-24 10:44:34 - src.agents.executeur - INFO -      OK - Reponse generee en 23.01s
+2026-08-24 10:44:34 - src.agents.executeur - INFO - 
+  -> Scenario [55] Rédaction de spécification technique fonctionnelle | Modele : llama3.1:8b (ollama)
+2026-08-24 10:44:38 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:45:05 - src.models_clients.ollama_client - DEBUG - Ollama response received (1906 chars)
+2026-08-24 10:45:05 - src.agents.executeur - INFO -      OK - Reponse generee en 29.46s
+2026-08-24 10:45:05 - src.agents.executeur - INFO - 
+  -> Scenario [53] Refactoring de code pour lisibilité | Modele : llama3.1:8b (ollama)
+2026-08-24 10:45:09 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:45:30 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-08-24 10:45:30 - src.api.routes.benchmark - INFO - Benchmark: 16 scenarios, 1 models by superadmin@ooredoo.com
+2026-08-24 10:45:30 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 16 scénarios...
+2026-08-24 10:45:30 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:30 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:32 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:32 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:32 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:32 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:34 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:34 - src.agents.collecteur - INFO - [COLLECTEUR] 16 scénarios collectés.
+2026-08-24 10:45:34 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-24 10:45:34 - src.agents.executeur - INFO -   16 scénarios × 1 modèles = 16 exécutions
+2026-08-24 10:45:34 - src.agents.executeur - INFO - 
+  -> Scenario [46] Comparaison de technologies (RAG) | Modele : llama3.1:8b (ollama)
+2026-08-24 10:45:36 - src.models_clients.ollama_client - DEBUG - Ollama response received (1652 chars)
+2026-08-24 10:45:36 - src.agents.executeur - INFO -      OK - Reponse generee en 29.08s
+2026-08-24 10:45:36 - src.agents.executeur - INFO - 
+  -> Scenario [43] Revue de code et suggestions d'amélioration | Modele : llama3.1:8b (ollama)
+2026-08-24 10:45:38 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:45:40 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:45:48 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-08-24 10:45:48 - src.api.routes.benchmark - INFO - Benchmark: 16 scenarios, 1 models by superadmin@ooredoo.com
+2026-08-24 10:45:48 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 16 scénarios...
+2026-08-24 10:45:48 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:49 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:49 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:49 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:50 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:50 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:50 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:50 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:50 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:51 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:51 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:51 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:52 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:52 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:52 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:52 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:45:52 - src.agents.collecteur - INFO - [COLLECTEUR] 16 scénarios collectés.
+2026-08-24 10:45:52 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-24 10:45:52 - src.agents.executeur - INFO -   16 scénarios × 1 modèles = 16 exécutions
+2026-08-24 10:45:52 - src.agents.executeur - INFO - 
+  -> Scenario [46] Comparaison de technologies (RAG) | Modele : llama3.1:8b (ollama)
+2026-08-24 10:45:56 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:45:59 - src.models_clients.ollama_client - DEBUG - Ollama response received (1667 chars)
+2026-08-24 10:45:59 - src.agents.executeur - INFO -      OK - Reponse generee en 23.12s
+2026-08-24 10:45:59 - src.agents.executeur - INFO - 
+  -> Scenario [48] Diagnostic d'incident depuis logs serveur | Modele : llama3.1:8b (ollama)
+2026-08-24 10:46:03 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:46:16 - src.models_clients.ollama_client - DEBUG - Ollama response received (1148 chars)
+2026-08-24 10:46:16 - src.agents.executeur - INFO -      OK - Reponse generee en 37.49s
+2026-08-24 10:46:16 - src.agents.executeur - INFO - [EXECUTEUR] 16 exécutions terminées, 0 erreurs.
+2026-08-24 10:46:16 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 16 exécutions (Ragas)...
+2026-08-24 10:46:31 - src.models_clients.ollama_client - DEBUG - Ollama response received (1421 chars)
+2026-08-24 10:46:31 - src.agents.executeur - INFO -      OK - Reponse generee en 37.09s
+2026-08-24 10:46:31 - src.agents.executeur - INFO - 
+  -> Scenario [48] Diagnostic d'incident depuis logs serveur | Modele : llama3.1:8b (ollama)
+2026-08-24 10:46:35 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:46:38 - src.models_clients.ollama_client - DEBUG - Ollama response received (509 chars)
+2026-08-24 10:46:38 - src.agents.executeur - INFO -      OK - Reponse generee en 36.67s
+2026-08-24 10:46:38 - src.agents.executeur - INFO - 
+  -> Scenario [52] Explication de pipeline ETL existant | Modele : llama3.1:8b (ollama)
+2026-08-24 10:46:42 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:46:52 - src.models_clients.ollama_client - DEBUG - Ollama response received (1186 chars)
+2026-08-24 10:46:52 - src.agents.executeur - INFO -      OK - Reponse generee en 18.54s
+2026-08-24 10:46:52 - src.agents.executeur - INFO - 
+  -> Scenario [52] Explication de pipeline ETL existant | Modele : llama3.1:8b (ollama)
+2026-08-24 10:46:56 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:47:07 - src.models_clients.ollama_client - DEBUG - Ollama response received (1163 chars)
+2026-08-24 10:47:07 - src.agents.executeur - INFO -      OK - Reponse generee en 26.96s
+2026-08-24 10:47:07 - src.agents.executeur - INFO - 
+  -> Scenario [49] Génération de cas de test fonctionnels | Modele : llama3.1:8b (ollama)
+2026-08-24 10:47:11 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:47:16 - src.models_clients.ollama_client - DEBUG - Ollama response received (742 chars)
+2026-08-24 10:47:16 - src.agents.executeur - INFO -      OK - Reponse generee en 22.05s
+2026-08-24 10:47:16 - src.agents.executeur - INFO - 
+  -> Scenario [49] Génération de cas de test fonctionnels | Modele : llama3.1:8b (ollama)
+2026-08-24 10:47:20 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:47:28 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-08-24 10:47:28 - src.api.routes.benchmark - INFO - Benchmark: 16 scenarios, 1 models by superadmin@ooredoo.com
+2026-08-24 10:47:28 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 16 scénarios...
+2026-08-24 10:47:29 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:29 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:30 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:30 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:30 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:32 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:32 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:34 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:34 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:34 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-08-24 10:47:34 - src.agents.collecteur - INFO - [COLLECTEUR] 16 scénarios collectés.
+2026-08-24 10:47:34 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-24 10:47:34 - src.agents.executeur - INFO -   16 scénarios × 1 modèles = 16 exécutions
+2026-08-24 10:47:34 - src.agents.executeur - INFO - 
+  -> Scenario [46] Comparaison de technologies (RAG) | Modele : mistral:7b (ollama)
+2026-08-24 10:47:38 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 10:47:49 - src.models_clients.ollama_client - DEBUG - Ollama response received (2117 chars)
+2026-08-24 10:47:49 - src.agents.executeur - INFO -      OK - Reponse generee en 40.38s
+2026-08-24 10:47:49 - src.agents.executeur - INFO - 
+  -> Scenario [8] Génération de code | Modele : llama3.1:8b (ollama)
+2026-08-24 10:47:53 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:48:11 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-08-24 10:48:11 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 10:48:11 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 10:48:11 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-08-24 10:48:11 - src.agents.evaluateur - INFO -      Score global      : 0.0
+2026-08-24 10:48:11 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 10:48:11 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 10:48:31 - src.models_clients.ollama_client - DEBUG - Ollama response received (2757 chars)
+2026-08-24 10:48:31 - src.agents.executeur - INFO -      OK - Reponse generee en 73.16s
+2026-08-24 10:48:31 - src.agents.executeur - INFO - 
+  -> Scenario [8] Génération de code | Modele : llama3.1:8b (ollama)
+2026-08-24 10:48:36 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:48:54 - src.models_clients.ollama_client - DEBUG - Ollama response received (1732 chars)
+2026-08-24 10:48:54 - src.agents.executeur - INFO -      OK - Reponse generee en 62.90s
+2026-08-24 10:48:54 - src.agents.executeur - INFO - 
+  -> Scenario [10] Génération de documentation technique | Modele : llama3.1:8b (ollama)
+2026-08-24 10:48:58 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:49:18 - src.models_clients.ollama_client - DEBUG - Ollama response received (1669 chars)
+2026-08-24 10:49:18 - src.agents.executeur - INFO -      OK - Reponse generee en 44.62s
+2026-08-24 10:49:18 - src.agents.executeur - INFO - 
+  -> Scenario [10] Génération de documentation technique | Modele : llama3.1:8b (ollama)
+2026-08-24 10:49:22 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:49:42 - src.models_clients.ollama_client - DEBUG - Ollama response received (1846 chars)
+2026-08-24 10:49:42 - src.agents.executeur - INFO -      OK - Reponse generee en 46.21s
+2026-08-24 10:49:42 - src.agents.executeur - INFO - 
+  -> Scenario [51] Génération de requête SQL complexe | Modele : llama3.1:8b (ollama)
+2026-08-24 10:49:47 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:49:59 - src.models_clients.ollama_client - DEBUG - Ollama response received (1098 chars)
+2026-08-24 10:49:59 - src.agents.executeur - INFO -      OK - Reponse generee en 38.53s
+2026-08-24 10:49:59 - src.agents.executeur - INFO - 
+  -> Scenario [51] Génération de requête SQL complexe | Modele : llama3.1:8b (ollama)
+2026-08-24 10:50:03 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:50:14 - src.models_clients.ollama_client - DEBUG - Ollama response received (1155 chars)
+2026-08-24 10:50:14 - src.agents.executeur - INFO -      OK - Reponse generee en 29.26s
+2026-08-24 10:50:14 - src.agents.executeur - INFO - 
+  -> Scenario [44] Génération de tests unitaires pour code existant | Modele : llama3.1:8b (ollama)
+2026-08-24 10:50:18 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:50:25 - src.models_clients.ollama_client - DEBUG - Ollama response received (933 chars)
+2026-08-24 10:50:25 - src.agents.executeur - INFO -      OK - Reponse generee en 24.77s
+2026-08-24 10:50:25 - src.agents.executeur - INFO - 
+  -> Scenario [44] Génération de tests unitaires pour code existant | Modele : llama3.1:8b (ollama)
+2026-08-24 10:50:30 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:50:35 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 10:50:35 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-08-24 10:50:35 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-08-24 10:50:35 - src.agents.evaluateur - INFO -      Context recall    : 0.5
+2026-08-24 10:50:35 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-08-24 10:50:35 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 10:50:40 - src.models_clients.ollama_client - ERROR - Ollama request timed out: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=180)
+2026-08-24 10:50:40 - src.agents.executeur - ERROR - LLM error for scenario 46 / modèle mistral:7b: Ollama timeout after 180s
+2026-08-24 10:50:40 - src.agents.executeur - INFO - 
+  -> Scenario [48] Diagnostic d'incident depuis logs serveur | Modele : mistral:7b (ollama)
+2026-08-24 10:50:45 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 10:50:47 - src.models_clients.ollama_client - DEBUG - Ollama response received (1435 chars)
+2026-08-24 10:50:47 - src.agents.executeur - INFO -      OK - Reponse generee en 31.50s
+2026-08-24 10:50:47 - src.agents.executeur - INFO - 
+  -> Scenario [54] Identification de vulnérabilités dans un extrait de code | Modele : llama3.1:8b (ollama)
+2026-08-24 10:50:51 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:50:55 - src.models_clients.ollama_client - DEBUG - Ollama response received (657 chars)
+2026-08-24 10:50:55 - src.agents.executeur - INFO -      OK - Reponse generee en 27.80s
+2026-08-24 10:50:55 - src.agents.executeur - INFO - 
+  -> Scenario [54] Identification de vulnérabilités dans un extrait de code | Modele : llama3.1:8b (ollama)
+2026-08-24 10:50:59 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:51:10 - src.models_clients.ollama_client - DEBUG - Ollama response received (1134 chars)
+2026-08-24 10:51:10 - src.agents.executeur - INFO -      OK - Reponse generee en 20.94s
+2026-08-24 10:51:10 - src.agents.executeur - INFO - 
+  -> Scenario [9] Modernisation de code legacy | Modele : llama3.1:8b (ollama)
+2026-08-24 10:51:14 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:51:27 - src.models_clients.ollama_client - DEBUG - Ollama response received (1273 chars)
+2026-08-24 10:51:27 - src.agents.executeur - INFO -      OK - Reponse generee en 29.28s
+2026-08-24 10:51:27 - src.agents.executeur - INFO - 
+  -> Scenario [9] Modernisation de code legacy | Modele : llama3.1:8b (ollama)
+2026-08-24 10:51:31 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:51:38 - src.models_clients.ollama_client - DEBUG - Ollama response received (867 chars)
+2026-08-24 10:51:38 - src.agents.executeur - INFO -      OK - Reponse generee en 25.63s
+2026-08-24 10:51:38 - src.agents.executeur - INFO - 
+  -> Scenario [45] Proposition d'architecture microservices | Modele : llama3.1:8b (ollama)
+2026-08-24 10:51:42 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:52:00 - src.models_clients.ollama_client - DEBUG - Ollama response received (1476 chars)
+2026-08-24 10:52:00 - src.agents.executeur - INFO -      OK - Reponse generee en 31.01s
+2026-08-24 10:52:00 - src.agents.executeur - INFO - 
+  -> Scenario [45] Proposition d'architecture microservices | Modele : llama3.1:8b (ollama)
+2026-08-24 10:52:04 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:52:13 - src.models_clients.ollama_client - DEBUG - Ollama response received (1154 chars)
+2026-08-24 10:52:13 - src.agents.executeur - INFO -      OK - Reponse generee en 33.18s
+2026-08-24 10:52:13 - src.agents.executeur - INFO - 
+  -> Scenario [50] Rédaction de rapport de bug structuré | Modele : llama3.1:8b (ollama)
+2026-08-24 10:52:17 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:52:38 - src.models_clients.ollama_client - DEBUG - Ollama response received (2170 chars)
+2026-08-24 10:52:38 - src.agents.executeur - INFO -      OK - Reponse generee en 36.10s
+2026-08-24 10:52:38 - src.agents.executeur - INFO - 
+  -> Scenario [50] Rédaction de rapport de bug structuré | Modele : llama3.1:8b (ollama)
+2026-08-24 10:52:42 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:52:48 - src.models_clients.ollama_client - DEBUG - Ollama response received (794 chars)
+2026-08-24 10:52:48 - src.agents.executeur - INFO -      OK - Reponse generee en 33.14s
+2026-08-24 10:52:48 - src.agents.executeur - INFO - 
+  -> Scenario [47] Rédaction de script de déploiement CI/CD | Modele : llama3.1:8b (ollama)
+2026-08-24 10:52:53 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:52:59 - src.models_clients.ollama_client - DEBUG - Ollama response received (800 chars)
+2026-08-24 10:52:59 - src.agents.executeur - INFO -      OK - Reponse generee en 19.46s
+2026-08-24 10:52:59 - src.agents.executeur - INFO - 
+  -> Scenario [47] Rédaction de script de déploiement CI/CD | Modele : llama3.1:8b (ollama)
+2026-08-24 10:53:03 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:53:10 - src.models_clients.ollama_client - DEBUG - Ollama response received (884 chars)
+2026-08-24 10:53:10 - src.agents.executeur - INFO -      OK - Reponse generee en 20.01s
+2026-08-24 10:53:10 - src.agents.executeur - INFO - 
+  -> Scenario [55] Rédaction de spécification technique fonctionnelle | Modele : llama3.1:8b (ollama)
+2026-08-24 10:53:15 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:53:30 - src.models_clients.ollama_client - DEBUG - Ollama response received (1662 chars)
+2026-08-24 10:53:30 - src.agents.executeur - INFO -      OK - Reponse generee en 29.07s
+2026-08-24 10:53:30 - src.agents.executeur - INFO - 
+  -> Scenario [55] Rédaction de spécification technique fonctionnelle | Modele : llama3.1:8b (ollama)
+2026-08-24 10:53:35 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:53:47 - src.models_clients.ollama_client - ERROR - Ollama request timed out: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=180)
+2026-08-24 10:53:47 - src.agents.executeur - ERROR - LLM error for scenario 48 / modèle mistral:7b: Ollama timeout after 180s
+2026-08-24 10:53:47 - src.agents.executeur - INFO - 
+  -> Scenario [52] Explication de pipeline ETL existant | Modele : mistral:7b (ollama)
+2026-08-24 10:53:51 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 10:53:51 - src.models_clients.ollama_client - DEBUG - Ollama response received (1689 chars)
+2026-08-24 10:53:51 - src.agents.executeur - INFO -      OK - Reponse generee en 38.88s
+2026-08-24 10:53:51 - src.agents.executeur - INFO - 
+  -> Scenario [53] Refactoring de code pour lisibilité | Modele : llama3.1:8b (ollama)
+2026-08-24 10:53:56 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:54:13 - src.models_clients.ollama_client - DEBUG - Ollama response received (1836 chars)
+2026-08-24 10:54:13 - src.agents.executeur - INFO -      OK - Reponse generee en 40.22s
+2026-08-24 10:54:13 - src.agents.executeur - INFO - 
+  -> Scenario [53] Refactoring de code pour lisibilité | Modele : llama3.1:8b (ollama)
+2026-08-24 10:54:17 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:58:04 - src.models_clients.ollama_client - ERROR - Ollama request timed out: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=180)
+2026-08-24 10:58:04 - src.models_clients.ollama_client - ERROR - Ollama request timed out: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=180)
+2026-08-24 10:58:04 - src.models_clients.ollama_client - ERROR - Ollama request timed out: HTTPConnectionPool(host='localhost', 2026-08-24 10:58:04 - src.agents.executeur - ERROR - LLM error for scenario 53 / modèle llama3.1:8b: Ollama timeout after 180s
+2026-08-24 10:58:04 - src.agents.executeur - INFO - 
+  -> Scenario [43] Revue de code et suggestions d'amélioration | Modele : llama3.1:8b (ollama)
+2026-08-24 10:58:04 - src.agents.executeur - ERROR - LLM error for scenario 52 / modèle mistral:7b: Ollama timeout after 180s
+2026-08-24 10:58:04 - src.agents.executeur - INFO - 
+  -> Scenario [43] Revue de code et suggestions d'amélioration | Modele : llama3.1:8b (ollama)
+2026-08-24 10:58:04 - src.agents.executeur - INFO - 
+  -> Scenario [49] Génération de cas de test fonctionnels | Modele : mistral:7b (ollama)
+2026-08-24 10:58:08 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 10:58:08 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 10:58:08 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-08-24 10:58:08 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 10:58:08 - src.agents.evaluateur - INFO -      Score global      : 0.0
+2026-08-24 10:58:08 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 10:58:08 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 10:58:08 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 10:58:08 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:58:08 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 10:58:08 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 10:58:21 - src.models_clients.ollama_client - DEBUG - Ollama response received (179 chars)
+2026-08-24 10:58:21 - src.agents.executeur - INFO -      OK - Reponse generee en 15.60s
+2026-08-24 10:58:22 - src.agents.executeur - INFO - [EXECUTEUR] 15 exécutions terminées, 1 erreurs.
+2026-08-24 10:58:22 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 15 exécutions (Ragas)...
+2026-08-24 10:58:38 - src.models_clients.ollama_client - DEBUG - Ollama response received (1153 chars)
+2026-08-24 10:58:38 - src.agents.executeur - INFO -      OK - Reponse generee en 31.68s
+2026-08-24 10:58:38 - src.agents.executeur - INFO - [EXECUTEUR] 15 exécutions terminées, 1 erreurs.
+2026-08-24 10:58:38 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 15 exécutions (Ragas)...
+2026-08-24 10:59:24 - src.models_clients.ollama_client - DEBUG - Ollama response received (2794 chars)
+2026-08-24 10:59:24 - src.agents.executeur - INFO -      OK - Reponse generee en 77.84s
+2026-08-24 10:59:24 - src.agents.executeur - INFO - 
+  -> Scenario [8] Génération de code | Modele : mistral:7b (ollama)
+2026-08-24 10:59:28 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 10:59:54 - src.models_clients.ollama_client - DEBUG - Ollama response received (1501 chars)
+2026-08-24 10:59:54 - src.agents.executeur - INFO -      OK - Reponse generee en 27.99s
+2026-08-24 10:59:54 - src.agents.executeur - INFO - 
+  -> Scenario [10] Génération de documentation technique | Modele : mistral:7b (ollama)
+2026-08-24 10:59:58 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:00:17 - src.models_clients.ollama_client - DEBUG - Ollama response received (1106 chars)
+2026-08-24 11:00:17 - src.agents.executeur - INFO -      OK - Reponse generee en 20.49s
+2026-08-24 11:00:17 - src.agents.executeur - INFO - 
+  -> Scenario [51] Génération de requête SQL complexe | Modele : mistral:7b (ollama)
+2026-08-24 11:00:21 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:00:41 - src.models_clients.ollama_client - DEBUG - Ollama response received (1110 chars)
+2026-08-24 11:00:41 - src.agents.executeur - INFO -      OK - Reponse generee en 22.18s
+2026-08-24 11:00:41 - src.agents.executeur - INFO - 
+  -> Scenario [44] Génération de tests unitaires pour code existant | Modele : mistral:7b (ollama)
+2026-08-24 11:00:45 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:01:11 - src.models_clients.ollama_client - DEBUG - Ollama response received (1416 chars)
+2026-08-24 11:01:11 - src.agents.executeur - INFO -      OK - Reponse generee en 27.86s
+2026-08-24 11:01:11 - src.agents.executeur - INFO - 
+  -> Scenario [54] Identification de vulnérabilités dans un extrait de code | Modele : mistral:7b (ollama)
+2026-08-24 11:01:15 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:01:35 - src.models_clients.ollama_client - DEBUG - Ollama response received (1229 chars)
+2026-08-24 11:01:35 - src.agents.executeur - INFO -      OK - Reponse generee en 21.93s
+2026-08-24 11:01:35 - src.agents.executeur - INFO - 
+  -> Scenario [9] Modernisation de code legacy | Modele : mistral:7b (ollama)
+2026-08-24 11:01:39 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:01:52 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-08-24 11:01:52 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:01:52 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:01:52 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-08-24 11:01:52 - src.agents.evaluateur - INFO -      Score global      : 0.0
+2026-08-24 11:01:52 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:01:52 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:02:03 - src.models_clients.ollama_client - DEBUG - Ollama response received (1336 chars)
+2026-08-24 11:02:03 - src.agents.executeur - INFO -      OK - Reponse generee en 26.69s
+2026-08-24 11:02:03 - src.agents.executeur - INFO - 
+  -> Scenario [45] Proposition d'architecture microservices | Modele : mistral:7b (ollama)
+2026-08-24 11:02:07 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:02:13 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-08-24 11:02:13 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-08-24 11:02:13 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:02:13 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:02:13 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-08-24 11:02:13 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:02:13 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:02:31 - src.models_clients.ollama_client - DEBUG - Ollama response received (1468 chars)
+2026-08-24 11:02:31 - src.agents.executeur - INFO -      OK - Reponse generee en 25.17s
+2026-08-24 11:02:31 - src.agents.executeur - INFO - 
+  -> Scenario [50] Rédaction de rapport de bug structuré | Modele : mistral:7b (ollama)
+2026-08-24 11:02:35 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:02:36 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:02:36 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:02:36 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:02:36 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-08-24 11:02:36 - src.agents.evaluateur - INFO -      Score global      : 0.0
+2026-08-24 11:02:36 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:02:36 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:02:36 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:02:50 - src.models_clients.ollama_client - DEBUG - Ollama response received (838 chars)
+2026-08-24 11:02:50 - src.agents.executeur - INFO -      OK - Reponse generee en 16.99s
+2026-08-24 11:02:50 - src.agents.executeur - INFO - 
+  -> Scenario [47] Rédaction de script de déploiement CI/CD | Modele : mistral:7b (ollama)
+2026-08-24 11:02:54 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:03:13 - src.models_clients.ollama_client - DEBUG - Ollama response received (1060 chars)
+2026-08-24 11:03:13 - src.agents.executeur - INFO -      OK - Reponse generee en 21.26s
+2026-08-24 11:03:13 - src.agents.executeur - INFO - 
+  -> Scenario [55] Rédaction de spécification technique fonctionnelle | Modele : mistral:7b (ollama)
+2026-08-24 11:03:17 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:03:42 - src.models_clients.ollama_client - DEBUG - Ollama response received (1700 chars)
+2026-08-24 11:03:42 - src.agents.executeur - INFO -      OK - Reponse generee en 27.45s
+2026-08-24 11:03:42 - src.agents.executeur - INFO - 
+  -> Scenario [53] Refactoring de code pour lisibilité | Modele : mistral:7b (ollama)
+2026-08-24 11:03:47 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:04:15 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:04:15 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-08-24 11:04:15 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-08-24 11:04:15 - src.agents.evaluateur - INFO -      Context recall    : 0.5
+2026-08-24 11:04:15 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-08-24 11:04:15 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:04:37 - src.models_clients.ollama_client - DEBUG - Ollama response received (3538 chars)
+2026-08-24 11:04:37 - src.agents.executeur - INFO -      OK - Reponse generee en 52.67s
+2026-08-24 11:04:37 - src.agents.executeur - INFO - 
+  -> Scenario [43] Revue de code et suggestions d'amélioration | Modele : mistral:7b (ollama)
+2026-08-24 11:04:41 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-08-24 11:05:06 - src.models_clients.ollama_client - DEBUG - Ollama response received (1523 chars)
+2026-08-24 11:05:06 - src.agents.executeur - INFO -      OK - Reponse generee en 26.46s
+2026-08-24 11:05:06 - src.agents.executeur - INFO - [EXECUTEUR] 13 exécutions terminées, 3 erreurs.
+2026-08-24 11:05:06 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 13 exécutions (Ragas)...
+2026-08-24 11:05:19 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 11:05:19 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 11:05:19 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 11:05:53 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-08-24 11:05:53 - src.api.routes.benchmark - INFO - Benchmark: 16 scenarios, 1 models by superadmin@ooredoo.com
+2026-08-24 11:05:53 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 16 scénarios...
+2026-08-24 11:05:53 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:53 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:53 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:54 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:54 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:54 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:57 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:57 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 11:05:57 - src.agents.collecteur - INFO - [COLLECTEUR] 16 scénarios collectés.
+2026-08-24 11:05:57 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-24 11:05:57 - src.agents.executeur - INFO -   16 scénarios × 1 modèles = 16 exécutions
+2026-08-24 11:05:57 - src.agents.executeur - INFO - 
+  -> Scenario [36] Analyse de mots-clés depuis un brief client | Modele : llama3.1:8b (ollama)
+2026-08-24 11:06:01 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:06:26 - src.models_clients.ollama_client - DEBUG - Ollama response received (778 chars)
+2026-08-24 11:06:26 - src.agents.executeur - INFO -      OK - Reponse generee en 26.64s
+2026-08-24 11:06:26 - src.agents.executeur - INFO - 
+  -> Scenario [42] Chatbot FAQ produit marketing (RAG) | Modele : llama3.1:8b (ollama)
+2026-08-24 11:06:30 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:06:49 - src.models_clients.ollama_client - DEBUG - Ollama response received (1053 chars)
+2026-08-24 11:06:49 - src.agents.executeur - INFO -      OK - Reponse generee en 21.55s
+2026-08-24 11:06:49 - src.agents.executeur - INFO - 
+  -> Scenario [6] Génération de copies publicitaires | Modele : llama3.1:8b (ollama)
+2026-08-24 11:06:53 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:07:16 - src.models_clients.ollama_client - DEBUG - Ollama response received (1250 chars)
+2026-08-24 11:07:16 - src.agents.executeur - INFO -      OK - Reponse generee en 24.90s
+2026-08-24 11:07:16 - src.agents.executeur - INFO - 
+  -> Scenario [35] Génération de méta-descriptions optimisées SEO | Modele : llama3.1:8b (ollama)
+2026-08-24 11:07:20 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:07:34 - src.models_clients.ollama_client - DEBUG - Ollama response received (635 chars)
+2026-08-24 11:07:34 - src.agents.executeur - INFO -      OK - Reponse generee en 15.82s
+2026-08-24 11:07:34 - src.agents.executeur - INFO - 
+  -> Scenario [31] Génération de posts réseaux sociaux multi-formats | Modele : llama3.1:8b (ollama)
+2026-08-24 11:07:38 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:08:01 - src.models_clients.ollama_client - DEBUG - Ollama response received (1162 chars)
+2026-08-24 11:08:01 - src.agents.executeur - INFO -      OK - Reponse generee en 24.69s
+2026-08-24 11:08:01 - src.agents.executeur - INFO - 
+  -> Scenario [29] Génération de titres publicitaires A/B testing | Modele : llama3.1:8b (ollama)
+2026-08-24 11:08:05 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:08:15 - src.models_clients.ollama_client - DEBUG - Ollama response received (425 chars)
+2026-08-24 11:08:15 - src.agents.executeur - INFO -      OK - Reponse generee en 12.30s
+2026-08-24 11:08:15 - src.agents.executeur - INFO - 
+  -> Scenario [38] Identification de personas marketing | Modele : llama3.1:8b (ollama)
+2026-08-24 11:08:19 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:08:30 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:08:30 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:08:30 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:08:30 - src.agents.evaluateur - INFO -      Context recall    : 0.5
+2026-08-24 11:08:30 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-08-24 11:08:30 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:08:30 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:08:30 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:08:47 - src.models_clients.ollama_client - DEBUG - Ollama response received (1580 chars)
+2026-08-24 11:08:47 - src.agents.executeur - INFO -      OK - Reponse generee en 29.35s
+2026-08-24 11:08:47 - src.agents.executeur - INFO - 
+  -> Scenario [41] Modération et catégorisation de commentaires clients | Modele : llama3.1:8b (ollama)
+2026-08-24 11:08:51 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:09:03 - src.models_clients.ollama_client - DEBUG - Ollama response received (573 chars)
+2026-08-24 11:09:03 - src.agents.executeur - INFO -      OK - Reponse generee en 14.77s
+2026-08-24 11:09:03 - src.agents.executeur - INFO - 
+  -> Scenario [7] Rédaction d'article de blog / FAQ | Modele : llama3.1:8b (ollama)
+2026-08-24 11:09:07 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:09:20 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:09:20 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-08-24 11:09:20 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:09:20 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:09:20 - src.agents.evaluateur - INFO -      Score global      : 1.0
+2026-08-24 11:09:20 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:09:20 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:09:20 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:09:41 - src.models_clients.ollama_client - DEBUG - Ollama response received (2126 chars)
+2026-08-24 11:09:41 - src.agents.executeur - INFO -      OK - Reponse generee en 35.76s
+2026-08-24 11:09:41 - src.agents.executeur - INFO - 
+  -> Scenario [30] Rédaction de description produit e-commerce | Modele : llama3.1:8b (ollama)
+2026-08-24 11:09:45 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:10:07 - src.models_clients.ollama_client - DEBUG - Ollama response received (1307 chars)
+2026-08-24 11:10:07 - src.agents.executeur - INFO -      OK - Reponse generee en 24.19s
+2026-08-24 11:10:07 - src.agents.executeur - INFO - 
+  -> Scenario [39] Rédaction d'email de relance panier abandonné | Modele : llama3.1:8b (ollama)
+2026-08-24 11:10:10 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:10:10 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:10:10 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-08-24 11:10:10 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:10:10 - src.agents.evaluateur - INFO -      Score global      : 0.0
+2026-08-24 11:10:10 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:10:10 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:10:10 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:10:11 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:10:28 - src.models_clients.ollama_client - DEBUG - Ollama response received (896 chars)
+2026-08-24 11:10:28 - src.agents.executeur - INFO -      OK - Reponse generee en 18.94s
+2026-08-24 11:10:28 - src.agents.executeur - INFO - 
+  -> Scenario [34] Rédaction de newsletter client mensuelle | Modele : llama3.1:8b (ollama)
+2026-08-24 11:10:32 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:10:55 - src.models_clients.ollama_client - DEBUG - Ollama response received (1270 chars)
+2026-08-24 11:10:55 - src.agents.executeur - INFO -      OK - Reponse generee en 24.99s
+2026-08-24 11:10:55 - src.agents.executeur - INFO - 
+  -> Scenario [33] Rédaction de script vidéo publicitaire courte | Modele : llama3.1:8b (ollama)
+2026-08-24 11:10:59 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:11:22 - src.models_clients.ollama_client - DEBUG - Ollama response received (1302 chars)
+2026-08-24 11:11:22 - src.agents.executeur - INFO -      OK - Reponse generee en 24.38s
+2026-08-24 11:11:22 - src.agents.executeur - INFO - 
+  -> Scenario [40] Rédaction de slogan de campagne | Modele : llama3.1:8b (ollama)
+2026-08-24 11:11:26 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:11:34 - src.models_clients.ollama_client - DEBUG - Ollama response received (258 chars)
+2026-08-24 11:11:34 - src.agents.executeur - INFO -      OK - Reponse generee en 10.52s
+2026-08-24 11:11:34 - src.agents.executeur - INFO - 
+  -> Scenario [32] Réponse à commentaire négatif sur réseaux sociaux | Modele : llama3.1:8b (ollama)
+2026-08-24 11:11:39 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:11:55 - src.models_clients.ollama_client - DEBUG - Ollama response received (933 chars)
+2026-08-24 11:11:55 - src.agents.executeur - INFO -      OK - Reponse generee en 19.00s
+2026-08-24 11:11:55 - src.agents.executeur - INFO - 
+  -> Scenario [37] Synthèse d'étude de satisfaction client | Modele : llama3.1:8b (ollama)
+2026-08-24 11:12:00 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 11:12:18 - src.models_clients.ollama_client - DEBUG - Ollama response received (886 chars)
+2026-08-24 11:12:18 - src.agents.executeur - INFO -      OK - Reponse generee en 20.24s
+2026-08-24 11:12:18 - src.agents.executeur - INFO - [EXECUTEUR] 16 exécutions terminées, 0 erreurs.
+2026-08-24 11:12:18 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 16 exécutions (Ragas)...
+2026-08-24 11:12:36 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:12:36 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:12:36 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:12:36 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:12:36 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:12:36 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:12:36 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:12:36 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:12:36 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:13:14 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:13:14 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:13:14 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:13:14 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:13:14 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:13:14 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:13:14 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:13:14 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:13:14 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:13:18 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:13:18 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:13:18 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:13:18 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:13:18 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:13:18 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:13:18 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:13:18 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:13:18 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:13:55 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:13:55 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:13:55 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:13:55 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:13:55 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:13:55 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:13:55 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:13:55 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:13:55 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:13:57 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:13:57 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:13:57 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:13:57 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:13:57 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:13:57 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:13:57 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:13:57 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:13:57 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:13:59 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:13:59 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:13:59 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:13:59 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:13:59 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:13:59 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:13:59 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:13:59 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:13:59 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:14:35 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:14:35 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:14:35 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:14:35 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:14:35 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:14:35 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:14:35 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:14:35 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:14:35 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:14:39 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:14:39 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:14:39 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:14:39 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:14:39 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:14:39 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:14:39 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:14:39 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:14:39 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:15:16 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:15:16 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:15:16 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:15:16 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:15:16 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:15:16 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:15:16 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:15:16 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:15:16 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:15:19 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:15:19 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:15:19 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:15:19 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:15:19 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:15:19 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:15:19 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:15:19 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:15:19 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:15:20 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:15:20 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:15:20 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:15:20 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:15:20 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:15:20 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:15:20 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:15:20 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:15:20 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:15:57 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:15:57 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:15:57 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:15:57 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:15:57 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:15:57 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:15:57 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:15:57 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:15:57 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:16:00 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:16:00 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:16:00 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:16:00 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:16:00 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:16:00 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:16:00 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:16:00 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:16:00 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:16:38 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:16:38 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:16:38 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:16:38 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:16:38 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:16:38 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:16:38 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:16:38 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:16:38 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:16:40 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:16:40 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:16:40 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:16:40 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:16:40 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:16:40 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:16:40 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:16:40 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:16:40 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:16:42 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:16:42 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:16:42 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:16:42 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:16:42 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:16:42 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:16:42 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:16:42 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:16:42 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:17:18 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:17:18 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:17:18 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:17:18 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:17:18 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:17:18 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:17:18 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:17:18 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:17:18 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:17:21 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:17:21 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:17:21 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:17:21 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:17:21 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:17:21 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:17:21 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:17:21 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:17:21 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:17:59 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:17:59 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:17:59 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:17:59 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:17:59 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:17:59 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:17:59 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:17:59 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:17:59 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:18:01 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:18:01 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:18:01 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:18:01 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:18:01 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:18:01 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:18:01 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:18:01 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:18:01 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:18:03 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:18:03 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:18:03 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:18:03 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:18:03 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:18:03 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:18:03 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:18:03 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:18:03 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:18:40 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:18:40 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:18:40 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:18:40 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:18:40 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:18:40 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:18:40 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:18:40 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:18:40 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:18:43 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:18:43 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:18:43 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:18:43 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:18:43 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:18:43 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:18:43 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:18:43 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:18:43 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:19:21 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:19:21 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:19:21 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:19:21 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:19:21 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:19:21 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:19:21 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:19:21 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:19:21 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:20:04 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:20:04 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:20:19 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:20:19 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:20:19 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:20:19 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:20:19 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:20:19 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:20:19 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:20:19 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:20:19 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:20:20 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:20:20 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:20:20 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:20:20 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:20:20 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:20:20 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:20:20 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:20:20 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:20:20 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:20:42 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:20:42 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:20:42 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:20:42 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:20:42 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:20:42 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:20:42 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:20:42 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:20:42 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:21:25 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:21:25 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:21:25 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:21:25 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:21:25 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:21:25 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:21:25 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:21:25 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:21:25 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:21:26 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:21:26 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:21:26 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:21:26 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:21:26 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:21:26 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:21:26 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:21:26 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:21:26 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:21:41 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:21:42 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:21:42 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:22:03 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:22:03 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:22:03 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:22:03 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:22:03 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:22:03 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:22:03 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:22:03 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:22:03 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:22:46 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:22:46 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:22:46 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:22:46 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:22:46 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:22:46 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:22:46 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:22:46 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:22:46 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:22:47 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:22:47 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:22:47 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:22:47 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:22:47 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:22:47 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:22:47 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:22:47 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:22:47 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:23:03 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:23:03 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:23:24 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:23:24 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:23:24 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:23:24 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:23:24 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:23:24 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:23:24 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:23:24 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:23:24 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:24:07 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:24:07 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:24:08 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:24:08 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:24:08 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:24:08 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:24:08 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:24:08 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:24:08 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:24:08 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:24:09 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:24:09 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:24:09 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:24:09 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:24:09 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:24:09 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:24:09 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:24:09 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:24:25 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:24:25 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:24:45 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:24:45 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:24:45 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:24:45 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:24:45 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:24:45 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:24:45 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:24:45 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:24:45 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:25:29 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:25:29 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:25:29 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:25:29 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:25:29 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:25:29 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:25:29 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:25:29 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:25:29 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:25:30 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:25:30 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:25:30 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:25:30 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:25:30 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:25:30 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:25:30 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:25:30 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:25:30 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:25:46 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:25:46 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:26:06 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:26:06 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:26:06 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:26:06 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:26:06 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:26:06 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:26:06 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:26:06 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:26:06 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:26:50 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:26:50 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:26:50 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:26:50 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:26:50 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:26:50 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:26:50 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:26:50 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:26:50 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:26:50 - src.agents.evaluateur - INFO - [EVALUATEUR] 16 évaluations terminées.
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - ============================================================
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Exécutions         : 16
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Latence moy.       : 28.45s
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Score global       : 0.4/1.0
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Faithfulness       : 0.0/1.0
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Answer relevancy   : 1.0/1.0
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Context precision  : 0.0/1.0
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Context recall     : 0.25/1.0
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO -    Scénarios          : Comparaison de technologies (RAG), Diagnostic d'incident depuis logs serveur, Explication de pipeline ETL existant, Génération de cas de test fonctionnels, Génération de code, Génération de documentation technique, Génération de requête SQL complexe, Génération de tests unitaires pour code existant, Identification de vulnérabilités dans un extrait de code, Modernisation de code legacy, Proposition d'architecture microservices, Rédaction de rapport de bug structuré, Rédaction de script de déploiement CI/CD, Rédaction de spécification technique fonctionnelle, Refactoring de code pour lisibilité, Revue de code et suggestions d'amélioration
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - avec un score global moyen de 0.4/1.0
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - et une latence moyenne de 28.45s
+2026-08-24 11:26:50 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-24 11:26:50 - src.api.routes.benchmark - INFO - Benchmark completed: 16 executions, 0 errors
+2026-08-24 11:26:51 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:26:51 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:26:51 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:26:51 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:26:51 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:26:51 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:26:51 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:26:51 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:26:51 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:27:07 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:27:07 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:27:07 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:27:07 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:27:07 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:27:07 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:27:07 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:27:07 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:27:07 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:27:08 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:27:08 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:27:08 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:27:08 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:27:08 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:27:08 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:27:08 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:27:08 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:27:08 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:27:28 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:27:28 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:27:28 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:27:28 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:27:28 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:27:28 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:27:28 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:27:28 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:27:28 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:28:12 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:28:12 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:28:12 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:28:12 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:28:12 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:28:12 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:28:12 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:28:12 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:28:12 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:28:29 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:28:29 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:28:29 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:28:29 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:28:29 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:28:29 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:28:29 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:28:29 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:28:29 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:28:30 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:28:30 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:28:30 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:28:30 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:28:30 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:28:30 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:28:30 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:28:30 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:28:30 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:28:50 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:28:50 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:28:50 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:28:50 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:28:50 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:28:50 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:28:50 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:28:50 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:28:50 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:28:50 - src.agents.evaluateur - INFO - [EVALUATEUR] 15 évaluations terminées.
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - ============================================================
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Exécutions         : 15
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Latence moy.       : 32.29s
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Score global       : 0.167/1.0
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Faithfulness       : 0.0/1.0
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Answer relevancy   : 1.0/1.0
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Context precision  : 0.0/1.0
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Context recall     : 0.25/1.0
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO -    Scénarios          : Comparaison de technologies (RAG), Diagnostic d'incident depuis logs serveur, Explication de pipeline ETL existant, Génération de cas de test fonctionnels, Génération de code, Génération de documentation technique, Génération de requête SQL complexe, Génération de tests unitaires pour code existant, Identification de vulnérabilités dans un extrait de code, Modernisation de code legacy, Proposition d'architecture microservices, Rédaction de rapport de bug structuré, Rédaction de script de déploiement CI/CD, Rédaction de spécification technique fonctionnelle, Revue de code et suggestions d'amélioration
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - avec un score global moyen de 0.167/1.0
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - et une latence moyenne de 32.29s
+2026-08-24 11:28:50 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-24 11:28:50 - src.api.routes.benchmark - INFO - Benchmark completed: 15 executions, 1 errors
+2026-08-24 11:29:34 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:29:34 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:29:34 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:29:34 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:29:34 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:29:34 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:29:34 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:29:34 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:29:34 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:29:34 - src.agents.evaluateur - INFO - [EVALUATEUR] 15 évaluations terminées.
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - ============================================================
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Exécutions         : 15
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Latence moy.       : 33.56s
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Score global       : 0.25/1.0
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Faithfulness       : N/A/1.0
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Answer relevancy   : N/A/1.0
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Context precision  : N/A/1.0
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Context recall     : 0.25/1.0
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO -    Scénarios          : Comparaison de technologies (RAG), Diagnostic d'incident depuis logs serveur, Explication de pipeline ETL existant, Génération de cas de test fonctionnels, Génération de code, Génération de documentation technique, Génération de requête SQL complexe, Génération de tests unitaires pour code existant, Identification de vulnérabilités dans un extrait de code, Modernisation de code legacy, Proposition d'architecture microservices, Rédaction de rapport de bug structuré, Rédaction de script de déploiement CI/CD, Rédaction de spécification technique fonctionnelle, Revue de code et suggestions d'amélioration
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - avec un score global moyen de 0.25/1.0
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - et une latence moyenne de 33.56s
+2026-08-24 11:29:34 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-24 11:29:34 - src.api.routes.benchmark - INFO - Benchmark completed: 15 executions, 1 errors
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:29:51 - src.agents.evaluateur - INFO - [EVALUATEUR] 13 évaluations terminées.
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - ============================================================
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - 
+#1 mistral:7b
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Exécutions         : 13
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Latence moy.       : 30.38s
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Score global       : N/A/1.0
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Faithfulness       : N/A/1.0
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Answer relevancy   : N/A/1.0
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Context precision  : N/A/1.0
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Context recall     : N/A/1.0
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO -    Scénarios          : Génération de cas de test fonctionnels, Génération de code, Génération de documentation technique, Génération de requête SQL complexe, Génération de tests unitaires pour code existant, Identification de vulnérabilités dans un extrait de code, Modernisation de code legacy, Proposition d'architecture microservices, Rédaction de rapport de bug structuré, Rédaction de script de déploiement CI/CD, Rédaction de spécification technique fonctionnelle, Refactoring de code pour lisibilité, Revue de code et suggestions d'amélioration
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - RECOMMANDATION : mistral:7b est le modèle le plus performant
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - avec un score global moyen de 0/1.0
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - et une latence moyenne de 30.38s
+2026-08-24 11:29:51 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-24 11:29:51 - src.api.routes.benchmark - INFO - Benchmark completed: 13 executions, 3 errors
+2026-08-24 11:32:16 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:32:16 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-08-24 11:32:16 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:32:16 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:32:16 - src.agents.evaluateur - INFO -      Score global      : 1.0
+2026-08-24 11:32:16 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:32:16 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:32:16 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:34:07 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:34:07 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:34:07 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:34:07 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:34:07 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:34:07 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:34:07 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:34:07 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:34:07 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:35:29 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:35:29 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:35:29 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:35:29 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:35:29 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:35:29 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:35:29 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:35:29 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:35:29 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:36:52 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 11:36:52 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 11:36:52 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 11:36:52 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 11:36:52 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 11:36:52 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 11:36:52 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 11:36:52 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 11:36:52 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 11:36:52 - src.agents.evaluateur - INFO - [EVALUATEUR] 16 évaluations terminées.
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - ============================================================
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Exécutions         : 16
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Latence moy.       : 21.75s
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Score global       : 1.0/1.0
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Faithfulness       : N/A/1.0
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Answer relevancy   : 1.0/1.0
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Context precision  : N/A/1.0
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Context recall     : N/A/1.0
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO -    Scénarios          : Analyse de mots-clés depuis un brief client, Chatbot FAQ produit marketing (RAG), Génération de copies publicitaires, Génération de méta-descriptions optimisées SEO, Génération de posts réseaux sociaux multi-formats, Génération de titres publicitaires A/B testing, Identification de personas marketing, Modération et catégorisation de commentaires clients, Rédaction d'article de blog / FAQ, Rédaction de description produit e-commerce, Rédaction d'email de relance panier abandonné, Rédaction de newsletter client mensuelle, Rédaction de script vidéo publicitaire courte, Rédaction de slogan de campagne, Réponse à commentaire négatif sur réseaux sociaux, Synthèse d'étude de satisfaction client
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - avec un score global moyen de 1.0/1.0
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - et une latence moyenne de 21.75s
+2026-08-24 11:36:52 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-24 11:36:52 - src.api.routes.benchmark - INFO - Benchmark completed: 16 executions, 0 errors
+2026-08-24 13:06:37 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-08-24 13:06:37 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-08-24 13:06:37 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 13:29:40 - src.dashboard.app - DEBUG - Loading executions with limit: 1
+2026-08-24 13:29:40 - src.dashboard.app - INFO - No scores found for executions, returning executions without scores
+2026-08-24 13:30:29 - src.dashboard.error_handling - DEBUG - Executing data operation: test addition
+2026-08-24 13:30:29 - src.dashboard.error_handling - DEBUG - Data operation successful: test addition
+2026-08-24 13:31:13 - test - DEBUG - Debug message test
+2026-08-24 13:31:13 - test - INFO - Info message test
+2026-08-24 13:31:13 - test - WARNING - Warning message test
+2026-08-24 13:31:14 - src.dashboard.error_handling - DEBUG - Executing data operation: test addition
+2026-08-24 13:31:14 - src.dashboard.error_handling - DEBUG - Data operation successful: test addition
+2026-08-24 13:31:14 - src.dashboard.error_handling - DEBUG - Entering dashboard section: test section
+2026-08-24 13:31:14 - src.dashboard.error_handling - DEBUG - Dashboard section completed successfully: test section
+2026-08-24 13:31:15 - src.dashboard.app - INFO - Test log message from dashboard
+2026-08-24 13:32:29 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-08-24 13:32:29 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-08-24 13:32:30 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 13:32:30 - src.auth.utils - WARNING - Login attempt with non-existent email: invalid@email.com
+2026-08-24 13:32:30 - src.dashboard.app - DEBUG - Loading executions with limit: 5
+2026-08-24 13:32:30 - src.dashboard.app - INFO - No scores found for executions, returning executions without scores
+2026-08-24 13:32:30 - src.dashboard.app - DEBUG - Loading scenario catalog
+2026-08-24 13:32:30 - src.dashboard.app - INFO - Successfully loaded 100 scenarios from catalog
+2026-08-24 13:32:30 - src.dashboard.error_handling - DEBUG - Executing data operation: multiplication test
+2026-08-24 13:32:30 - src.dashboard.error_handling - DEBUG - Data operation successful: multiplication test
+2026-08-24 13:32:30 - src.dashboard.error_handling - DEBUG - Entering dashboard section: test section
+2026-08-24 13:32:30 - src.dashboard.error_handling - DEBUG - Dashboard section completed successfully: test section
+2026-08-24 13:32:30 - test_workflow - DEBUG - Test debug message
+2026-08-24 13:32:30 - test_workflow - INFO - Test info message
+2026-08-24 13:32:30 - test_workflow - WARNING - Test warning message
+2026-08-24 13:38:10 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-08-24 13:38:10 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-08-24 13:38:11 - __main__ - DEBUG - Database query completed - user found: True
+2026-08-24 13:38:11 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-08-24 13:38:15 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-08-24 13:38:17 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 13:38:17 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 13:38:17 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 13:38:17 - __main__ - DEBUG - API token obtained successfully
+2026-08-24 13:38:17 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-08-24 13:38:19 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 13:38:20 - __main__ - DEBUG - Loading executions with limit: 300
+2026-08-24 13:38:21 - __main__ - INFO - Successfully loaded 165 executions with scores
+2026-08-24 13:38:21 - __main__ - INFO - Loaded 165 executions for dashboard display
+2026-08-24 13:38:21 - __main__ - DEBUG - Loading scenario catalog
+2026-08-24 13:38:21 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-08-24 13:39:17 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 13:39:17 - __main__ - INFO - Loaded 165 executions for dashboard display
+2026-08-24 13:39:22 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 13:39:22 - __main__ - INFO - Loaded 165 executions for dashboard display
+2026-08-24 13:39:23 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 13:39:23 - __main__ - INFO - Loaded 165 executions for dashboard display
+2026-08-24 13:39:31 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 13:39:31 - __main__ - INFO - Loaded 165 executions for dashboard display
+2026-08-24 13:39:32 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 13:39:32 - __main__ - INFO - Loaded 165 executions for dashboard display
+2026-08-24 13:39:33 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-08-24 13:39:33 - src.api.routes.benchmark - INFO - Benchmark: 17 scenarios, 1 models by superadmin@ooredoo.com
+2026-08-24 13:39:33 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 17 scénarios...
+2026-08-24 13:39:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:34 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:35 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:35 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:36 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:36 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:37 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:37 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:38 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:38 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:39 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:39 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:40 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:41 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:42 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:43 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:45 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-08-24 13:39:45 - src.agents.collecteur - INFO - [COLLECTEUR] 17 scénarios collectés.
+2026-08-24 13:39:45 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-24 13:39:45 - src.agents.executeur - INFO -   17 scénarios × 1 modèles = 17 exécutions
+2026-08-24 13:39:45 - src.agents.executeur - INFO - 
+  -> Scenario [5] Chatbot support RH (RAG) | Modele : llama3.1:8b (ollama)
+2026-08-24 13:39:49 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:40:24 - src.models_clients.ollama_client - DEBUG - Ollama response received (1198 chars)
+2026-08-24 13:40:24 - src.agents.executeur - INFO -      OK - Reponse generee en 37.15s
+2026-08-24 13:40:24 - src.agents.executeur - INFO - 
+  -> Scenario [19] Conception de plan de formation individuel | Modele : llama3.1:8b (ollama)
+2026-08-24 13:40:29 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:40:37 - src.dashboard.app - INFO - Login attempt for email: client@ooredoo.com, expected_role: client
+2026-08-24 13:40:37 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 13:40:37 - src.dashboard.app - DEBUG - User role verification: found=client, expected=client
+2026-08-24 13:40:37 - src.dashboard.app - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-08-24 13:40:38 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-08-24 13:40:38 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-08-24 13:40:38 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-08-24 13:40:38 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 13:40:38 - src.dashboard.app - DEBUG - Loading executions with limit: 50
+2026-08-24 13:40:38 - src.dashboard.app - ERROR - Error loading executions: "['faithfulness'] not in index"
+Traceback (most recent call last):
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\src\dashboard\app.py", line 161, in load_executions
+    df[["faithfulness", "answer_relevancy", "context_precision", "context_recall"]]
+    ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 4384, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 6302, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "C:\Users\ranim\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 6355, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['faithfulness'] not in index"
+2026-08-24 13:40:38 - src.dashboard.app - DEBUG - Loading scenario catalog
+2026-08-24 13:40:38 - src.dashboard.app - INFO - Successfully loaded 100 scenarios from catalog
+2026-08-24 13:40:38 - src.dashboard.app - INFO - Login attempt for email: admin@ooredoo.com, expected_role: admin
+2026-08-24 13:40:38 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 13:40:38 - src.dashboard.app - DEBUG - User role verification: found=admin, expected=admin
+2026-08-24 13:40:38 - src.dashboard.app - INFO - Login successful for user: admin@ooredoo.com with role: admin
+2026-08-24 13:40:39 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-08-24 13:40:39 - src.api.auth - DEBUG - Token created for user: admin@ooredoo.com
+2026-08-24 13:40:39 - src.api.routes.auth - INFO - User logged in: admin@ooredoo.com
+2026-08-24 13:40:39 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 13:40:40 - src.dashboard.app - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-08-24 13:40:40 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 13:40:40 - src.dashboard.app - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-08-24 13:40:40 - src.dashboard.app - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-08-24 13:40:41 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 13:40:41 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 13:40:41 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 13:40:41 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 13:40:41 - src.dashboard.app - INFO - Login attempt for email: nonexistent@user.com, expected_role: client
+2026-08-24 13:40:41 - src.dashboard.app - DEBUG - Database query completed - user found: False
+2026-08-24 13:40:41 - src.dashboard.app - WARNING - Login failed - user not found: nonexistent@user.com
+2026-08-24 13:40:41 - src.dashboard.error_handling - DEBUG - Executing data operation: test operation
+2026-08-24 13:40:41 - src.dashboard.error_handling - ERROR - Data operation failed (test operation): Test error
+Traceback (most recent call last):
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\src\dashboard\error_handling.py", line 64, in safe_data_operation
+    result = operation_func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\simulate_dashboard_user_journey.py", line 215, in failing_function
+    raise Exception("Test error")
+Exception: Test error
+2026-08-24 13:40:41 - src.dashboard.app - DEBUG - Loading executions with limit: 0
+2026-08-24 13:40:41 - src.dashboard.app - WARNING - No executions found in database
+2026-08-24 13:41:14 - src.models_clients.ollama_client - DEBUG - Ollama response received (2247 chars)
+2026-08-24 13:41:14 - src.agents.executeur - INFO -      OK - Reponse generee en 47.96s
+2026-08-24 13:41:14 - src.agents.executeur - INFO - 
+  -> Scenario [26] Extraction de compétences depuis une offre concurrente | Modele : llama3.1:8b (ollama)
+2026-08-24 13:41:19 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:41:50 - src.models_clients.ollama_client - DEBUG - Ollama response received (1596 chars)
+2026-08-24 13:41:50 - src.agents.executeur - INFO -      OK - Reponse generee en 33.21s
+2026-08-24 13:41:50 - src.agents.executeur - INFO - 
+  -> Scenario [28] Génération de parcours d'intégration nouvel arrivant | Modele : llama3.1:8b (ollama)
+2026-08-24 13:41:54 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:42:26 - src.models_clients.ollama_client - DEBUG - Ollama response received (1665 chars)
+2026-08-24 13:42:26 - src.agents.executeur - INFO -      OK - Reponse generee en 33.81s
+2026-08-24 13:42:26 - src.agents.executeur - INFO - 
+  -> Scenario [20] Génération de quiz d'évaluation post-formation | Modele : llama3.1:8b (ollama)
+2026-08-24 13:42:30 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:43:24 - src.models_clients.ollama_client - DEBUG - Ollama response received (2834 chars)
+2026-08-24 13:43:24 - src.agents.executeur - INFO -      OK - Reponse generee en 56.04s
+2026-08-24 13:43:24 - src.agents.executeur - INFO - 
+  -> Scenario [3] Préparation grille d'évaluation entretien | Modele : llama3.1:8b (ollama)
+2026-08-24 13:43:28 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:43:52 - src.models_clients.ollama_client - DEBUG - Ollama response received (1192 chars)
+2026-08-24 13:43:52 - src.agents.executeur - INFO -      OK - Reponse generee en 26.37s
+2026-08-24 13:43:52 - src.agents.executeur - INFO - 
+  -> Scenario [17] Rédaction d'annonce LinkedIn attractive | Modele : llama3.1:8b (ollama)
+2026-08-24 13:43:56 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:44:29 - src.models_clients.ollama_client - DEBUG - Ollama response received (1712 chars)
+2026-08-24 13:44:29 - src.agents.executeur - INFO -      OK - Reponse generee en 34.90s
+2026-08-24 13:44:29 - src.agents.executeur - INFO - 
+  -> Scenario [4] Rédaction de communiqué interne | Modele : llama3.1:8b (ollama)
+2026-08-24 13:44:33 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:44:56 - src.models_clients.ollama_client - DEBUG - Ollama response received (1233 chars)
+2026-08-24 13:44:56 - src.agents.executeur - INFO -      OK - Reponse generee en 24.81s
+2026-08-24 13:44:56 - src.agents.executeur - INFO - 
+  -> Scenario [24] Rédaction de FAQ sur le télétravail | Modele : llama3.1:8b (ollama)
+2026-08-24 13:45:00 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:45:40 - src.models_clients.ollama_client - DEBUG - Ollama response received (1968 chars)
+2026-08-24 13:45:40 - src.agents.executeur - INFO -      OK - Reponse generee en 41.73s
+2026-08-24 13:45:40 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : llama3.1:8b (ollama)
+2026-08-24 13:45:44 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:46:19 - src.models_clients.ollama_client - DEBUG - Ollama response received (1839 chars)
+2026-08-24 13:46:19 - src.agents.executeur - INFO -      OK - Reponse generee en 37.19s
+2026-08-24 13:46:19 - src.agents.executeur - INFO - 
+  -> Scenario [23] Rédaction de newsletter interne mensuelle | Modele : llama3.1:8b (ollama)
+2026-08-24 13:46:23 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:46:51 - src.models_clients.ollama_client - DEBUG - Ollama response received (1476 chars)
+2026-08-24 13:46:51 - src.agents.executeur - INFO -      OK - Reponse generee en 29.90s
+2026-08-24 13:46:51 - src.agents.executeur - INFO - 
+  -> Scenario [25] Rédaction de témoignage collaborateur (ghostwriting) | Modele : llama3.1:8b (ollama)
+2026-08-24 13:46:55 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:47:20 - src.models_clients.ollama_client - DEBUG - Ollama response received (1189 chars)
+2026-08-24 13:47:20 - src.agents.executeur - INFO -      OK - Reponse generee en 27.03s
+2026-08-24 13:47:20 - src.agents.executeur - INFO - 
+  -> Scenario [21] Réponse à question sur bulletin de paie (RAG) | Modele : llama3.1:8b (ollama)
+2026-08-24 13:47:24 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:47:43 - src.models_clients.ollama_client - DEBUG - Ollama response received (1021 chars)
+2026-08-24 13:47:43 - src.agents.executeur - INFO -      OK - Reponse generee en 21.23s
+2026-08-24 13:47:43 - src.agents.executeur - INFO - 
+  -> Scenario [18] Réponse de refus de candidature personnalisée | Modele : llama3.1:8b (ollama)
+2026-08-24 13:47:48 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:48:08 - src.models_clients.ollama_client - DEBUG - Ollama response received (960 chars)
+2026-08-24 13:48:08 - src.agents.executeur - INFO -      OK - Reponse generee en 22.34s
+2026-08-24 13:48:08 - src.agents.executeur - INFO - 
+  -> Scenario [22] Synthèse de compte-rendu de réunion CSE | Modele : llama3.1:8b (ollama)
+2026-08-24 13:48:12 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:48:35 - src.models_clients.ollama_client - DEBUG - Ollama response received (1099 chars)
+2026-08-24 13:48:35 - src.agents.executeur - INFO -      OK - Reponse generee en 25.12s
+2026-08-24 13:48:35 - src.agents.executeur - INFO - 
+  -> Scenario [27] Traduction de communiqué interne multilingue | Modele : llama3.1:8b (ollama)
+2026-08-24 13:48:39 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:49:23 - src.models_clients.ollama_client - DEBUG - Ollama response received (2813 chars)
+2026-08-24 13:49:23 - src.agents.executeur - INFO -      OK - Reponse generee en 45.39s
+2026-08-24 13:49:23 - src.agents.executeur - INFO - 
+  -> Scenario [2] Tri et présélection des CV | Modele : llama3.1:8b (ollama)
+2026-08-24 13:49:27 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 13:50:01 - src.models_clients.ollama_client - DEBUG - Ollama response received (1392 chars)
+2026-08-24 13:50:01 - src.agents.executeur - INFO -      OK - Reponse generee en 36.06s
+2026-08-24 13:50:01 - src.agents.executeur - INFO - [EXECUTEUR] 17 exécutions terminées, 0 erreurs.
+2026-08-24 13:50:01 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 17 exécutions (Ragas)...
+2026-08-24 13:52:04 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 13:52:04 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 13:52:04 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 13:52:04 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 13:52:04 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 13:52:04 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 13:52:04 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 13:52:04 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 13:52:04 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 13:53:26 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 13:53:26 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 13:53:26 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 13:53:26 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 13:53:26 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 13:53:26 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 13:53:26 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 13:53:26 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 13:53:26 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 13:54:48 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 13:54:48 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 13:54:48 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 13:54:48 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 13:54:48 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 13:54:48 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 13:54:48 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 13:54:48 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 13:54:48 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 13:56:10 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 13:56:10 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 13:56:10 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 13:56:10 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 13:56:11 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 13:56:11 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 13:56:11 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 13:56:11 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 13:56:11 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 13:57:33 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 13:57:33 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 13:57:33 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 13:57:33 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 13:57:33 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 13:57:33 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 13:57:33 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 13:57:33 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 13:57:33 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 13:59:58 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 13:59:58 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-08-24 13:59:58 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 13:59:58 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 13:59:58 - src.agents.evaluateur - INFO -      Score global      : 1.0
+2026-08-24 13:59:58 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 13:59:58 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 13:59:58 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:01:20 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:01:20 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:01:20 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:01:20 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:01:20 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:01:20 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:01:20 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:01:20 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:01:20 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:02:42 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:02:42 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:02:42 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:02:42 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:02:42 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:02:42 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:02:42 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:02:42 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:02:42 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:04:05 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:04:05 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:04:05 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:04:05 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:04:05 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:04:05 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:04:05 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:04:05 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:04:05 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:05:27 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:05:27 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:05:27 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:05:27 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:05:27 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:05:27 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:05:27 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:05:27 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:05:27 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:08:23 - src.dashboard.app - DEBUG - Loading executions with limit: 10
+2026-08-24 14:08:23 - src.dashboard.app - INFO - No scores found for executions, returning executions without scores
+2026-08-24 14:09:09 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:09:09 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:09:09 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:09:09 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:09:09 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:09:09 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:09:09 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:09:10 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:09:10 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:10:31 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:10:31 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:10:31 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:10:31 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:10:31 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:10:31 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:10:31 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:10:31 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:10:31 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:10:55 - dashboard.app - INFO - Login attempt for email: client@ooredoo.com, expected_role: <sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:55 - dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:10:55 - dashboard.app - DEBUG - User role verification: found=client, expected=<sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:55 - dashboard.app - WARNING - Login failed - role mismatch: user_role=client, expected=<sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:55 - dashboard.app - INFO - Login attempt for email: admin@ooredoo.com, expected_role: <sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:55 - dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:10:55 - dashboard.app - DEBUG - User role verification: found=admin, expected=<sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:56 - dashboard.app - WARNING - Login failed - role mismatch: user_role=admin, expected=<sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:56 - dashboard.app - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: <sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:56 - dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:10:56 - dashboard.app - DEBUG - User role verification: found=super_admin, expected=<sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:10:56 - dashboard.app - WARNING - Login failed - role mismatch: user_role=super_admin, expected=<sqlalchemy.orm.session.Session object at 0x0000021C86CF93A0>
+2026-08-24 14:11:57 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:11:57 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-08-24 14:11:57 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:11:57 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:11:57 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-08-24 14:11:57 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:11:57 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:11:57 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:13:00 - src.dashboard.app - INFO - Login attempt for email: client@ooredoo.com, expected_role: client
+2026-08-24 14:13:01 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:13:01 - src.dashboard.app - DEBUG - User role verification: found=client, expected=client
+2026-08-24 14:13:02 - src.dashboard.app - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-08-24 14:13:04 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-08-24 14:13:04 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-08-24 14:13:04 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-08-24 14:13:04 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 14:13:04 - src.dashboard.app - INFO - Login attempt for email: admin@ooredoo.com, expected_role: admin
+2026-08-24 14:13:04 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:13:04 - src.dashboard.app - DEBUG - User role verification: found=admin, expected=admin
+2026-08-24 14:13:05 - src.dashboard.app - INFO - Login successful for user: admin@ooredoo.com with role: admin
+2026-08-24 14:13:06 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-08-24 14:13:06 - src.api.auth - DEBUG - Token created for user: admin@ooredoo.com
+2026-08-24 14:13:06 - src.api.routes.auth - INFO - User logged in: admin@ooredoo.com
+2026-08-24 14:13:06 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 14:13:06 - src.dashboard.app - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-08-24 14:13:06 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:13:06 - src.dashboard.app - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-08-24 14:13:08 - src.dashboard.app - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-08-24 14:13:12 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 14:13:12 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 14:13:12 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 14:13:12 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 14:13:13 - src.dashboard.error_handling - ERROR - Error in test_function_error: Test error
+Traceback (most recent call last):
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\src\dashboard\error_handling.py", line 24, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\test_complete_dashboard_workflow.py", line 215, in test_function_error
+    raise ValueError("Test error")
+ValueError: Test error
+2026-08-24 14:13:17 - src.dashboard.error_handling - DEBUG - Executing data operation: <function test_error_handling.<locals>.safe_op at 0x0000019CCF29ACA0>
+2026-08-24 14:13:17 - src.dashboard.error_handling - ERROR - Data operation failed (<function test_error_handling.<locals>.safe_op at 0x0000019CCF29ACA0>): 'dict' object is not callable
+Traceback (most recent call last):
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\src\dashboard\error_handling.py", line 64, in safe_data_operation
+    result = operation_func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'dict' object is not callable
+2026-08-24 14:13:19 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:13:19 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:13:19 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:13:19 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:13:19 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:13:19 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:13:19 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:13:19 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:13:19 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:14:14 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-08-24 14:14:14 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-08-24 14:14:14 - __main__ - DEBUG - Database query completed - user found: True
+2026-08-24 14:14:14 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-08-24 14:14:17 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-08-24 14:14:20 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 14:14:20 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 14:14:20 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 14:14:20 - __main__ - DEBUG - API token obtained successfully
+2026-08-24 14:14:20 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-08-24 14:14:21 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 14:14:22 - __main__ - DEBUG - Loading executions with limit: 300
+2026-08-24 14:14:22 - __main__ - INFO - Successfully loaded 182 executions with scores
+2026-08-24 14:14:22 - __main__ - INFO - Loaded 182 executions for dashboard display
+2026-08-24 14:14:29 - src.dashboard.app - INFO - Login attempt for email: client@ooredoo.com, expected_role: client
+2026-08-24 14:14:29 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:14:29 - src.dashboard.app - DEBUG - User role verification: found=client, expected=client
+2026-08-24 14:14:30 - src.dashboard.app - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-08-24 14:14:31 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-08-24 14:14:31 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-08-24 14:14:31 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-08-24 14:14:31 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 14:14:31 - src.dashboard.app - INFO - Login attempt for email: admin@ooredoo.com, expected_role: admin
+2026-08-24 14:14:31 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:14:31 - src.dashboard.app - DEBUG - User role verification: found=admin, expected=admin
+2026-08-24 14:14:31 - src.dashboard.app - INFO - Login successful for user: admin@ooredoo.com with role: admin
+2026-08-24 14:14:32 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-08-24 14:14:32 - src.api.auth - DEBUG - Token created for user: admin@ooredoo.com
+2026-08-24 14:14:32 - src.api.routes.auth - INFO - User logged in: admin@ooredoo.com
+2026-08-24 14:14:32 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 14:14:32 - src.dashboard.app - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-08-24 14:14:32 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-08-24 14:14:32 - src.dashboard.app - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-08-24 14:14:33 - src.dashboard.app - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-08-24 14:14:34 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-08-24 14:14:34 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-08-24 14:14:34 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-08-24 14:14:34 - src.dashboard.app - DEBUG - API token obtained successfully
+2026-08-24 14:14:34 - src.dashboard.error_handling - ERROR - Error in test_function_error: Test error
+Traceback (most recent call last):
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\src\dashboard\error_handling.py", line 24, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\test_complete_dashboard_workflow.py", line 215, in test_function_error
+    raise ValueError("Test error")
+ValueError: Test error
+2026-08-24 14:14:34 - src.dashboard.error_handling - DEBUG - Executing data operation: <function test_error_handling.<locals>.safe_op at 0x000002279AE0ACA0>
+2026-08-24 14:14:34 - src.dashboard.error_handling - ERROR - Data operation failed (<function test_error_handling.<locals>.safe_op at 0x000002279AE0ACA0>): 'str' object is not callable
+Traceback (most recent call last):
+  File "C:\Users\ranim\OneDrive\Bureau\ooredoo-ia-benchmark\src\dashboard\error_handling.py", line 64, in safe_data_operation
+    result = operation_func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'str' object is not callable
+2026-08-24 14:14:43 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:14:43 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:14:43 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:14:43 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:14:43 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:14:43 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:14:43 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:14:43 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:14:43 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:16:06 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:16:06 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:16:06 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:16:06 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:16:06 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:16:06 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:16:06 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:16:06 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:16:06 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:16:37 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 14:16:37 - __main__ - INFO - Loaded 182 executions for dashboard display
+2026-08-24 14:16:38 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 14:16:38 - __main__ - INFO - Loaded 182 executions for dashboard display
+2026-08-24 14:16:44 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 14:16:44 - __main__ - INFO - Loaded 182 executions for dashboard display
+2026-08-24 14:16:45 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 14:16:45 - __main__ - INFO - Loaded 182 executions for dashboard display
+2026-08-24 14:16:46 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-08-24 14:16:46 - src.api.routes.benchmark - INFO - Benchmark: 16 scenarios, 1 models by superadmin@ooredoo.com
+2026-08-24 14:16:46 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 16 scénarios...
+2026-08-24 14:16:47 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:48 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:48 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:51 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:52 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:54 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:54 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:56 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-08-24 14:16:56 - src.agents.collecteur - INFO - [COLLECTEUR] 16 scénarios collectés.
+2026-08-24 14:16:56 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-08-24 14:16:56 - src.agents.executeur - INFO -   16 scénarios × 1 modèles = 16 exécutions
+2026-08-24 14:16:56 - src.agents.executeur - INFO - 
+  -> Scenario [36] Analyse de mots-clés depuis un brief client | Modele : llama3.1:8b (ollama)
+2026-08-24 14:17:00 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:17:29 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:17:29 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:17:29 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:17:29 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:17:29 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:17:29 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:17:29 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:17:29 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:17:29 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:17:29 - src.agents.evaluateur - INFO - [EVALUATEUR] 17 évaluations terminées.
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - ============================================================
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Exécutions         : 17
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Latence moy.       : 34.13s
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Score global       : 0.75/1.0
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Faithfulness       : N/A/1.0
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Answer relevancy   : 0.75/1.0
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Context precision  : N/A/1.0
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Context recall     : N/A/1.0
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO -    Scénarios          : Chatbot support RH (RAG), Conception de plan de formation individuel, Extraction de compétences depuis une offre concurrente, Génération de parcours d'intégration nouvel arrivant, Génération de quiz d'évaluation post-formation, Préparation grille d'évaluation entretien, Rédaction d'annonce LinkedIn attractive, Rédaction de communiqué interne, Rédaction de FAQ sur le télétravail, Rédaction de fiche de poste, Rédaction de newsletter interne mensuelle, Rédaction de témoignage collaborateur (ghostwriting), Réponse à question sur bulletin de paie (RAG), Réponse de refus de candidature personnalisée, Synthèse de compte-rendu de réunion CSE, Traduction de communiqué interne multilingue, Tri et présélection des CV
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - avec un score global moyen de 0.75/1.0
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - et une latence moyenne de 34.13s
+2026-08-24 14:17:29 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-24 14:17:29 - src.api.routes.benchmark - INFO - Benchmark completed: 17 executions, 0 errors
+2026-08-24 14:17:30 - src.models_clients.ollama_client - DEBUG - Ollama response received (966 chars)
+2026-08-24 14:17:30 - src.agents.executeur - INFO -      OK - Reponse generee en 32.13s
+2026-08-24 14:17:30 - src.agents.executeur - INFO - 
+  -> Scenario [42] Chatbot FAQ produit marketing (RAG) | Modele : llama3.1:8b (ollama)
+2026-08-24 14:17:34 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:17:56 - src.models_clients.ollama_client - DEBUG - Ollama response received (1027 chars)
+2026-08-24 14:17:56 - src.agents.executeur - INFO -      OK - Reponse generee en 24.47s
+2026-08-24 14:17:56 - src.agents.executeur - INFO - 
+  -> Scenario [6] Génération de copies publicitaires | Modele : llama3.1:8b (ollama)
+2026-08-24 14:18:01 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:18:27 - src.models_clients.ollama_client - DEBUG - Ollama response received (1106 chars)
+2026-08-24 14:18:27 - src.agents.executeur - INFO -      OK - Reponse generee en 28.76s
+2026-08-24 14:18:27 - src.agents.executeur - INFO - 
+  -> Scenario [35] Génération de méta-descriptions optimisées SEO | Modele : llama3.1:8b (ollama)
+2026-08-24 14:18:31 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:18:53 - src.models_clients.ollama_client - DEBUG - Ollama response received (935 chars)
+2026-08-24 14:18:53 - src.agents.executeur - INFO -      OK - Reponse generee en 23.31s
+2026-08-24 14:18:53 - src.agents.executeur - INFO - 
+  -> Scenario [31] Génération de posts réseaux sociaux multi-formats | Modele : llama3.1:8b (ollama)
+2026-08-24 14:18:57 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:19:19 - src.models_clients.ollama_client - DEBUG - Ollama response received (863 chars)
+2026-08-24 14:19:19 - src.agents.executeur - INFO -      OK - Reponse generee en 24.67s
+2026-08-24 14:19:19 - src.agents.executeur - INFO - 
+  -> Scenario [29] Génération de titres publicitaires A/B testing | Modele : llama3.1:8b (ollama)
+2026-08-24 14:19:24 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:19:41 - src.models_clients.ollama_client - DEBUG - Ollama response received (715 chars)
+2026-08-24 14:19:41 - src.agents.executeur - INFO -      OK - Reponse generee en 19.74s
+2026-08-24 14:19:41 - src.agents.executeur - INFO - 
+  -> Scenario [38] Identification de personas marketing | Modele : llama3.1:8b (ollama)
+2026-08-24 14:19:46 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:20:10 - src.models_clients.ollama_client - DEBUG - Ollama response received (1113 chars)
+2026-08-24 14:20:10 - src.agents.executeur - INFO -      OK - Reponse generee en 26.25s
+2026-08-24 14:20:10 - src.agents.executeur - INFO - 
+  -> Scenario [41] Modération et catégorisation de commentaires clients | Modele : llama3.1:8b (ollama)
+2026-08-24 14:20:14 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:20:37 - src.models_clients.ollama_client - DEBUG - Ollama response received (1127 chars)
+2026-08-24 14:20:37 - src.agents.executeur - INFO -      OK - Reponse generee en 25.12s
+2026-08-24 14:20:37 - src.agents.executeur - INFO - 
+  -> Scenario [7] Rédaction d'article de blog / FAQ | Modele : llama3.1:8b (ollama)
+2026-08-24 14:20:41 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:21:15 - src.models_clients.ollama_client - DEBUG - Ollama response received (1770 chars)
+2026-08-24 14:21:15 - src.agents.executeur - INFO -      OK - Reponse generee en 35.74s
+2026-08-24 14:21:15 - src.agents.executeur - INFO - 
+  -> Scenario [30] Rédaction de description produit e-commerce | Modele : llama3.1:8b (ollama)
+2026-08-24 14:21:19 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:21:39 - src.models_clients.ollama_client - DEBUG - Ollama response received (918 chars)
+2026-08-24 14:21:39 - src.agents.executeur - INFO -      OK - Reponse generee en 22.72s
+2026-08-24 14:21:39 - src.agents.executeur - INFO - 
+  -> Scenario [39] Rédaction d'email de relance panier abandonné | Modele : llama3.1:8b (ollama)
+2026-08-24 14:21:43 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:22:04 - src.models_clients.ollama_client - DEBUG - Ollama response received (912 chars)
+2026-08-24 14:22:04 - src.agents.executeur - INFO -      OK - Reponse generee en 22.17s
+2026-08-24 14:22:04 - src.agents.executeur - INFO - 
+  -> Scenario [34] Rédaction de newsletter client mensuelle | Modele : llama3.1:8b (ollama)
+2026-08-24 14:22:08 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:22:34 - src.models_clients.ollama_client - DEBUG - Ollama response received (1097 chars)
+2026-08-24 14:22:34 - src.agents.executeur - INFO -      OK - Reponse generee en 28.08s
+2026-08-24 14:22:34 - src.agents.executeur - INFO - 
+  -> Scenario [33] Rédaction de script vidéo publicitaire courte | Modele : llama3.1:8b (ollama)
+2026-08-24 14:22:38 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:23:10 - src.models_clients.ollama_client - DEBUG - Ollama response received (1424 chars)
+2026-08-24 14:23:10 - src.agents.executeur - INFO -      OK - Reponse generee en 34.10s
+2026-08-24 14:23:10 - src.agents.executeur - INFO - 
+  -> Scenario [40] Rédaction de slogan de campagne | Modele : llama3.1:8b (ollama)
+2026-08-24 14:23:14 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:23:31 - src.models_clients.ollama_client - DEBUG - Ollama response received (679 chars)
+2026-08-24 14:23:31 - src.agents.executeur - INFO -      OK - Reponse generee en 18.76s
+2026-08-24 14:23:31 - src.agents.executeur - INFO - 
+  -> Scenario [32] Réponse à commentaire négatif sur réseaux sociaux | Modele : llama3.1:8b (ollama)
+2026-08-24 14:23:35 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:23:50 - src.models_clients.ollama_client - DEBUG - Ollama response received (623 chars)
+2026-08-24 14:23:50 - src.agents.executeur - INFO -      OK - Reponse generee en 17.09s
+2026-08-24 14:23:50 - src.agents.executeur - INFO - 
+  -> Scenario [37] Synthèse d'étude de satisfaction client | Modele : llama3.1:8b (ollama)
+2026-08-24 14:23:54 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-08-24 14:24:27 - src.models_clients.ollama_client - DEBUG - Ollama response received (1642 chars)
+2026-08-24 14:24:27 - src.agents.executeur - INFO -      OK - Reponse generee en 35.20s
+2026-08-24 14:24:27 - src.agents.executeur - INFO - [EXECUTEUR] 16 exécutions terminées, 0 erreurs.
+2026-08-24 14:24:27 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 16 exécutions (Ragas)...
+2026-08-24 14:25:34 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:25:34 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-08-24 14:25:34 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:25:34 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:25:34 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-08-24 14:25:34 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:25:34 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:25:34 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:26:57 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:26:57 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:26:57 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:26:57 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:26:57 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:26:57 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:26:57 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:26:57 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:26:57 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:28:19 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:28:19 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:28:19 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:28:19 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:28:19 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:28:19 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:28:19 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:28:19 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:28:19 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:29:42 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:29:42 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:29:42 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:29:42 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:29:42 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:29:42 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:29:42 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:29:42 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:29:42 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:31:04 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:31:04 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:31:04 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:31:04 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:31:04 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:31:04 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:31:04 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:31:04 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:31:04 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:32:26 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:32:26 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:32:26 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:32:26 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:32:26 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:32:26 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:32:26 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:32:26 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:32:26 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:33:48 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:33:48 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:33:48 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:33:48 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:33:48 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:33:48 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:33:48 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:33:48 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:33:48 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:35:11 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:35:11 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:35:11 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:35:11 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:35:11 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:35:11 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:35:11 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:35:11 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:35:11 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:35:22 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 14:35:22 - __main__ - INFO - Loaded 182 executions for dashboard display
+2026-08-24 14:35:27 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-08-24 14:35:27 - __main__ - INFO - Loaded 182 executions for dashboard display
+2026-08-24 14:36:34 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:36:34 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:36:34 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:36:34 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:36:34 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:36:34 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:36:34 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:36:34 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:36:34 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:37:40 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:37:40 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-08-24 14:37:40 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:37:40 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:37:40 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-08-24 14:37:40 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:37:40 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:37:40 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:39:02 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:39:02 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:39:03 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:39:03 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:39:03 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:39:03 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:39:03 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:39:03 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:39:03 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:40:27 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:40:27 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:40:27 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:40:27 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:40:27 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:40:27 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:40:27 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:40:27 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:40:27 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:41:50 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:41:50 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:41:50 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:41:50 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:41:50 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:41:50 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:41:50 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:41:50 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:41:50 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:43:12 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:43:12 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:43:12 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:43:12 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:43:12 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:43:12 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:43:12 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:43:12 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:43:12 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:44:34 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:44:34 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:44:34 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:44:34 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:44:34 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:44:34 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:44:34 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:44:34 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:44:34 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:45:56 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-08-24 14:45:56 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-08-24 14:45:56 - src.agents.evaluateur - INFO -      Context precision : None
+2026-08-24 14:45:56 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-08-24 14:45:56 - src.agents.evaluateur - INFO -      Score global      : None
+2026-08-24 14:45:56 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-08-24 14:45:56 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-08-24 14:45:56 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-08-24 14:45:56 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-08-24 14:45:56 - src.agents.evaluateur - INFO - [EVALUATEUR] 16 évaluations terminées.
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - ============================================================
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Exécutions         : 16
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Latence moy.       : 26.14s
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Score global       : 0.5/1.0
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Faithfulness       : N/A/1.0
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Answer relevancy   : 0.5/1.0
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Context precision  : N/A/1.0
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Context recall     : N/A/1.0
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO -    Scénarios          : Analyse de mots-clés depuis un brief client, Chatbot FAQ produit marketing (RAG), Génération de copies publicitaires, Génération de méta-descriptions optimisées SEO, Génération de posts réseaux sociaux multi-formats, Génération de titres publicitaires A/B testing, Identification de personas marketing, Modération et catégorisation de commentaires clients, Rédaction d'article de blog / FAQ, Rédaction de description produit e-commerce, Rédaction d'email de relance panier abandonné, Rédaction de newsletter client mensuelle, Rédaction de script vidéo publicitaire courte, Rédaction de slogan de campagne, Réponse à commentaire négatif sur réseaux sociaux, Synthèse d'étude de satisfaction client
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - 
+============================================================
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - avec un score global moyen de 0.5/1.0
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - et une latence moyenne de 26.14s
+2026-08-24 14:45:56 - src.agents.consolidateur - INFO - ============================================================
+
+2026-08-24 14:45:56 - src.api.routes.benchmark - INFO - Benchmark completed: 16 executions, 0 errors
+2026-08-24 14:52:18 - src.dashboard.app - DEBUG - Loading executions with limit: 10
+2026-08-24 14:52:18 - src.dashboard.app - INFO - Successfully loaded 10 executions with scores
+2026-08-24 14:52:46 - src.dashboard.app - DEBUG - Loading executions with limit: 10
+2026-08-24 14:52:46 - src.dashboard.app - INFO - Successfully loaded 10 executions with scores

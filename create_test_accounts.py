@@ -23,19 +23,19 @@ db = SessionLocal()
 test_accounts = [
     {
         "email": "client@ooredoo.com",
-        "password": "password123",
+        "password": "client123",
         "role": "client",
         "name": "Client Test"
     },
     {
         "email": "admin@ooredoo.com",
-        "password": "password123",
+        "password": "admin123",
         "role": "admin",
         "name": "Admin Test"
     },
     {
         "email": "superadmin@ooredoo.com",
-        "password": "password123",
+        "password": "superadmin123",
         "role": "super_admin",
         "name": "Super Admin Test"
     }
@@ -67,15 +67,15 @@ try:
     print("=" * 80)
     print("\nYou can now test login with:")
     print("  - Email: client@ooredoo.com")
-    print("    Password: password123")
+    print("    Password: client123")
     print("    Role: Client")
     print("")
     print("  - Email: admin@ooredoo.com")
-    print("    Password: password123")
+    print("    Password: admin123")
     print("    Role: Admin")
     print("")
     print("  - Email: superadmin@ooredoo.com")
-    print("    Password: password123")
+    print("    Password: superadmin123")
     print("    Role: Super Admin")
     print("=" * 80 + "\n")
     

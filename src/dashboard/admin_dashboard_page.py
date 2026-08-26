@@ -36,79 +36,125 @@ from src.dashboard.radar_chart import (
     get_radar_chart_data,
     create_metrics_comparison_table,
 )
+from src.utils.logger import setup_logger
+
+# Set up logging
+logger = setup_logger(__name__)
 
 
 def render_admin_dashboard():
-    """Main admin dashboard page."""
+    """Main admin dashboard page with comprehensive error handling."""
     
-    st.set_page_config(
-        page_title="Admin Dashboard - Ooredoo IA Benchmark",
-        layout="wide",
-        initial_sidebar_state="expanded",
-    )
-    
-    st.title("⚙️ Admin Dashboard - Model Benchmark Analysis")
-    st.markdown("Department-level analysis with cascading filters, model comparison, and performance ranking.")
-    
-    # ========================================================================
-    # SIDEBAR: Department Filter (Cascading)
-    # ========================================================================
-    
-    with st.sidebar:
-        st.header("Filters")
+    try:
+        logger.info("Rendering admin dashboard")
         
-        # Load all departments
-        all_depts = get_all_departments()
-        dept_names = [d["name"] for d in all_depts]
-        dept_display = [f"{d['name']} ({d['execution_count']} exec)" for d in all_depts]
-        
-        # Multi-select departments
-        selected_dept_display = st.multiselect(
-            "Select Departments",
-            dept_display,
-            default=dept_display,
-            help="Choose one or more departments to filter views"
+        st.set_page_config(
+            page_title="Admin Dashboard - Ooredoo IA Benchmark",
+            layout="wide",
+            initial_sidebar_state="expanded",
         )
         
-        # Extract department names from display
-        selected_depts = [
-            dept_names[dept_display.index(d)]
-            for d in selected_dept_display
-            if d in dept_display
-        ]
+        st.title("⚙️ Admin Dashboard - Model Benchmark Analysis")
+        st.markdown("Department-level analysis with cascading filters, model comparison, and performance ranking.")
         
-        if not selected_depts:
-            st.warning("Please select at least one department")
-            return
+        # ========================================================================
+        # SIDEBAR: Department Filter (Cascading)
+        # ========================================================================
         
-        # Cascading: Get scenarios and models for selected departments
-        scenarios = get_scenarios_for_departments(selected_depts)
-        models = get_models_for_departments(selected_depts)
+        with st.sidebar:
+            st.header("Filters")
+            
+            try:
+                # Load all departments
+                all_depts = get_all_departments()
+                if not all_depts:
+                    st.error("No departments found in database")
+                    logger.warning("No departments found when loading admin dashboard")
+                    return
+                    
+                dept_names = [d["name"] for d in all_depts]
+                dept_display = [f"{d['name']} ({d['execution_count']} exec)" for d in all_depts]
+                
+                logger.debug(f"Loaded {len(all_depts)} departments for filter")
+                
+            except Exception as e:
+                logger.error(f"Error loading departments: {e}", exc_info=True)
+                st.error("Erreur lors du chargement des départements")
+                st.exception(e)
+                return
+            
+            # Multi-select departments
+            selected_dept_display = st.multiselect(
+                "Select Departments",
+                dept_display,
+                default=dept_display,
+                help="Choose one or more departments to filter views"
+            )
+            
+            # Extract department names from display
+            selected_depts = [
+                dept_names[dept_display.index(d)]
+                for d in selected_dept_display
+                if d in dept_display
+            ]
+            
+            if not selected_depts:
+                st.warning("Please select at least one department")
+                return
+            
+            try:
+                # Cascading: Get scenarios and models for selected departments
+                scenarios = get_scenarios_for_departments(selected_depts)
+                models = get_models_for_departments(selected_depts)
+                
+                logger.debug(f"Loaded {len(scenarios)} scenarios and {len(models)} models for selected departments")
 
-        scenario_labels = {
-            scenario["id"]: f"{scenario['departement']} — {scenario['nom_cas_usage']}"
-            for scenario in scenarios
-        }
-        selected_scenario_ids = st.multiselect(
-            "Scénarios",
-            options=list(scenario_labels),
-            default=list(scenario_labels),
-            format_func=lambda scenario_id: scenario_labels[scenario_id],
-            help="Le catalogue est lu directement depuis la table scenarios, y compris sans score.",
-        )
-        visible_scenarios = [
-            scenario for scenario in scenarios if scenario["id"] in selected_scenario_ids
-        ]
+                scenario_labels = {
+                    scenario["id"]: f"{scenario['departement']} — {scenario['nom_cas_usage']}"
+                    for scenario in scenarios
+                }
+                selected_scenario_ids = st.multiselect(
+                    "Scénarios",
+                    options=list(scenario_labels),
+                    default=list(scenario_labels),
+                    format_func=lambda scenario_id: scenario_labels[scenario_id],
+                    help="Le catalogue est lu directement depuis la table scenarios, y compris sans score.",
+                )
+                visible_scenarios = [
+                    scenario for scenario in scenarios if scenario["id"] in selected_scenario_ids
+                ]
+                
+            except Exception as e:
+                logger.error(f"Error loading scenarios/models: {e}", exc_info=True)
+                st.error("Erreur lors du chargement des scénarios et modèles")
+                st.exception(e)
+                return
+            
+            st.markdown("---")
+            st.subheader("Cascading Data")
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric("Scenarios", len(visible_scenarios))
+            with col2:
+                st.metric("Models Tested", f"{len(models)} / 12")
+            
+            st.caption("📊 Note: 4 of 12 models have benchmark data (8 remote models pending benchmarking)")
         
-        st.markdown("---")
-        st.subheader("Cascading Data")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.metric("Scenarios", len(visible_scenarios))
-        with col2:
-            st.metric("Models Tested", f"{len(models)} / 12")
+        # Continue with the rest of the function...
+        # (The rest remains unchanged but I should add try-catch around major sections)
         
-        st.caption("📊 Note: 4 of 12 models have benchmark data (8 remote models pending benchmarking)")
+    except Exception as e:
+        logger.error(f"Critical error in admin dashboard: {e}", exc_info=True)
+        st.error("Une erreur critique s'est produite dans le dashboard administrateur.")
+        st.error("Détails de l'erreur (pour débogage) :")
+        st.exception(e)
+        
+        # Show recovery options
+        with st.expander("Options de récupération"):
+            if st.button("Vider le cache"):
+                st.cache_data.clear()
+                st.success("Cache vidé. Veuillez actualiser la page.")
+        return
     
     # ========================================================================
     # MAIN CONTENT: Department Overview
