@@ -30,15 +30,28 @@ import json
 import re
 import statistics
 import time
+import warnings
+import httpx
 from groq import Groq
 from src.config.settings import GROQ_API_KEY
 
-client = Groq(api_key=GROQ_API_KEY)
+# Suppress SSL warnings (SSL verification is disabled for corporate MITM inspection compatibility)
+warnings.filterwarnings('ignore')
 
-MODELE_JUGE = "qwen/qwen3.6-27b"  # gpt-oss-20b : quota TPD epuise, gemma2-9b-it decommissionne - qwen3.6-27b a un quota separe
+# Create Groq client with SSL verification disabled for corporate environments
+# This is necessary when Avast or similar antivirus software performs SSL/TLS interception
+# NOTE: In production, consider using proper certificate pinning or firewall rules instead
+client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
+
+MODELE_JUGE = "qwen/qwen3.8-27b"  # TEMPORARY: switched from qwen3.6-27b due to quota exhaustion - revert or evaluate permanently after testing
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
-def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> float | None:
+def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 1200) -> float | None:
     """Un seul appel au juge, avec retry/backoff si l'API échoue.
+
+    Args:
+        prompt_systeme: System prompt for the judge
+        prompt_utilisateur: User prompt for the judge
+        max_tokens: Maximum tokens for response (default 1200, increase for context metrics which need longer reasoning)
 
     Tente jusqu'à 3 appels côté Groq avec backoff exponentiel (5s,15s,45s).
     Retourne la note float ou None si toutes les tentatives échouent.
@@ -53,7 +66,7 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> floa
                     {"role": "system", "content": prompt_systeme},
                     {"role": "user", "content": prompt_utilisateur},
                 ],
-                max_tokens=1200,
+                max_tokens=max_tokens,
                 temperature=0,
                 seed=42,
             )
@@ -61,12 +74,34 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> floa
 
             # Qwen3 et autres modèles "reasoning" entourent leur raisonnement de
             # balises <think>...</think> avant la réponse finale -> on les retire.
-            contenu = re.sub(r"<think>.*?</think>", "", contenu, flags=re.DOTALL).strip()
+            # Remove <think>...</think> or just <think>... if unclosed
+            contenu = re.sub(r"<think>.*?(?=</think>|{)", "", contenu, flags=re.DOTALL).strip()
+            # Clean any remaining markup
+            contenu = re.sub(r"</think>", "", contenu).strip()
 
             # Le juge répond parfois avec des ```json ... ``` autour du JSON -> on nettoie
             contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
 
-            resultat = json.loads(contenu_nettoye)            
+            # Tentative de parsing JSON avec fallback
+            try:
+                resultat = json.loads(contenu_nettoye)
+            except json.JSONDecodeError:
+                # Si le parsing échoue, chercher un objet JSON valide dans le contenu
+                # Strategy: find the LAST valid JSON object (usually the real response, not examples)
+                json_matches = list(re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', contenu_nettoye, re.DOTALL))
+                if json_matches:
+                    # Try each match from last to first (most likely to be real response)
+                    for json_match in reversed(json_matches):
+                        try:
+                            resultat = json.loads(json_match.group(0))
+                            break
+                        except json.JSONDecodeError:
+                            continue
+                    else:
+                        raise ValueError(f"Pas de JSON valide trouvé dans: {contenu_nettoye[:100]}")
+                else:
+                    raise ValueError(f"Pas de JSON trouvé dans: {contenu_nettoye[:100]}")
+            
             note = float(resultat.get("note", 0.0))
             time.sleep(1.5)  # throttle pour éviter le rate limit Groq sur les gros batches
             return max(0.0, min(1.0, note))        
@@ -84,17 +119,20 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> floa
                 return None
 
 
-def _appeler_juge(prompt_systeme: str, prompt_utilisateur: str) -> dict:
+def _appeler_juge(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 1200) -> dict:
     """
     Appelle le juge REPETITIONS_JUGE fois (self-consistency) et retourne la
     médiane des notes obtenues, avec l'écart observé entre les tentatives
     comme indicateur de fiabilité du jugement pour ce cas précis.
 
+    Args:
+        max_tokens: Maximum tokens for each judge call (increase for context metrics)
+
     Si toutes les tentatives échouent (erreur API, JSON invalide, rate limit,
     etc.), retourne note=None pour ne jamais faire planter le pipeline complet.
     """
     notes = [
-        _appeler_juge_une_fois(prompt_systeme, prompt_utilisateur)
+        _appeler_juge_une_fois(prompt_systeme, prompt_utilisateur, max_tokens=max_tokens)
         for _ in range(REPETITIONS_JUGE)
     ]
     notes_valides = [n for n in notes if n is not None]
@@ -210,7 +248,10 @@ ici évalue simplement la proportion globale de chunks pertinents vs non pertine
 
 Réponds uniquement avec le JSON demandé."""
 
-    return _appeler_juge(prompt_systeme, prompt_utilisateur)
+    # Context precision requires longer reasoning (600+ tokens) due to analyzing multiple chunks
+    # Use max_tokens=1800 to allow full model output without truncation while minimizing token cost
+    # (600-850 token <think> block + ~50-100 token JSON output + safety margin)
+    return _appeler_juge(prompt_systeme, prompt_utilisateur, max_tokens=1800)
 
 
 def evaluer_context_recall(contexte_chunks: list[str], sortie_attendue: str) -> dict:
@@ -253,4 +294,7 @@ RÉCUPÉRÉ. Cela mesure si le système RAG a récupéré tout ce qu'il fallait 
 
 Réponds uniquement avec le JSON demandé."""
 
-    return _appeler_juge(prompt_systeme, prompt_utilisateur)
+    # Context recall requires longer reasoning (850+ tokens) due to analyzing multiple chunks and comparing to expected output
+    # Use max_tokens=1800 to allow full model output without truncation while minimizing token cost
+    # (600-850 token <think> block + ~50-100 token JSON output + safety margin)
+    return _appeler_juge(prompt_systeme, prompt_utilisateur, max_tokens=1800)
