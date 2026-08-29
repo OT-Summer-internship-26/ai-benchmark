@@ -1,12 +1,13 @@
 """
 Orchestrateur de l'évaluation NLP (Sprint 4) — remplace l'évaluation heuristique
-de src/agents/evaluateur.py par les 4 métriques Ragas réimplémentées dans metrics.py.
+de src/agents/evaluateur.py par les 4 métriques Ragas réimplémentées dans metrics.py,
+plus 2 métriques de sécurité (toxicity, harmfulness) ajoutées au Sprint 5.
 
-⚠️ Coût en temps : ce module fait 4 appels Groq (un par métrique) par exécution
+⚠️ Coût en temps : ce module fait 6 appels Groq (un par métrique) par exécution
 évaluée, en plus de l'appel de génération de la réponse elle-même. Sur un
 benchmark de 16 scénarios × 4 modèles = 64 exécutions, ça représente jusqu'à
-256 appels Groq supplémentaires. Le rate-limit gratuit de Groq peut être atteint
-sur de gros batches — un backoff/retry pourra être ajouté si besoin.
+384 appels Groq supplémentaires. Le rate-limit gratuit de Groq peut être atteint
+sur de gros batches — un backoff/retry est déjà géré dans metrics.py.
 """
 
 from src.evaluation.metrics import (
@@ -14,6 +15,8 @@ from src.evaluation.metrics import (
     evaluer_answer_relevancy,
     evaluer_context_precision,
     evaluer_context_recall,
+    evaluer_toxicity,
+    evaluer_harmfulness,
 )
 
 
@@ -24,8 +27,8 @@ def evaluer_execution_ragas(
     sortie_attendue: str | None = None,
 ) -> dict:
     """
-    Calcule les 4 métriques Ragas pour une exécution (réponse générée par un LLM
-    pour un scénario donné), via un LLM-juge (Groq).
+    Calcule les 4 métriques Ragas + 2 métriques de sécurité pour une exécution
+    (réponse générée par un LLM pour un scénario donné), via un LLM-juge (Groq).
 
     Retourne un dict :
     {
@@ -33,22 +36,31 @@ def evaluer_execution_ragas(
         "answer_relevancy": {"note": float|None, "justification": str},
         "context_precision": {"note": float|None, "justification": str},
         "context_recall": {"note": float|None, "justification": str},
-        "score_global": float,  # moyenne des notes disponibles (ignore les None)
+        "toxicity": {"note": float|None, "justification": str},
+        "harmfulness": {"note": float|None, "justification": str},
+        "score_global": float,  # moyenne des 4 métriques RAGAS uniquement (ignore toxicity/harmfulness)
     }
 
     Notes entre 0.0 et 1.0 (convention Ragas) — différent de l'échelle 1-5
-    utilisée par l'ancienne évaluation heuristique. À garder en tête pour
-    l'affichage dans le futur dashboard (Sprint 5).
+    utilisée par l'ancienne évaluation heuristique.
+
+    IMPORTANT : score_global = moyenne des 4 métriques RAGAS originales uniquement.
+    Les métriques toxicity et harmfulness sont retournées séparément et ne modifient
+    PAS le score_global pour préserver la comparabilité avec les benchmarks existants.
     """
     resultats = {
         "faithfulness": evaluer_faithfulness(reponse, contexte_chunks),
         "answer_relevancy": evaluer_answer_relevancy(reponse, question),
         "context_precision": evaluer_context_precision(contexte_chunks, question),
         "context_recall": evaluer_context_recall(contexte_chunks, sortie_attendue),
+        "toxicity": evaluer_toxicity(reponse),
+        "harmfulness": evaluer_harmfulness(reponse),
     }
 
+    # Score global = moyenne des 4 métriques RAGAS uniquement (préserve la sémantique existante)
+    ragas_metrics = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
     notes_valides = [
-        v["note"] for v in resultats.values() if v["note"] is not None
+        resultats[m]["note"] for m in ragas_metrics if resultats[m]["note"] is not None
     ]
     score_global = round(sum(notes_valides) / len(notes_valides), 3) if notes_valides else None
 
@@ -90,6 +102,8 @@ def evaluer_toutes_les_executions(state: dict) -> dict:
         print(f"     Answer relevancy  : {resultat['answer_relevancy']['note']}")
         print(f"     Context precision : {resultat['context_precision']['note']}")
         print(f"     Context recall    : {resultat['context_recall']['note']}")
+        print(f"     Toxicity          : {resultat['toxicity']['note']}")
+        print(f"     Harmfulness       : {resultat['harmfulness']['note']}")
         print(f"     Score global      : {resultat['score_global']}")
 
         evaluations.append({

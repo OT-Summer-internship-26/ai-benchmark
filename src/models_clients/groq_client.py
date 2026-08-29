@@ -1,6 +1,8 @@
 from groq import Groq
 from langdetect import detect
 from src.config.settings import GROQ_API_KEY
+from src.observability.langfuse_client import trace_llm_call
+import time
 
 client = Groq(api_key=GROQ_API_KEY)
 
@@ -14,6 +16,42 @@ LANGUE_NOMS = {
 }
 
 def generate_response(question: str, context_chunks: list[str]) -> str:
+    """
+    Generate a response using Groq API (backward compatible - returns string).
+    
+    Args:
+        question: The question to answer
+        context_chunks: RAG context chunks to use
+        
+    Returns:
+        Generated response text
+    """
+    # Call the new function and discard usage stats for backward compatibility
+    response, _ = generate_response_with_usage(question, context_chunks, metadata=None)
+    return response
+
+
+def generate_response_with_usage(
+    question: str,
+    context_chunks: list[str],
+    metadata: dict = None,
+) -> tuple[str, dict]:
+    """
+    Generate a response using Groq API with Langfuse tracing and usage tracking.
+    
+    Args:
+        question: The question to answer
+        context_chunks: RAG context chunks to use
+        metadata: Optional metadata for Langfuse tracing
+        
+    Returns:
+        Tuple of (response_text, usage_stats) where usage_stats contains:
+            - prompt_tokens: Number of tokens in prompt
+            - completion_tokens: Number of tokens in completion
+            - total_tokens: Total tokens
+            - latency: Response latency in seconds
+            - estimated_cost: Always 0.0 for Groq (free tier)
+    """
     context = "\n\n---\n\n".join(context_chunks)
 
     try:
@@ -53,17 +91,53 @@ sans combler par des généralités.
 7. N'insère jamais un mot isolé d'une langue différente de {nom_langue} (pas de mélange, 
 même pour un seul terme)."""
 
-
-    response = client.chat.completions.create(
+    with trace_llm_call(
+        name="groq_generation",
         model="openai/gpt-oss-120b",
-        messages=[
-            {
-                "role": "system",
-                "content": f"Tu dois répondre exclusivement en {nom_langue}. C'est une règle absolue et non négociable, peu importe la langue du contexte fourni."
-            },
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=800
-    )
-
-    return response.choices[0].message.content
+        input_prompt=prompt,
+        metadata=metadata or {},
+    ) as trace:
+        start_time = time.time()
+        response = client.chat.completions.create(
+            model="openai/gpt-oss-120b",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"Tu dois répondre exclusivement en {nom_langue}. C'est une règle absolue et non négociable, peu importe la langue du contexte fourni."
+                },
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=800
+        )
+        latency = time.time() - start_time
+        
+        # Extract token usage from Groq response
+        usage = response.usage
+        prompt_tokens = getattr(usage, 'prompt_tokens', 0)
+        completion_tokens = getattr(usage, 'completion_tokens', 0)
+        total_tokens = getattr(usage, 'total_tokens', prompt_tokens + completion_tokens)
+        
+        # Groq free tier = coût 0
+        estimated_cost = 0.0
+        
+        usage_stats = {
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
+            "total_tokens": total_tokens,
+            "latency": latency,
+            "estimated_cost": estimated_cost,
+        }
+        
+        response_text = response.choices[0].message.content
+        
+        # Enregistrer dans Langfuse
+        trace.set_output(response_text)
+        trace.set_usage(
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            total_tokens=total_tokens,
+            total_cost=estimated_cost,
+        )
+        trace.set_metadata(latency_seconds=latency)
+        
+        return response_text, usage_stats

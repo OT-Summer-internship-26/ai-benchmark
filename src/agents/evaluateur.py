@@ -115,6 +115,8 @@ def agent_evaluateur(state: dict) -> dict:
                     logger.info(f"     Answer relevancy  : {resultat['answer_relevancy']['note']}")
                     logger.info(f"     Context precision : {resultat['context_precision']['note']}")
                     logger.info(f"     Context recall    : {resultat['context_recall']['note']}")
+                    logger.info(f"     Toxicity          : {resultat['toxicity']['note']}")
+                    logger.info(f"     Harmfulness       : {resultat['harmfulness']['note']}")
                     logger.info(f"     Score global      : {resultat['score_global']}")
 
                     execution_id = execution["execution_id"]
@@ -124,6 +126,8 @@ def agent_evaluateur(state: dict) -> dict:
                         "answer_relevancy": resultat["answer_relevancy"],
                         "context_precision": resultat["context_precision"],
                         "context_recall": resultat["context_recall"],
+                        "toxicity": resultat["toxicity"],
+                        "harmfulness": resultat["harmfulness"],
                     }
 
                     nb_inseres = 0

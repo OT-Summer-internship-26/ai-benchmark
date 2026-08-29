@@ -1,7 +1,7 @@
 import time
 import requests
-from src.models_clients.ollama_client import generate_response as generate_response_ollama
-from src.models_clients.gemini_client import generate_response as generate_response_gemini
+from src.models_clients.ollama_client import generate_response_with_usage as generate_response_ollama
+from src.models_clients.gemini_client import generate_response_with_usage as generate_response_gemini
 from src.database.connection import engine
 from sqlalchemy import text
 from src.utils.logger import setup_logger
@@ -48,12 +48,23 @@ def _check_model_available(model_name: str) -> bool:
     initial_delay=2.0,
     exceptions=(requests.Timeout, requests.ConnectionError)
 )
-def _generate_response_ollama_with_retry(question: str, context_chunks: list[str], model_name: str) -> str:
-    """Generate response with retry logic for transient network failures (Ollama)."""
+def _generate_response_ollama_with_retry(
+    question: str,
+    context_chunks: list[str],
+    model_name: str,
+    metadata: dict = None
+) -> tuple[str, dict]:
+    """
+    Generate response with retry logic for transient network failures (Ollama).
+    
+    Returns:
+        Tuple of (response_text, usage_stats)
+    """
     return generate_response_ollama(
         question=question,
         context_chunks=context_chunks,
-        model_name=model_name
+        model_name=model_name,
+        metadata=metadata,
     )
 
 
@@ -62,11 +73,21 @@ def _generate_response_ollama_with_retry(question: str, context_chunks: list[str
     initial_delay=2.0,
     exceptions=(Exception,)  # les erreurs API Gemini (quota, 5xx, réseau) sont génériques côté SDK
 )
-def _generate_response_gemini_with_retry(question: str, context_chunks: list[str]) -> str:
-    """Generate response with retry logic for transient failures (Gemini API)."""
+def _generate_response_gemini_with_retry(
+    question: str,
+    context_chunks: list[str],
+    metadata: dict = None
+) -> tuple[str, dict]:
+    """
+    Generate response with retry logic for transient failures (Gemini API).
+    
+    Returns:
+        Tuple of (response_text, usage_stats)
+    """
     return generate_response_gemini(
         question=question,
         context_chunks=context_chunks,
+        metadata=metadata,
     )
 
 
@@ -107,6 +128,13 @@ def agent_executeur(state: dict) -> dict:
                     logger.info(f"\n  -> Scenario [{scenario['id']}] {scenario['nom_cas_usage']} | Modele : {nom_modele} ({provider})")
 
                     try:
+                        metadata = {
+                            "scenario_id": scenario["id"],
+                            "scenario_name": scenario["nom_cas_usage"],
+                            "model_name": nom_modele,
+                            "provider": provider,
+                        }
+                        
                         if provider == "ollama":
                             # Verify Ollama model is available before attempting
                             if not _check_model_available(nom_modele):
@@ -116,10 +144,11 @@ def agent_executeur(state: dict) -> dict:
                                 continue
 
                             debut = time.time()
-                            reponse = _generate_response_ollama_with_retry(
+                            reponse, usage_stats = _generate_response_ollama_with_retry(
                                 question=scenario["prompt"],
                                 context_chunks=scenario["chunks_rag"],
-                                model_name=nom_modele
+                                model_name=nom_modele,
+                                metadata=metadata,
                             )
                             latence = time.time() - debut
 
@@ -127,9 +156,10 @@ def agent_executeur(state: dict) -> dict:
                             # Pas de health check préalable : on tente l'appel directement,
                             # les erreurs (clé API invalide, quota, réseau) sont gérées par le retry.
                             debut = time.time()
-                            reponse = _generate_response_gemini_with_retry(
+                            reponse, usage_stats = _generate_response_gemini_with_retry(
                                 question=scenario["prompt"],
                                 context_chunks=scenario["chunks_rag"],
+                                metadata=metadata,
                             )
                             latence = time.time() - debut
 
@@ -139,14 +169,23 @@ def agent_executeur(state: dict) -> dict:
                             logger.error(msg)
                             continue
 
-                        logger.info(f"     OK - Reponse generee en {latence:.2f}s")
+                        # Extract usage statistics
+                        tokens_utilises = usage_stats.get("total_tokens", 0)
+                        cout_estime = usage_stats.get("estimated_cost", 0.0)
 
-                        # Use proper parameterized query
+                        logger.info(
+                            f"     OK - Reponse generee en {latence:.2f}s "
+                            f"({tokens_utilises} tokens, coût estimé: ${cout_estime:.6f})"
+                        )
+
+                        # Use proper parameterized query with token usage and cost
                         result = conn.execute(
                             text("""
                                 INSERT INTO executions 
-                                (scenario_id, modele_id, reponse_generee, latence_secondes, cout_estime, date_execution)
-                                VALUES (:scenario_id, :modele_id, :reponse, :latence, :cout, NOW())
+                                (scenario_id, modele_id, reponse_generee, latence_secondes, 
+                                 tokens_utilises, cout_estime, date_execution)
+                                VALUES (:scenario_id, :modele_id, :reponse, :latence, 
+                                        :tokens, :cout, NOW())
                                 RETURNING id
                             """),
                             {
@@ -154,7 +193,8 @@ def agent_executeur(state: dict) -> dict:
                                 "modele_id": modele_id,
                                 "reponse": reponse,
                                 "latence": latence,
-                                "cout": 0.0,
+                                "tokens": tokens_utilises,
+                                "cout": cout_estime,
                             }
                         )
                         execution_id = result.fetchone()[0]
@@ -166,6 +206,8 @@ def agent_executeur(state: dict) -> dict:
                             "modele": nom_modele,
                             "reponse": reponse,
                             "latence": latence,
+                            "tokens_utilises": tokens_utilises,
+                            "cout_estime": cout_estime,
                         })
 
                     except OllamaUnavailableException as e:
