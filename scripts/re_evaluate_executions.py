@@ -50,6 +50,8 @@ def insert_scores(conn, execution_id: int, resultat: dict):
         "answer_relevancy": resultat["answer_relevancy"],
         "context_precision": resultat["context_precision"],
         "context_recall": resultat["context_recall"],
+        "toxicity": resultat["toxicity"],
+        "harmfulness": resultat["harmfulness"],
     }
 
     nb_inseres = 0
@@ -80,7 +82,7 @@ def insert_scores(conn, execution_id: int, resultat: dict):
                 "exec_id": execution_id,
                 "critere": "score_global",
                 "note": float(resultat["score_global"]),
-                "commentaire": "Re-eval RAGAS",
+                "commentaire": "Re-eval RAGAS (moyenne 4 métriques originales uniquement)",
             },
         )
         nb_inseres += 1

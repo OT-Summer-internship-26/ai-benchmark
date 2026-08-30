@@ -47,7 +47,7 @@ def existing_criteria(conn, exec_id: int):
 
 
 def insert_missing(conn, exec_id: int, resultat: dict, existing: set):
-    criteres = ["faithfulness", "answer_relevancy", "context_precision", "context_recall", "score_global"]
+    criteres = ["faithfulness", "answer_relevancy", "context_precision", "context_recall", "toxicity", "harmfulness", "score_global"]
     inserted = 0
     for crit in criteres:
         if crit in existing:
@@ -56,7 +56,7 @@ def insert_missing(conn, exec_id: int, resultat: dict, existing: set):
         comment = None
         if crit == "score_global":
             val = resultat.get("score_global")
-            comment = "Re-eval RAGAS (safe insert)"
+            comment = "Re-eval RAGAS (safe insert, moyenne 4 métriques originales)"
         else:
             detail = resultat.get(crit, {})
             val = detail.get("note")
