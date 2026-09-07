@@ -102,7 +102,17 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
                 else:
                     raise ValueError(f"Pas de JSON trouvé dans: {contenu_nettoye[:100]}")
             
-            note = float(resultat.get("note", 0.0))
+            note = resultat.get("note")
+            
+            # Validate judge returned a valid numeric note
+            if note is None:
+                logger.warning(
+                    f"Judge returned None for note field. "
+                    f"Raw response (first 200 chars): {contenu[:200]}"
+                )
+                raise ValueError(f"Judge returned invalid response: note=None in JSON")
+            
+            note = float(note)
             time.sleep(1.5)  # throttle pour éviter le rate limit Groq sur les gros batches
             return max(0.0, min(1.0, note))        
         except Exception as e:
