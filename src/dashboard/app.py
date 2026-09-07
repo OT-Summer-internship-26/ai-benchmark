@@ -31,51 +31,13 @@ from src.utils.logger import setup_logger
 # Set up logging
 logger = setup_logger(__name__)
 
-def safe_format_score(value, as_percentage=True, default_text="N/A"):
-    """
-    Safely format score values, handling None, NaN, and numeric values.
-    
-    Args:
-        value: The score value (float, None, or NaN)
-        as_percentage: If True, format as percentage (0.85 -> 85.0%)
-        default_text: Text to show for None/NaN values
-    
-    Returns:
-        Formatted string
-    """
-    if value is None or pd.isna(value):
-        return default_text
-    
-    try:
-        float_val = float(value)
-        if as_percentage:
-            return f"{float_val:.1%}"
-        else:
-            return f"{float_val:.3f}"
-    except (ValueError, TypeError):
-        return default_text
+# Import centralized formatting utilities
+from src.dashboard.formatting import (
+    safe_format_score,
+    safe_format_cost,
+    safe_format_latency,
+)
 
-def safe_format_cost(value, default_text="N/A"):
-    """Safely format cost values."""
-    if value is None or pd.isna(value):
-        return default_text
-    
-    try:
-        float_val = float(value)
-        return f"{float_val:.4f}"
-    except (ValueError, TypeError):
-        return default_text
-
-def safe_format_latency(value, default_text="N/A"):
-    """Safely format latency values."""
-    if value is None or pd.isna(value):
-        return default_text
-    
-    try:
-        float_val = float(value)
-        return f"{float_val:.2f}s"
-    except (ValueError, TypeError):
-        return default_text
 
 def format_executions_for_display(df, display_columns):
     """

@@ -10,6 +10,7 @@ This is NOT template text. Each justification is derived from concrete metrics.
 import pandas as pd
 from sqlalchemy import text
 from src.database.connection import engine
+from src.dashboard.formatting import safe_format_score
 
 
 def generate_consolidateur_justification(
@@ -110,15 +111,15 @@ def generate_consolidateur_justification(
         if len(sorted_metrics) >= 2:
             # Top 2 strengths
             strengths = [
-                f"{sorted_metrics[0][0].replace('_', ' ').title()}: {sorted_metrics[0][1]:.1%}",
-                f"{sorted_metrics[1][0].replace('_', ' ').title()}: {sorted_metrics[1][1]:.1%}"
+                f"{sorted_metrics[0][0].replace('_', ' ').title()}: {safe_format_score(sorted_metrics[0][1])}",
+                f"{sorted_metrics[1][0].replace('_', ' ').title()}: {safe_format_score(sorted_metrics[1][1])}"
             ]
             
             # Bottom 2 weaknesses (areas for improvement)
             if len(sorted_metrics) >= 4:
                 weaknesses = [
-                    f"{sorted_metrics[-1][0].replace('_', ' ').title()}: {sorted_metrics[-1][1]:.1%}",
-                    f"{sorted_metrics[-2][0].replace('_', ' ').title()}: {sorted_metrics[-2][1]:.1%}"
+                    f"{sorted_metrics[-1][0].replace('_', ' ').title()}: {safe_format_score(sorted_metrics[-1][1])}",
+                    f"{sorted_metrics[-2][0].replace('_', ' ').title()}: {safe_format_score(sorted_metrics[-2][1])}"
                 ]
         
         # Generate narrative justification text
@@ -188,30 +189,11 @@ def _generate_narrative(
     
     # Metric breakdown
     lines.append("**Ragas Evaluation Metrics:**")
-    if faithfulness is not None:
-        lines.append(f"- Faithfulness: {faithfulness:.1%} — How well the model stays faithful to context")
-    else:
-        lines.append("- Faithfulness: N/A — How well the model stays faithful to context")
-    
-    if answer_relevancy is not None:
-        lines.append(f"- Answer Relevancy: {answer_relevancy:.1%} — How well answers match the question")
-    else:
-        lines.append("- Answer Relevancy: N/A — How well answers match the question")
-    
-    if context_precision is not None:
-        lines.append(f"- Context Precision: {context_precision:.1%} — Quality of retrieved context snippets")
-    else:
-        lines.append("- Context Precision: N/A — Quality of retrieved context snippets")
-    
-    if context_recall is not None:
-        lines.append(f"- Context Recall: {context_recall:.1%} — Completeness of context retrieval")
-    else:
-        lines.append("- Context Recall: N/A — Completeness of context retrieval")
-    
-    if global_score is not None:
-        lines.append(f"- **Overall Score: {global_score:.1%}**")
-    else:
-        lines.append("- **Overall Score: N/A**")
+    lines.append(f"- Faithfulness: {safe_format_score(faithfulness)} — How well the model stays faithful to context")
+    lines.append(f"- Answer Relevancy: {safe_format_score(answer_relevancy)} — How well answers match the question")
+    lines.append(f"- Context Precision: {safe_format_score(context_precision)} — Quality of retrieved context snippets")
+    lines.append(f"- Context Recall: {safe_format_score(context_recall)} — Completeness of context retrieval")
+    lines.append(f"- **Overall Score: {safe_format_score(global_score)}**")
     lines.append("")
     
     # Strengths

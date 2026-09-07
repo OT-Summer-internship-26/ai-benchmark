@@ -6,6 +6,7 @@ Provides data structure for radar visualization showing model performance across
 
 import pandas as pd
 from src.dashboard.admin_queries import get_department_model_comparison
+from src.dashboard.formatting import safe_float_for_plotly
 
 
 def get_radar_chart_data(department: str, max_models: int = 6) -> dict | None:
@@ -57,10 +58,10 @@ def get_radar_chart_data(department: str, max_models: int = 6) -> dict | None:
         models_data.append({
             "name": row['model_name'],
             "metrics": {
-                "faithfulness": float(row['faithfulness']) if pd.notna(row['faithfulness']) and row['faithfulness'] is not None else 0.0,
-                "answer_relevancy": float(row['answer_relevancy']) if pd.notna(row['answer_relevancy']) and row['answer_relevancy'] is not None else 0.0,
-                "context_precision": float(row['context_precision']) if pd.notna(row['context_precision']) and row['context_precision'] is not None else 0.0,
-                "context_recall": float(row['context_recall']) if pd.notna(row['context_recall']) and row['context_recall'] is not None else 0.0,
+                "faithfulness": safe_float_for_plotly(row['faithfulness'], fallback=0.0),
+                "answer_relevancy": safe_float_for_plotly(row['answer_relevancy'], fallback=0.0),
+                "context_precision": safe_float_for_plotly(row['context_precision'], fallback=0.0),
+                "context_recall": safe_float_for_plotly(row['context_recall'], fallback=0.0),
             },
             "global_score": float(row['global_score']),
             "execution_count": int(row['execution_count']),
