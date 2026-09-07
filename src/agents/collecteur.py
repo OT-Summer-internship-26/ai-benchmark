@@ -43,7 +43,16 @@ def agent_collecteur(state: dict) -> dict:
                             top_k=8
                         )
                         scenario["chunks_rag"] = chunks
-                        logger.info(f"✓ Scénario {scenario_id} ({scenario['nom_cas_usage']}) — {len(chunks)} chunks RAG récupérés")
+                        
+                        # Log warning if RAG retrieval returned no chunks
+                        if not chunks or len(chunks) == 0:
+                            logger.warning(
+                                f"RAG retrieval failed for scenario {scenario_id} "
+                                f"({scenario['nom_cas_usage']}) / dept {scenario['departement']}: "
+                                f"no chunks returned (empty vector store or embedding failure)"
+                            )
+                        else:
+                            logger.info(f"[OK] Scenario {scenario_id} ({scenario['nom_cas_usage']}) — {len(chunks)} chunks RAG récupérés")
                     except RAGException as e:
                         msg = f"Erreur RAG pour scénario {scenario_id}: {str(e)}"
                         erreurs.append(msg)
