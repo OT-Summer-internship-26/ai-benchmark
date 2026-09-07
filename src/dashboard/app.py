@@ -2094,10 +2094,11 @@ def main() -> None:
                     if result.get("rapport"):
                         with st.expander("Rapport détaillé (JSON)"):
                             st.json(result["rapport"])
-                    st.info("Vide le cache pour voir les nouvelles exécutions dans les autres onglets.")
-                    if st.button("🔄 Rafraîchir les données du dashboard", key="refresh_after_run"):
-                        st.cache_data.clear()
-                        st.rerun()
+                    
+                    # Auto-clear cache and reload dashboard to show new executions immediately
+                    st.info("✅ Cache vidé automatiquement — les nouvelles données sont maintenant visibles dans tous les onglets.")
+                    st.cache_data.clear()
+                    st.rerun()
                 else:
                     st.error(result)
 
