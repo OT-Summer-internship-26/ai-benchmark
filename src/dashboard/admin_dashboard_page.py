@@ -236,7 +236,7 @@ def render_admin_dashboard():
                 ]
                 
                 # Format numeric columns
-                display_df['Global Score'] = display_df['Global Score'].apply(lambda x: f'{x:.1%}')
+                display_df['Global Score'] = display_df['Global Score'].apply(lambda x: f'{x:.1%}' if pd.notna(x) else 'N/A')
                 display_df['Faithfulness'] = display_df['Faithfulness'].apply(lambda x: f'{x:.1%}' if pd.notna(x) else 'N/A')
                 display_df['Answer Relevancy'] = display_df['Answer Relevancy'].apply(lambda x: f'{x:.1%}' if pd.notna(x) else 'N/A')
                 display_df['Context Precision'] = display_df['Context Precision'].apply(lambda x: f'{x:.1%}' if pd.notna(x) else 'N/A')
