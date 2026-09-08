@@ -195,11 +195,16 @@ def get_department_model_comparison(
             FROM executions e
             JOIN modeles m ON m.id = e.modele_id
             JOIN scenarios s ON s.id = e.scenario_id
-            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.is_legacy = FALSE
-            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.is_legacy = FALSE
-            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.is_legacy = FALSE
-            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.is_legacy = FALSE
+            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND f.is_legacy = FALSE
+            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND ar.is_legacy = FALSE
+            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND cp.is_legacy = FALSE
+            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND cr.is_legacy = FALSE
             WHERE s.departement = :department
+              AND e.id IN (
+                  SELECT DISTINCT sc.execution_id FROM scores sc
+                  WHERE sc.methode = 'ragas'
+                  AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+              )
             GROUP BY m.nom
             ORDER BY (
                 COALESCE(AVG(CASE WHEN f.critere = 'faithfulness' THEN f.note END), 0) + 
@@ -239,12 +244,20 @@ def get_department_leaderboard(
         - context_precision: float
         - context_recall: float
     """
-    where_clause = ""
+    ragas_filter = """
+        e.id IN (
+            SELECT DISTINCT sc.execution_id FROM scores sc
+            WHERE sc.methode = 'ragas'
+            AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+        )
+    """
     params = {}
     
     if departments:
-        where_clause = "WHERE s.departement = ANY(:departments)"
+        where_clause = f"WHERE s.departement = ANY(:departments) AND {ragas_filter}"
         params["departments"] = departments
+    else:
+        where_clause = f"WHERE {ragas_filter}"
     
     with engine.connect() as conn:
         query = text(f"""
@@ -260,10 +273,10 @@ def get_department_leaderboard(
                 FROM executions e
                 JOIN modeles m ON m.id = e.modele_id
                 JOIN scenarios s ON s.id = e.scenario_id
-                LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.is_legacy = FALSE
-                LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.is_legacy = FALSE
-                LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.is_legacy = FALSE
-                LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.is_legacy = FALSE
+                LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND f.is_legacy = FALSE
+                LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND ar.is_legacy = FALSE
+                LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND cp.is_legacy = FALSE
+                LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND cr.is_legacy = FALSE
                 {where_clause}
                 GROUP BY s.departement, m.nom
             )

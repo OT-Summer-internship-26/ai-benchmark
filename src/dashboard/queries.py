@@ -231,6 +231,11 @@ def load_executions_by_department(
                 JOIN scenarios s ON s.id = e.scenario_id
                 JOIN modeles m ON m.id = e.modele_id
                 WHERE s.departement = :department
+                  AND e.id IN (
+                    SELECT DISTINCT sc.execution_id FROM scores sc
+                    WHERE sc.methode = 'ragas'
+                    AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                  )
                 ORDER BY e.date_execution DESC
                 {limit_clause}
                 """
@@ -335,6 +340,11 @@ def load_executions_for_departments(
                 JOIN scenarios s ON s.id = e.scenario_id
                 JOIN modeles m ON m.id = e.modele_id
                 WHERE s.departement = ANY(:departments)
+                  AND e.id IN (
+                    SELECT DISTINCT sc.execution_id FROM scores sc
+                    WHERE sc.methode = 'ragas'
+                    AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                  )
                 ORDER BY e.date_execution DESC
                 {limit_clause}
                 """
@@ -447,6 +457,11 @@ def get_best_model_for_department(
             LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas'
             LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas'
             WHERE s.departement = :department
+              AND e.id IN (
+                SELECT DISTINCT sc.execution_id FROM scores sc
+                WHERE sc.methode = 'ragas'
+                AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+              )
             GROUP BY m.id, m.nom
             HAVING COUNT(DISTINCT e.id) >= :min_executions
             ORDER BY avg_score DESC, num_executions DESC

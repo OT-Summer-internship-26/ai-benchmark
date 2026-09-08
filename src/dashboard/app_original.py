@@ -1,13 +1,13 @@
-import sys
+﻿import sys
 import pathlib
 
 # ---------------------------------------------------------------------------
-# Path bootstrap — ensures `src` is importable regardless of which directory
+# Path bootstrap ÔÇö ensures `src` is importable regardless of which directory
 # `streamlit run` is launched from.  Resolves to the project root:
 #   ooredoo-ia-benchmark/
 #       src/
 #           dashboard/
-#               app.py   ← this file  (__file__ is 2 levels below the root)
+#               app.py   ÔåÉ this file  (__file__ is 2 levels below the root)
 # ---------------------------------------------------------------------------
 _PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[2]
 if str(_PROJECT_ROOT) not in sys.path:
@@ -31,13 +31,51 @@ from src.utils.logger import setup_logger
 # Set up logging
 logger = setup_logger(__name__)
 
-# Import centralized formatting utilities
-from src.dashboard.formatting import (
-    safe_format_score,
-    safe_format_cost,
-    safe_format_latency,
-)
+def safe_format_score(value, as_percentage=True, default_text="N/A"):
+    """
+    Safely format score values, handling None, NaN, and numeric values.
+    
+    Args:
+        value: The score value (float, None, or NaN)
+        as_percentage: If True, format as percentage (0.85 -> 85.0%)
+        default_text: Text to show for None/NaN values
+    
+    Returns:
+        Formatted string
+    """
+    if value is None or pd.isna(value):
+        return default_text
+    
+    try:
+        float_val = float(value)
+        if as_percentage:
+            return f"{float_val:.1%}"
+        else:
+            return f"{float_val:.3f}"
+    except (ValueError, TypeError):
+        return default_text
 
+def safe_format_cost(value, default_text="N/A"):
+    """Safely format cost values."""
+    if value is None or pd.isna(value):
+        return default_text
+    
+    try:
+        float_val = float(value)
+        return f"{float_val:.4f}"
+    except (ValueError, TypeError):
+        return default_text
+
+def safe_format_latency(value, default_text="N/A"):
+    """Safely format latency values."""
+    if value is None or pd.isna(value):
+        return default_text
+    
+    try:
+        float_val = float(value)
+        return f"{float_val:.2f}s"
+    except (ValueError, TypeError):
+        return default_text
 
 def format_executions_for_display(df, display_columns):
     """
@@ -62,42 +100,42 @@ def format_executions_for_display(df, display_columns):
     return display_df
 
 # URL de base de l'API FastAPI (Sprint 3). Ajuste si elle tourne ailleurs
-# (autre port, autre machine, etc.) — par exemple via une variable
-# d'environnement si tu déploies un jour au-delà de ta machine locale.
+# (autre port, autre machine, etc.) ÔÇö par exemple via une variable
+# d'environnement si tu d├®ploies un jour au-del├á de ta machine locale.
 API_BASE_URL = "http://127.0.0.1:8000"
-# Nombre de scénarios attendu par département — utilisé pour le contrôle
-# de complétude affiché dans l'onglet Administration.
+# Nombre de sc├®narios attendu par d├®partement ÔÇö utilis├® pour le contr├┤le
+# de compl├®tude affich├® dans l'onglet Administration.
 SCENARIOS_CIBLE_PAR_DEPARTEMENT = 16
 
 
 # ---------------------------------------------------------------------------
-# Page config — called exactly ONCE, as the very first Streamlit command in
+# Page config ÔÇö called exactly ONCE, as the very first Streamlit command in
 # the whole script (unconditionally). This avoids the classic Streamlit
 # error "set_page_config() can only be called once" that happens when it's
 # called separately inside both the login screen and the main app.
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Benchmark IA — Ooredoo",
-    page_icon="📡",
+    page_title="Benchmark IA ÔÇö Ooredoo",
+    page_icon="­ƒôí",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
 
 # ---------------------------------------------------------------------------
-# Helpers pédagogiques pour les graphiques (ajout)
+# Helpers p├®dagogiques pour les graphiques (ajout)
 # ---------------------------------------------------------------------------
 
 def score_to_label(score) -> str:
-    """Convertit un score brut (0-1) en label qualitatif compréhensible
-    pour un public non-technique (utilisé côté Client)."""
+    """Convertit un score brut (0-1) en label qualitatif compr├®hensible
+    pour un public non-technique (utilis├® c├┤t├® Client)."""
     if score is None or pd.isna(score):
         return "N/A"
     if score >= 0.75:
-        return "🟢 Excellent"
+        return "­ƒƒó Excellent"
     if score >= 0.5:
-        return "🟡 Correct"
-    return "🔴 À améliorer"
+        return "­ƒƒí Correct"
+    return "­ƒö┤ ├Ç am├®liorer"
 
 
 @st.cache_data
@@ -125,11 +163,6 @@ def load_executions(limit: int | None = 200) -> pd.DataFrame:
                     FROM executions e
                     JOIN scenarios s ON s.id = e.scenario_id
                     JOIN modeles m ON m.id = e.modele_id
-                    WHERE e.id IN (
-                        SELECT DISTINCT sc.execution_id FROM scores sc
-                        WHERE sc.methode = 'ragas'
-                        AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
-                    )
                     ORDER BY e.date_execution DESC
                     {limit_clause}
                     """
@@ -232,7 +265,7 @@ def load_executions(limit: int | None = 200) -> pd.DataFrame:
 
 @st.cache_data
 def load_scenario_catalog() -> pd.DataFrame:
-    """Charge tous les scénarios existants (avec ou sans exécutions), triés par département."""
+    """Charge tous les sc├®narios existants (avec ou sans ex├®cutions), tri├®s par d├®partement."""
     logger.debug("Loading scenario catalog")
     
     try:
@@ -257,37 +290,37 @@ def format_datetime(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_metric_cards(df: pd.DataFrame, client_mode: bool = False) -> None:
-    """Affiche les 4 cartes de métriques clés.
+    """Affiche les 4 cartes de m├®triques cl├®s.
     En mode client (client_mode=True), le score brut (ex: 0.410) est
-    remplacé par un label qualitatif (🟢/🟡/🔴) plus lisible pour un
-    public non-technique — conformément à la demande de simplification.
+    remplac├® par un label qualitatif (­ƒƒó/­ƒƒí/­ƒö┤) plus lisible pour un
+    public non-technique ÔÇö conform├®ment ├á la demande de simplification.
     """
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Exécutions", len(df))
-    col2.metric("Modèles", df["modele_nom"].nunique())
-    col3.metric("Scénarios", df["nom_cas_usage"].nunique())
+    col1.metric("Ex├®cutions", len(df))
+    col2.metric("Mod├¿les", df["modele_nom"].nunique())
+    col3.metric("Sc├®narios", df["nom_cas_usage"].nunique())
     if "score_global_auto" in df.columns:
         moyenne = df["score_global_auto"].mean()
         if client_mode:
-            col4.metric("Qualité globale", score_to_label(moyenne))
+            col4.metric("Qualit├® globale", score_to_label(moyenne))
         else:
             col4.metric("Score global moyen", f"{round(moyenne, 3):.3f}" if pd.notna(moyenne) else "N/A")
     else:
-        col4.metric("Qualité globale" if client_mode else "Score global moyen", "N/A")
+        col4.metric("Qualit├® globale" if client_mode else "Score global moyen", "N/A")
 
 
 def build_client_department_comparison(filtered: pd.DataFrame) -> None:
-    """Vue orientée décision métier : pour chaque département, quel est
-    le modèle le plus performant ? Remplace la table technique de modèles
+    """Vue orient├®e d├®cision m├®tier : pour chaque d├®partement, quel est
+    le mod├¿le le plus performant ? Remplace la table technique de mod├¿les
     dans l'interface Client."""
-    st.markdown("## Quel modèle IA pour quel besoin ?")
+    st.markdown("## Quel mod├¿le IA pour quel besoin ?")
     st.write(
-        "Cette vue vous aide à choisir le modèle IA le plus adapté selon le "
-        "département ou le type de besoin métier."
+        "Cette vue vous aide ├á choisir le mod├¿le IA le plus adapt├® selon le "
+        "d├®partement ou le type de besoin m├®tier."
     )
 
     if "departement" not in filtered.columns or filtered.empty:
-        st.info("Pas assez de données pour établir une recommandation par département.")
+        st.info("Pas assez de donn├®es pour ├®tablir une recommandation par d├®partement.")
         return
 
     dept_summary = (
@@ -298,7 +331,7 @@ def build_client_department_comparison(filtered: pd.DataFrame) -> None:
     )
 
     if dept_summary.empty:
-        st.info("Pas assez de données pour établir une recommandation par département.")
+        st.info("Pas assez de donn├®es pour ├®tablir une recommandation par d├®partement.")
         return
 
     best_per_dept = (
@@ -311,9 +344,9 @@ def build_client_department_comparison(filtered: pd.DataFrame) -> None:
 
     st.table(
         best_per_dept.rename(columns={
-            "departement": "Département",
-            "modele_nom": "Modèle recommandé",
-        })[["Département", "Modèle recommandé", "Recommandation"]]
+            "departement": "D├®partement",
+            "modele_nom": "Mod├¿le recommand├®",
+        })[["D├®partement", "Mod├¿le recommand├®", "Recommandation"]]
     )
 
 
@@ -329,8 +362,8 @@ ROLE_DISPLAY = {
 
 ROLE_OPTIONS = list(ROLE_DISPLAY.keys())
 
-# Rappel visuel affiché comme placeholder du champ e-mail en mode démo.
-# À retirer une fois que de vrais comptes existent.
+# Rappel visuel affich├® comme placeholder du champ e-mail en mode d├®mo.
+# ├Ç retirer une fois que de vrais comptes existent.
 DEMO_HINTS = {
     "client": "client@ooredoo.com",
     "admin": "admin@ooredoo.com",
@@ -340,9 +373,9 @@ DEMO_HINTS = {
 
 def do_login(email: str, password: str, expected_role: str) -> bool:
     """
-    Vérifie les identifiants en base. Retourne True en cas de succès.
-    Vérifie aussi que le rôle réel du compte correspond au profil choisi
-    dans le menu déroulant.
+    V├®rifie les identifiants en base. Retourne True en cas de succ├¿s.
+    V├®rifie aussi que le r├┤le r├®el du compte correspond au profil choisi
+    dans le menu d├®roulant.
     """
     # Enhanced logging to diagnose login issues
     logger.info(f"Login attempt for email: {email}, expected_role: {expected_role}")
@@ -381,8 +414,8 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
 
         if user.role != expected_role:
             error_msg = (
-                f"Ce compte est enregistré comme « {ROLE_DISPLAY.get(user.role, user.role)} », "
-                f"pas « {ROLE_DISPLAY.get(expected_role, expected_role)} ». "
+                f"Ce compte est enregistr├® comme ┬½ {ROLE_DISPLAY.get(user.role, user.role)} ┬╗, "
+                f"pas ┬½ {ROLE_DISPLAY.get(expected_role, expected_role)} ┬╗. "
                 "Choisissez le bon profil dans le menu."
             )
             logger.warning(f"Login failed - role mismatch: user_role={user.role}, expected={expected_role}")
@@ -401,7 +434,7 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
             resp = requests.post(
                 f"{API_BASE_URL}/auth/login",
                 json={"email": email, "password": password},
-                timeout=60,
+                timeout=10,
             )
             resp.raise_for_status()
             st.session_state["api_token"] = resp.json()["token"]
@@ -415,9 +448,9 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
         return True
         
     except Exception as e:
-        error_msg = f"Erreur lors de la vérification des identifiants: {str(e)}"
+        error_msg = f"Erreur lors de la v├®rification des identifiants: {str(e)}"
         logger.error(f"Database error during login: {e}", exc_info=True)
-        st.session_state["login_error"] = "Une erreur technique est survenue. Veuillez réessayer."
+        st.session_state["login_error"] = "Une erreur technique est survenue. Veuillez r├®essayer."
         return False
     finally:
         db.close()
@@ -426,13 +459,13 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
 
 def do_signup(email: str, password: str, confirm_password: str) -> bool:
     """
-    Crée un nouveau compte Utilisateur (toujours avec le rôle "client") et
-    connecte la personne immédiatement après.
+    Cr├®e un nouveau compte Utilisateur (toujours avec le r├┤le "client") et
+    connecte la personne imm├®diatement apr├¿s.
 
-    Le libre-service de création de compte est volontairement limité au
-    rôle client : les comptes admin / super_admin ne peuvent pas être
-    auto-créés depuis cet écran, ils sont provisionnés par un super admin
-    déjà connecté (voir gestion des utilisateurs dans l'onglet Administration).
+    Le libre-service de cr├®ation de compte est volontairement limit├® au
+    r├┤le client : les comptes admin / super_admin ne peuvent pas ├¬tre
+    auto-cr├®├®s depuis cet ├®cran, ils sont provisionn├®s par un super admin
+    d├®j├á connect├® (voir gestion des utilisateurs dans l'onglet Administration).
     """
     email = email.strip()
 
@@ -443,14 +476,14 @@ def do_signup(email: str, password: str, confirm_password: str) -> bool:
         st.session_state["login_error"] = "Les mots de passe ne correspondent pas."
         return False
     if len(password) < 6:
-        st.session_state["login_error"] = "Le mot de passe doit contenir au moins 6 caractères."
+        st.session_state["login_error"] = "Le mot de passe doit contenir au moins 6 caract├¿res."
         return False
 
     db = SessionLocal()
     try:
         existing = db.query(Utilisateur).filter(Utilisateur.email == email).first()
         if existing:
-            st.session_state["login_error"] = "Un compte existe déjà avec cette adresse e-mail."
+            st.session_state["login_error"] = "Un compte existe d├®j├á avec cette adresse e-mail."
             return False
 
         user = Utilisateur(
@@ -470,11 +503,11 @@ def do_signup(email: str, password: str, confirm_password: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Gestion des utilisateurs (réservée au super admin, une fois connecté)
+# Gestion des utilisateurs (r├®serv├®e au super admin, une fois connect├®)
 # ---------------------------------------------------------------------------
 
 def admin_list_users():
-    """Retourne tous les comptes, triés par rôle puis par email."""
+    """Retourne tous les comptes, tri├®s par r├┤le puis par email."""
     db = SessionLocal()
     try:
         return (
@@ -487,21 +520,21 @@ def admin_list_users():
 
 
 def admin_create_user(email: str, password: str, role: str) -> tuple[bool, str]:
-    """Crée un compte avec le rôle de son choix. Ne connecte personne :
-    réservé à un super admin qui provisionne un compte pour quelqu'un d'autre."""
+    """Cr├®e un compte avec le r├┤le de son choix. Ne connecte personne :
+    r├®serv├® ├á un super admin qui provisionne un compte pour quelqu'un d'autre."""
     email = email.strip()
 
     if not email or not password:
         return False, "Merci de remplir tous les champs."
     if len(password) < 6:
-        return False, "Le mot de passe doit contenir au moins 6 caractères."
+        return False, "Le mot de passe doit contenir au moins 6 caract├¿res."
     if role not in ROLE_OPTIONS:
-        return False, "Rôle invalide."
+        return False, "R├┤le invalide."
 
     db = SessionLocal()
     try:
         if db.query(Utilisateur).filter(Utilisateur.email == email).first():
-            return False, "Un compte existe déjà avec cette adresse e-mail."
+            return False, "Un compte existe d├®j├á avec cette adresse e-mail."
         db.add(
             Utilisateur(
                 email=email,
@@ -510,14 +543,14 @@ def admin_create_user(email: str, password: str, role: str) -> tuple[bool, str]:
             )
         )
         db.commit()
-        return True, f"Compte créé pour {email} ({ROLE_DISPLAY.get(role, role)})."
+        return True, f"Compte cr├®├® pour {email} ({ROLE_DISPLAY.get(role, role)})."
     finally:
         db.close()
 
 
 def admin_update_role(user_id: int, new_role: str) -> tuple[bool, str]:
     if new_role not in ROLE_OPTIONS:
-        return False, "Rôle invalide."
+        return False, "R├┤le invalide."
     db = SessionLocal()
     try:
         user = db.query(Utilisateur).filter(Utilisateur.id == user_id).first()
@@ -525,14 +558,14 @@ def admin_update_role(user_id: int, new_role: str) -> tuple[bool, str]:
             return False, "Compte introuvable."
         user.role = new_role
         db.commit()
-        return True, f"Rôle mis à jour : {user.email} → {ROLE_DISPLAY.get(new_role, new_role)}."
+        return True, f"R├┤le mis ├á jour : {user.email} ÔåÆ {ROLE_DISPLAY.get(new_role, new_role)}."
     finally:
         db.close()
 
 
 def admin_reset_password(user_id: int, new_password: str) -> tuple[bool, str]:
     if len(new_password) < 6:
-        return False, "Le mot de passe doit contenir au moins 6 caractères."
+        return False, "Le mot de passe doit contenir au moins 6 caract├¿res."
     db = SessionLocal()
     try:
         user = db.query(Utilisateur).filter(Utilisateur.id == user_id).first()
@@ -540,7 +573,7 @@ def admin_reset_password(user_id: int, new_password: str) -> tuple[bool, str]:
             return False, "Compte introuvable."
         user.mot_de_passe_hash = hash_password(new_password)
         db.commit()
-        return True, f"Mot de passe réinitialisé pour {user.email}."
+        return True, f"Mot de passe r├®initialis├® pour {user.email}."
     finally:
         db.close()
 
@@ -552,16 +585,16 @@ def admin_delete_user(user_id: int, requester_email: str) -> tuple[bool, str]:
         if user is None:
             return False, "Compte introuvable."
         if user.email == requester_email:
-            return False, "Impossible de supprimer votre propre compte pendant que vous êtes connecté avec."
+            return False, "Impossible de supprimer votre propre compte pendant que vous ├¬tes connect├® avec."
         db.delete(user)
         db.commit()
-        return True, f"Compte {user.email} supprimé."
+        return True, f"Compte {user.email} supprim├®."
     finally:
         db.close()
 
 
 # ---------------------------------------------------------------------------
-# Pilotage du benchmark (réservé à Admin + Super Admin)
+# Pilotage du benchmark (r├®serv├® ├á Admin + Super Admin)
 # ---------------------------------------------------------------------------
 
 def trigger_benchmark_run(
@@ -584,21 +617,21 @@ def trigger_benchmark_run(
         return True, response.json()
     except requests.exceptions.ConnectionError:
         return False, (
-            f"Impossible de joindre l'API sur {API_BASE_URL}. Vérifie qu'elle tourne : "
+            f"Impossible de joindre l'API sur {API_BASE_URL}. V├®rifie qu'elle tourne : "
             "`uvicorn src.api.main:app --reload --port 8000`"
         )
     except requests.exceptions.Timeout:
         return False, (
-            "Le délai d'attente a été dépassé. Le benchmark est peut-être encore en cours "
-            "côté serveur — vérifie les logs de l'API, puis rafraîchis le dashboard."
+            "Le d├®lai d'attente a ├®t├® d├®pass├®. Le benchmark est peut-├¬tre encore en cours "
+            "c├┤t├® serveur ÔÇö v├®rifie les logs de l'API, puis rafra├«chis le dashboard."
         )
     except requests.exceptions.HTTPError:
         return False, f"Erreur API ({response.status_code}) : {response.text}"
     except Exception as exc:
-        return False, f"Erreur inattendue lors de l'appel à l'API : {exc}"
+        return False, f"Erreur inattendue lors de l'appel ├á l'API : {exc}"
 
 
-# --- Catalogue des scénarios -----------------------------------------------
+# --- Catalogue des sc├®narios -----------------------------------------------
 
 def admin_list_scenarios():
     db = SessionLocal()
@@ -613,12 +646,12 @@ def admin_list_scenarios():
 
 
 def admin_scenarios_completeness() -> pd.DataFrame:
-    """Compare le nombre de scénarios en base par département à la cible
-    (16 par département). Utilisé dans l'onglet Administration pour
-    garantir la complétude du catalogue."""
+    """Compare le nombre de sc├®narios en base par d├®partement ├á la cible
+    (16 par d├®partement). Utilis├® dans l'onglet Administration pour
+    garantir la compl├®tude du catalogue."""
     scenarios = admin_list_scenarios()
     if not scenarios:
-        return pd.DataFrame(columns=["Département", "Nb scénarios", "Statut"])
+        return pd.DataFrame(columns=["D├®partement", "Nb sc├®narios", "Statut"])
 
     counts: dict[str, int] = {}
     for s in scenarios:
@@ -626,8 +659,8 @@ def admin_scenarios_completeness() -> pd.DataFrame:
 
     rows = []
     for dep, count in sorted(counts.items()):
-        statut = "✅ complet" if count >= SCENARIOS_CIBLE_PAR_DEPARTEMENT else f"❌ manque {SCENARIOS_CIBLE_PAR_DEPARTEMENT - count}"
-        rows.append({"Département": dep, "Nb scénarios": count, "Statut": statut})
+        statut = "Ô£à complet" if count >= SCENARIOS_CIBLE_PAR_DEPARTEMENT else f"ÔØî manque {SCENARIOS_CIBLE_PAR_DEPARTEMENT - count}"
+        rows.append({"D├®partement": dep, "Nb sc├®narios": count, "Statut": statut})
 
     return pd.DataFrame(rows)
 
@@ -641,7 +674,7 @@ def admin_create_scenario(
     prompt = prompt.strip()
 
     if not departement or not nom_cas_usage or not prompt:
-        return False, "Département, nom du cas d'usage et prompt sont obligatoires."
+        return False, "D├®partement, nom du cas d'usage et prompt sont obligatoires."
 
     db = SessionLocal()
     try:
@@ -656,7 +689,7 @@ def admin_create_scenario(
             )
         )
         db.commit()
-        return True, f"Scénario « {nom_cas_usage} » créé."
+        return True, f"Sc├®nario ┬½ {nom_cas_usage} ┬╗ cr├®├®."
     finally:
         db.close()
 
@@ -669,7 +702,7 @@ def admin_update_scenario(
     try:
         scenario = db.query(Scenario).filter(Scenario.id == scenario_id).first()
         if scenario is None:
-            return False, "Scénario introuvable."
+            return False, "Sc├®nario introuvable."
 
         scenario.departement = departement.strip()
         scenario.metier = metier.strip() or None
@@ -678,7 +711,7 @@ def admin_update_scenario(
         scenario.sortie_attendue = sortie_attendue.strip() or None
         scenario.critere_succes = critere_succes.strip() or None
         db.commit()
-        return True, f"Scénario « {scenario.nom_cas_usage} » mis à jour."
+        return True, f"Sc├®nario ┬½ {scenario.nom_cas_usage} ┬╗ mis ├á jour."
     finally:
         db.close()
 
@@ -688,18 +721,18 @@ def admin_delete_scenario(scenario_id: int) -> tuple[bool, str]:
     try:
         scenario = db.query(Scenario).filter(Scenario.id == scenario_id).first()
         if scenario is None:
-            return False, "Scénario introuvable."
+            return False, "Sc├®nario introuvable."
         db.delete(scenario)
         db.commit()
-        return True, "Scénario supprimé."
+        return True, "Sc├®nario supprim├®."
     except IntegrityError:
         db.rollback()
-        return False, "Impossible de supprimer : des exécutions existent encore pour ce scénario."
+        return False, "Impossible de supprimer : des ex├®cutions existent encore pour ce sc├®nario."
     finally:
         db.close()
 
 
-# --- Catalogue des modèles ---------------------------------------------------
+# --- Catalogue des mod├¿les ---------------------------------------------------
 
 def admin_list_models():
     db = SessionLocal()
@@ -714,12 +747,12 @@ def admin_create_model(
 ) -> tuple[bool, str]:
     nom = nom.strip()
     if not nom:
-        return False, "Le nom du modèle est obligatoire."
+        return False, "Le nom du mod├¿le est obligatoire."
 
     db = SessionLocal()
     try:
         if db.query(Modele).filter(Modele.nom == nom).first():
-            return False, "Un modèle avec ce nom existe déjà."
+            return False, "Un mod├¿le avec ce nom existe d├®j├á."
         db.add(
             Modele(
                 nom=nom,
@@ -729,7 +762,7 @@ def admin_create_model(
             )
         )
         db.commit()
-        return True, f"Modèle « {nom} » ajouté au catalogue."
+        return True, f"Mod├¿le ┬½ {nom} ┬╗ ajout├® au catalogue."
     finally:
         db.close()
 
@@ -741,13 +774,13 @@ def admin_update_model(
     try:
         modele = db.query(Modele).filter(Modele.id == model_id).first()
         if modele is None:
-            return False, "Modèle introuvable."
+            return False, "Mod├¿le introuvable."
         modele.nom = nom.strip()
         modele.fournisseur = fournisseur.strip() or None
         modele.version = version.strip() or None
         modele.cout_par_1k_tokens = cout_par_1k_tokens
         db.commit()
-        return True, f"Modèle « {modele.nom} » mis à jour."
+        return True, f"Mod├¿le ┬½ {modele.nom} ┬╗ mis ├á jour."
     finally:
         db.close()
 
@@ -757,27 +790,27 @@ def admin_delete_model(model_id: int) -> tuple[bool, str]:
     try:
         modele = db.query(Modele).filter(Modele.id == model_id).first()
         if modele is None:
-            return False, "Modèle introuvable."
+            return False, "Mod├¿le introuvable."
         db.delete(modele)
         db.commit()
-        return True, "Modèle supprimé du catalogue."
+        return True, "Mod├¿le supprim├® du catalogue."
     except IntegrityError:
         db.rollback()
-        return False, "Impossible de supprimer : des exécutions existent encore pour ce modèle."
+        return False, "Impossible de supprimer : des ex├®cutions existent encore pour ce mod├¿le."
     finally:
         db.close()
 
 
 ROLE_ICONS = {
-    "client": "👤",
-    "admin": "🛠️",
-    "super_admin": "🔐",
+    "client": "­ƒæñ",
+    "admin": "­ƒøá´©Å",
+    "super_admin": "­ƒöÉ",
 }
 
 ROLE_TAGLINES = {
-    "client": "Consultez les indicateurs clés du benchmark.",
-    "admin": "Analysez, exportez et pilotez les résultats.",
-    "super_admin": "Accès complet, y compris les outils d'administration.",
+    "client": "Consultez les indicateurs cl├®s du benchmark.",
+    "admin": "Analysez, exportez et pilotez les r├®sultats.",
+    "super_admin": "Acc├¿s complet, y compris les outils d'administration.",
 }
 
 
@@ -939,8 +972,8 @@ def _inject_login_css() -> None:
 
 
 def login_page():
-    """Écran de connexion plein écran, en un seul flux progressif :
-    accueil → choix du profil → connexion / création de compte.
+    """├ëcran de connexion plein ├®cran, en un seul flux progressif :
+    accueil ÔåÆ choix du profil ÔåÆ connexion / cr├®ation de compte.
     """
     _inject_login_css()
 
@@ -955,11 +988,11 @@ def login_page():
 
     # -------------------------------------------------------------- landing
     if stage == "landing":
-        st.markdown('<div class="oi-eyebrow">Ooredoo · Direction IA</div>', unsafe_allow_html=True)
+        st.markdown('<div class="oi-eyebrow">Ooredoo ┬À Direction IA</div>', unsafe_allow_html=True)
         st.markdown('<div class="oi-title">Benchmark IA</div>', unsafe_allow_html=True)
         st.markdown(
-            '<div class="oi-subtitle">Évaluez, comparez et pilotez la performance des '
-            "modèles IA déployés au sein d'Ooredoo, sur des cas d'usage métier réels.</div>",
+            '<div class="oi-subtitle">├ëvaluez, comparez et pilotez la performance des '
+            "mod├¿les IA d├®ploy├®s au sein d'Ooredoo, sur des cas d'usage m├®tier r├®els.</div>",
             unsafe_allow_html=True,
         )
         st.markdown("<div style='height:34px;'></div>", unsafe_allow_html=True)
@@ -967,22 +1000,22 @@ def login_page():
         _, mid, _ = st.columns([1, 1.2, 1])
         with mid:
             with st.container(key="oi_cta"):
-                if st.button("Accéder à la plateforme  →", use_container_width=True):
+                if st.button("Acc├®der ├á la plateforme  ÔåÆ", use_container_width=True):
                     st.session_state["login_stage"] = "role"
                     st.rerun()
 
     # ----------------------------------------------------------------- role
     elif stage == "role":
         with st.container(key="oi_back"):
-            if st.button("← Retour", key="oi_back_role"):
+            if st.button("ÔåÉ Retour", key="oi_back_role"):
                 st.session_state["login_stage"] = "landing"
                 st.rerun()
 
-        st.markdown('<div class="oi-eyebrow">Étape 1 / 2</div>', unsafe_allow_html=True)
+        st.markdown('<div class="oi-eyebrow">├ëtape 1 / 2</div>', unsafe_allow_html=True)
         st.markdown('<div class="oi-title oi-title-sub">Choisissez votre profil</div>', unsafe_allow_html=True)
         st.markdown(
-            '<div class="oi-subtitle">L\'affichage et les données disponibles s\'adaptent '
-            "au profil sélectionné.</div>",
+            '<div class="oi-subtitle">L\'affichage et les donn├®es disponibles s\'adaptent '
+            "au profil s├®lectionn├®.</div>",
             unsafe_allow_html=True,
         )
         st.markdown("<div style='height:36px;'></div>", unsafe_allow_html=True)
@@ -1003,7 +1036,7 @@ def login_page():
         role_key = st.session_state["login_role"] or "client"
 
         with st.container(key="oi_back"):
-            if st.button("← Changer de profil", key="oi_back_auth"):
+            if st.button("ÔåÉ Changer de profil", key="oi_back_auth"):
                 st.session_state["login_stage"] = "role"
                 st.rerun()
 
@@ -1014,15 +1047,15 @@ def login_page():
                     f'<div class="oi-role-chip">{ROLE_ICONS[role_key]} {ROLE_DISPLAY[role_key]}</div>',
                     unsafe_allow_html=True,
                 )
-                st.markdown('<div class="oi-auth-heading">Accès à la plateforme</div>', unsafe_allow_html=True)
+                st.markdown('<div class="oi-auth-heading">Acc├¿s ├á la plateforme</div>', unsafe_allow_html=True)
 
                 can_self_signup = role_key == "client"
 
                 if can_self_signup:
-                    st.markdown('<div class="oi-auth-caption">Connectez-vous ou créez un compte pour continuer</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="oi-auth-caption">Connectez-vous ou cr├®ez un compte pour continuer</div>', unsafe_allow_html=True)
                     mode_label = st.radio(
                         "Action",
-                        options=["Se connecter", "Créer un compte"],
+                        options=["Se connecter", "Cr├®er un compte"],
                         horizontal=True,
                         index=0 if st.session_state["login_mode"] == "signin" else 1,
                         label_visibility="collapsed",
@@ -1030,8 +1063,8 @@ def login_page():
                     st.session_state["login_mode"] = "signin" if mode_label == "Se connecter" else "signup"
                 else:
                     st.markdown(
-                        '<div class="oi-auth-caption">Les comptes Administrateur et Super Admin sont créés '
-                        "par un super admin déjà connecté, depuis l'onglet Administration.</div>",
+                        '<div class="oi-auth-caption">Les comptes Administrateur et Super Admin sont cr├®├®s '
+                        "par un super admin d├®j├á connect├®, depuis l'onglet Administration.</div>",
                         unsafe_allow_html=True,
                     )
                     st.session_state["login_mode"] = "signin"
@@ -1052,12 +1085,12 @@ def login_page():
                         logger.info(f"Login form submitted for email: {email}, role: {role_key}")
                         
                         try:
-                            st.info("🔄 Vérification des identifiants...")
+                            st.info("­ƒöä V├®rification des identifiants...")
                             login_success = do_login(email, password, expected_role=role_key)
                             
                             if login_success:
                                 logger.info(f"Login successful, redirecting user: {email}")
-                                st.success("✅ Connexion réussie ! Redirection...")
+                                st.success("Ô£à Connexion r├®ussie ! Redirection...")
                                 # Small delay to show success message
                                 import time
                                 time.sleep(0.5)
@@ -1068,25 +1101,25 @@ def login_page():
                                 
                         except Exception as e:
                             logger.error(f"Unexpected error during login form processing: {e}", exc_info=True)
-                            st.error("Une erreur inattendue s'est produite. Veuillez réessayer.")
+                            st.error("Une erreur inattendue s'est produite. Veuillez r├®essayer.")
                 else:
                     with st.form("signup_form"):
                         email = st.text_input("Adresse e-mail")
                         password = st.text_input("Mot de passe", type="password")
                         confirm = st.text_input("Confirmer le mot de passe", type="password")
-                        submitted = st.form_submit_button("Créer un compte", use_container_width=True)
+                        submitted = st.form_submit_button("Cr├®er un compte", use_container_width=True)
                     
                     # Enhanced error handling for signup flow
                     if submitted:
                         logger.info(f"Signup form submitted for email: {email}")
                         
                         try:
-                            st.info("🔄 Création du compte en cours...")
+                            st.info("­ƒöä Cr├®ation du compte en cours...")
                             signup_success = do_signup(email, password, confirm)
                             
                             if signup_success:
                                 logger.info(f"Signup successful for user: {email}")
-                                st.success("✅ Compte créé avec succès ! Redirection...")
+                                st.success("Ô£à Compte cr├®├® avec succ├¿s ! Redirection...")
                                 # Small delay to show success message
                                 import time
                                 time.sleep(0.5)
@@ -1097,20 +1130,20 @@ def login_page():
                                 
                         except Exception as e:
                             logger.error(f"Unexpected error during signup form processing: {e}", exc_info=True)
-                            st.error("Une erreur inattendue s'est produite lors de la création du compte.")
+                            st.error("Une erreur inattendue s'est produite lors de la cr├®ation du compte.")
 
                 if st.session_state.get("login_error"):
                     st.error(st.session_state["login_error"])
                 
                 # Show debugging information in development
                 if st.session_state.get("login_error"):
-                    with st.expander("🔧 Informations de débogage"):
+                    with st.expander("­ƒöº Informations de d├®bogage"):
                         st.write(f"**Email saisi:** {email if 'email' in locals() else 'N/A'}")
-                        st.write(f"**Rôle attendu:** {role_key}")
+                        st.write(f"**R├┤le attendu:** {role_key}")
                         st.write(f"**Mode login:** {st.session_state.get('login_mode')}")
                         st.write(f"**Session auth_email:** {st.session_state.get('auth_email')}")
                         st.write(f"**Session auth_role:** {st.session_state.get('auth_role')}")
-                        st.write(f"**API token présent:** {bool(st.session_state.get('api_token'))}")
+                        st.write(f"**API token pr├®sent:** {bool(st.session_state.get('api_token'))}")
                         if st.session_state.get('api_token_error'):
                             st.write(f"**API token error:** {st.session_state.get('api_token_error')}")
 
@@ -1147,7 +1180,7 @@ def render_sidebar_identity(email: str, role: str) -> None:
         unsafe_allow_html=True,
     )
 
-    if st.sidebar.button("Se déconnecter", use_container_width=True):
+    if st.sidebar.button("Se d├®connecter", use_container_width=True):
         st.session_state.pop("auth_email", None)
         st.session_state.pop("auth_role", None)
         st.session_state.pop("login_mode", None)
@@ -1156,9 +1189,9 @@ def render_sidebar_identity(email: str, role: str) -> None:
         st.rerun()
 
     role_messages = {
-        "Client": "Vue simplifiée : indicateurs clés uniquement.",
-        "Admin": "Accès complet aux données métier et aux exports.",
-        "Super Admin": "Accès complet + outils d'administration.",
+        "Client": "Vue simplifi├®e : indicateurs cl├®s uniquement.",
+        "Admin": "Acc├¿s complet aux donn├®es m├®tier et aux exports.",
+        "Super Admin": "Acc├¿s complet + outils d'administration.",
     }
     st.sidebar.caption(role_messages.get(role, ""))
     st.sidebar.divider()
@@ -1186,9 +1219,9 @@ def main() -> None:
 
         if is_admin:
             if st.session_state.get("api_token"):
-               st.sidebar.caption("API token: ✅ présent")
+               st.sidebar.caption("API token: Ô£à pr├®sent")
             else:
-                st.sidebar.error(f"API token absent — erreur : {st.session_state.get('api_token_error')}")
+                st.sidebar.error(f"API token absent ÔÇö erreur : {st.session_state.get('api_token_error')}")
                 logger.warning(f"Admin user {email} missing API token: {st.session_state.get('api_token_error')}")
 
         st.markdown(
@@ -1201,8 +1234,8 @@ def main() -> None:
             unsafe_allow_html=True,
         )
         st.markdown(
-            "Ce dashboard permet de comparer les résultats de benchmark RAG + LLM, "
-            "d'analyser la performance des modèles et de consulter les exécutions détaillées."
+            "Ce dashboard permet de comparer les r├®sultats de benchmark RAG + LLM, "
+            "d'analyser la performance des mod├¿les et de consulter les ex├®cutions d├®taill├®es."
         )
 
         st.markdown(
@@ -1220,16 +1253,16 @@ def main() -> None:
         try:
             st.sidebar.header("Filtres")
             load_all = st.sidebar.checkbox(
-                "Charger toutes les exécutions (ignorer la limite)",
+                "Charger toutes les ex├®cutions (ignorer la limite)",
                 value=False,
-                help="Utile pour être sûr de voir tous les scénarios/modèles, même au-delà de la limite ci-dessous.",
+                help="Utile pour ├¬tre s├╗r de voir tous les sc├®narios/mod├¿les, m├¬me au-del├á de la limite ci-dessous.",
             )
             if load_all:
                 limit = None
-                st.sidebar.caption("Limite désactivée — toutes les exécutions de la base sont chargées.")
+                st.sidebar.caption("Limite d├®sactiv├®e ÔÇö toutes les ex├®cutions de la base sont charg├®es.")
             else:
                 limit = st.sidebar.slider(
-                    "Nombre d'exécutions à charger",
+                    "Nombre d'ex├®cutions ├á charger",
                     min_value=10,
                     max_value=2000,
                     value=300,
@@ -1237,20 +1270,20 @@ def main() -> None:
                 )
 
             # Load data with error handling
-            with st.spinner("Chargement des données..."):
+            with st.spinner("Chargement des donn├®es..."):
                 df = load_executions(limit=limit)
                 df = format_datetime(df)
 
             if df.empty:
-                st.warning("Aucune exécution disponible dans la base de données.")
-                st.info("Veuillez vérifier que des benchmarks ont été exécutés ou contactez votre administrateur.")
+                st.warning("Aucune ex├®cution disponible dans la base de donn├®es.")
+                st.info("Veuillez v├®rifier que des benchmarks ont ├®t├® ex├®cut├®s ou contactez votre administrateur.")
                 return
 
             logger.info(f"Loaded {len(df)} executions for dashboard display")
             
         except Exception as e:
             logger.error(f"Error loading dashboard data: {e}", exc_info=True)
-            st.error("Erreur lors du chargement des données. Veuillez réessayer ou contactez votre administrateur.")
+            st.error("Erreur lors du chargement des donn├®es. Veuillez r├®essayer ou contactez votre administrateur.")
             st.exception(e)
             return
 
@@ -1260,23 +1293,23 @@ def main() -> None:
     except Exception as e:
         logger.error(f"Critical error in main dashboard: {e}", exc_info=True)
         st.error("Une erreur critique s'est produite dans le dashboard.")
-        st.error("Détails de l'erreur (pour débogage) :")
+        st.error("D├®tails de l'erreur (pour d├®bogage) :")
         st.exception(e)
         
         # Show recovery options
-        with st.expander("Options de récupération"):
-            if st.button("Réinitialiser la session"):
+        with st.expander("Options de r├®cup├®ration"):
+            if st.button("R├®initialiser la session"):
                 for key in list(st.session_state.keys()):
                     del st.session_state[key]
                 st.rerun()
             
             if st.button("Vider le cache"):
                 st.cache_data.clear()
-                st.success("Cache vidé. Veuillez actualiser la page.")
+                st.success("Cache vid├®. Veuillez actualiser la page.")
                 
         return
 
-    # Vérifier la présence de scores heuristiques anciens et prévenir
+    # V├®rifier la pr├®sence de scores heuristiques anciens et pr├®venir
     try:
         with engine.connect() as conn:
             legacy_count = conn.execute(
@@ -1287,44 +1320,14 @@ def main() -> None:
     except Exception:
         legacy_count = 0
 
-# if is_admin and legacy_count and legacy_count > 0:
-#     st.sidebar.warning(
-#         f"Attention — {legacy_count} scores heuristiques anciens détectés en base.\n"
-#         "Ces anciennes métriques peuvent fausser les agrégations. Exécutez `python scripts/cleanup_scores.py --dry-run` puis `--apply` pour nettoyer."
-#     )
-
-    # Check for unevaluated (orphan) executions and warn
-    try:
-        with engine.connect() as conn:
-            orphan_stats = conn.execute(
-                text("""
-                    SELECT 
-                        COUNT(DISTINCT e.id) as total_executions,
-                        COUNT(DISTINCT CASE WHEN sc.id IS NOT NULL THEN e.id END) as scored_executions
-                    FROM executions e
-                    LEFT JOIN scores sc ON sc.execution_id = e.id 
-                        AND sc.methode = 'ragas'
-                        AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
-                """)
-            ).fetchone()
-            total_exec = orphan_stats[0] or 0
-            scored_exec = orphan_stats[1] or 0
-            orphan_count = total_exec - scored_exec
-    except Exception:
-        orphan_count = 0
-        total_exec = 0
-        scored_exec = 0
-
-    if orphan_count > 0:
-        pct = round(orphan_count / total_exec * 100) if total_exec > 0 else 0
-        st.info(
-            f"ℹ️ **{orphan_count} exécution(s) en attente d'évaluation RAGAS** ({pct}% du total).\n\n"
-            f"Les résultats affichés ne couvrent que les {scored_exec} exécutions évaluées. "
-            f"Lancez `python reevaluate_missing_scores.py --resume` pour évaluer les restantes."
+    if is_admin and legacy_count and legacy_count > 0:
+        st.sidebar.warning(
+            f"Attention ÔÇö {legacy_count} scores heuristiques anciens d├®tect├®s en base.\n"
+            "Ces anciennes m├®triques peuvent fausser les agr├®gations. Ex├®cutez `python scripts/cleanup_scores.py --dry-run` puis `--apply` pour nettoyer."
         )
 
     if df.empty:
-        st.warning("Aucune exécution disponible dans la base de données.")
+        st.warning("Aucune ex├®cution disponible dans la base de donn├®es.")
         return
 
     if is_admin:
@@ -1334,9 +1337,9 @@ def main() -> None:
         scenarios = scenario_catalog["nom_cas_usage"].tolist()
         departement_par_scenario = dict(zip(scenario_catalog["nom_cas_usage"], scenario_catalog["departement"]))
 
-        selected_modeles = st.sidebar.multiselect("Modèles", modeles, default=modeles)
+        selected_modeles = st.sidebar.multiselect("Mod├¿les", modeles, default=modeles)
         selected_scenarios = st.sidebar.multiselect(
-           "Scénarios",
+           "Sc├®narios",
           scenarios,
           default=scenarios,
           format_func=lambda nom: f"{nom} ({departement_par_scenario.get(nom, '?')})",
@@ -1345,7 +1348,7 @@ def main() -> None:
         min_date = df["date_execution"].min().date()
         max_date = df["date_execution"].max().date()
         date_range = st.sidebar.date_input(
-           "Période d'exécution",
+           "P├®riode d'ex├®cution",
           value=(min_date, max_date),
           min_value=min_date,
           max_value=max_date,
@@ -1360,7 +1363,7 @@ def main() -> None:
 
     else:
 
-        # Client : pas de filtres avancés, vue simplifiée sur toutes les données disponibles
+        # Client : pas de filtres avanc├®s, vue simplifi├®e sur toutes les donn├®es disponibles
         selected_modeles = df["modele_nom"].unique().tolist()
         selected_scenarios = df["nom_cas_usage"].unique().tolist()
         start_date = df["date_execution"].min().date()
@@ -1373,7 +1376,7 @@ def main() -> None:
         & (df["date_execution"].dt.date <= end_date)
     ]
 
-    # Style / affichage — advanced display controls are admin-only; regular
+    # Style / affichage ÔÇö advanced display controls are admin-only; regular
     # users get sensible defaults instead of being shown extra knobs.
     if is_admin:
         st.sidebar.markdown("---")
@@ -1391,19 +1394,19 @@ def main() -> None:
     # Advanced export controls
     if is_admin:
         st.sidebar.markdown("---")
-        st.sidebar.markdown("**Export avancé**")
+        st.sidebar.markdown("**Export avanc├®**")
         all_columns = filtered.columns.tolist()
         default_cols = [c for c in ["execution_id", "modele_nom", "nom_cas_usage", "date_execution", "score_global_display"] if c in all_columns]
-        selected_columns_for_export = st.sidebar.multiselect("Colonnes à exporter", options=all_columns, default=default_cols)
+        selected_columns_for_export = st.sidebar.multiselect("Colonnes ├á exporter", options=all_columns, default=default_cols)
     else:
         selected_columns_for_export = ["date_execution", "modele_nom", "nom_cas_usage", "score_global_display"]
 
     if filtered.empty:
-        st.warning("Aucun résultat pour les filtres sélectionnés et la période définie.")
+        st.warning("Aucun r├®sultat pour les filtres s├®lectionn├®s et la p├®riode d├®finie.")
         return
 
     latest_run = filtered["date_execution"].max()
-    st.caption(f"Dernière exécution chargée : {latest_run}")
+    st.caption(f"Derni├¿re ex├®cution charg├®e : {latest_run}")
 
     metric_names = {
         "score_global_display": "Score global",
@@ -1414,7 +1417,7 @@ def main() -> None:
         "latence_secondes": "Latence (s)",
     }
     selected_metric_key = st.sidebar.selectbox(
-        "Métrique à comparer",
+        "M├®trique ├á comparer",
         list(metric_names.values()),
         index=0,
     )
@@ -1453,10 +1456,10 @@ def main() -> None:
     best_scenario = summary_scenario.iloc[0] if not summary_scenario.empty else None
 
     # ------------------------------------------------------------------
-    # Construction des onglets : le Client n'a plus "Détails des
-    # exécutions" (données brutes/techniques) ni "Pilotage".
+    # Construction des onglets : le Client n'a plus "D├®tails des
+    # ex├®cutions" (donn├®es brutes/techniques) ni "Pilotage".
     # ------------------------------------------------------------------
-    tabs = ["Vue d'ensemble", "Comparaison modèles", "Comparaison scénarios", "Détails des exécutions"]
+    tabs = ["Vue d'ensemble", "Comparaison mod├¿les", "Comparaison sc├®narios", "D├®tails des ex├®cutions"]
 
     if is_admin:
         tabs.append("Pilotage")
@@ -1476,43 +1479,43 @@ def main() -> None:
             st.markdown("## Vue d'ensemble")
             
 
-            st.markdown("#### Top 3 modèles")
+            st.markdown("#### Top 3 mod├¿les")
             top3 = summary_model.head(3).copy()
             if not top3.empty:
                 top3 = top3.reset_index(drop=True)
                 top3.index = top3.index + 1
-                top3["Qualité"] = top3["score_global_display"].apply(score_to_label)
+                top3["Qualit├®"] = top3["score_global_display"].apply(score_to_label)
                 top3["score_global_display"] = top3["score_global_display"].map(lambda v: f"{v:.3f}")
                 st.table(
                     top3.rename(
                         columns={
-                            "modele_nom": "Modèle",
+                            "modele_nom": "Mod├¿le",
                             "score_global_display": "Score global",
                             "latence_secondes": "Latence (s)",
                         }
-                    )[["Modèle", "Qualité", "Latence (s)"]]
+                    )[["Mod├¿le", "Qualit├®", "Latence (s)"]]
                 )
             else:
-                st.info("Pas de modèles à afficher pour le Top 3.")
+                st.info("Pas de mod├¿les ├á afficher pour le Top 3.")
 
-            st.markdown("#### Top 3 scénarios")
+            st.markdown("#### Top 3 sc├®narios")
             top3_scenarios = summary_scenario.head(3).copy()
             if not top3_scenarios.empty:
                 top3_scenarios = top3_scenarios.reset_index(drop=True)
                 top3_scenarios.index = top3_scenarios.index + 1
-                top3_scenarios["Qualité"] = top3_scenarios["score_global_display"].apply(score_to_label)
+                top3_scenarios["Qualit├®"] = top3_scenarios["score_global_display"].apply(score_to_label)
                 top3_scenarios["score_global_display"] = top3_scenarios["score_global_display"].map(lambda v: f"{v:.3f}")
                 st.table(
                     top3_scenarios.rename(
                         columns={
-                            "nom_cas_usage": "Scénario",
+                            "nom_cas_usage": "Sc├®nario",
                             "score_global_display": "Score global",
                             "latence_secondes": "Latence (s)",
                         }
-                    )[["Scénario", "Qualité", "Latence (s)"]]
+                    )[["Sc├®nario", "Qualit├®", "Latence (s)"]]
                 )
             else:
-                st.info("Pas de scénarios à afficher pour le Top 3.")
+                st.info("Pas de sc├®narios ├á afficher pour le Top 3.")
 
             st.divider()
             build_client_department_comparison(filtered)
@@ -1544,22 +1547,22 @@ def main() -> None:
                 second_score = summary_model.iloc[1]["score_global_display"] if len(summary_model) > 1 else 0
                 delta = best_model["score_global_display"] - second_score
                 rec_col1.metric(
-                    "Modèle recommandé",
+                    "Mod├¿le recommand├®",
                     f"{best_model['modele_nom']} ({best_model['score_global_display']:.3f})",
                     delta=f"{delta:+.3f}",
                 )
                 rec_col2.metric(
-                    "Scénario recommandé",
+                    "Sc├®nario recommand├®",
                     best_scenario["nom_cas_usage"],
                     f"{best_scenario['score_global_display']:.3f}",
                 )
                 rec_col3.metric(
-                    "Scores évalués",
+                    "Scores ├®valu├®s",
                     int(filtered[["faithfulness", "answer_relevancy", "context_precision", "context_recall"]].count().sum()),
                 )
             st.divider()
 
-            st.markdown("#### Top 3 modèles")
+            st.markdown("#### Top 3 mod├¿les")
             top3 = summary_model.head(3).copy()
             if not top3.empty:
                 top3 = top3.reset_index(drop=True)
@@ -1569,7 +1572,7 @@ def main() -> None:
                 st.table(
                     top3.rename(
                         columns={
-                            "modele_nom": "Modèle",
+                            "modele_nom": "Mod├¿le",
                             "score_global_display": "Score global",
                             "faithfulness": "Faithfulness",
                             "answer_relevancy": "Answer relevancy",
@@ -1580,9 +1583,9 @@ def main() -> None:
                     )
                 )
             else:
-                st.info("Pas de modèles à afficher pour le Top 3.")
+                st.info("Pas de mod├¿les ├á afficher pour le Top 3.")
 
-            st.markdown("#### Meilleur modèle par scénario")
+            st.markdown("#### Meilleur mod├¿le par sc├®nario")
             best_per_scenario = (
                 filtered.dropna(subset=["score_global_display"])
                 .groupby(["nom_cas_usage", "modele_nom"])["score_global_display"]
@@ -1595,14 +1598,14 @@ def main() -> None:
             )
             if not best_per_scenario.empty:
                 best_per_scenario["score_global_display"] = best_per_scenario["score_global_display"].map(lambda v: f"{v:.3f}")
-                st.table(best_per_scenario.rename(columns={"nom_cas_usage": "Scénario", "modele_nom": "Meilleur modèle", "score_global_display": "Score"}))
+                st.table(best_per_scenario.rename(columns={"nom_cas_usage": "Sc├®nario", "modele_nom": "Meilleur mod├¿le", "score_global_display": "Score"}))
             else:
-                st.info("Pas assez de données pour déterminer le meilleur modèle par scénario.")
+                st.info("Pas assez de donn├®es pour d├®terminer le meilleur mod├¿le par sc├®nario.")
             st.divider()
 
             csv = filtered.to_csv(index=False).encode("utf-8")
             st.download_button(
-                "Exporter CSV des exécutions filtrées",
+                "Exporter CSV des ex├®cutions filtr├®es",
                 data=csv,
                 file_name="executions_filtered.csv",
                 mime="text/csv",
@@ -1625,20 +1628,20 @@ def main() -> None:
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     )
                 except Exception:
-                    st.info("Export Excel non disponible (vérifiez que 'openpyxl' est installé).")
+                    st.info("Export Excel non disponible (v├®rifiez que 'openpyxl' est install├®).")
 
-            st.markdown("#### Répartition des métriques RAGAS par modèle (stacked)")
-            stacked_df = model_metrics_long.rename(columns={"modele_nom": "Modèle", "critere": "Critère", "note": "Note"})
+            st.markdown("#### R├®partition des m├®triques RAGAS par mod├¿le (stacked)")
+            stacked_df = model_metrics_long.rename(columns={"modele_nom": "Mod├¿le", "critere": "Crit├¿re", "note": "Note"})
             if not stacked_df.empty:
                 stacked_spec = {
                     "mark": "bar",
                     "encoding": {
-                        "y": {"field": "Modèle", "type": "nominal", "sort": "-x"},
+                        "y": {"field": "Mod├¿le", "type": "nominal", "sort": "-x"},
                         "x": {"aggregate": "sum", "field": "Note", "type": "quantitative"},
-                        "color": {"field": "Critère", "type": "nominal", "scale": {"scheme": palette}},
+                        "color": {"field": "Crit├¿re", "type": "nominal", "scale": {"scheme": palette}},
                         "tooltip": [
-                            {"field": "Modèle", "type": "nominal"},
-                            {"field": "Critère", "type": "nominal"},
+                            {"field": "Mod├¿le", "type": "nominal"},
+                            {"field": "Crit├¿re", "type": "nominal"},
                             {"field": "Note", "type": "quantitative"},
                         ],
                     },
@@ -1647,10 +1650,10 @@ def main() -> None:
                     stacked_spec["encoding"]["x"]["stack"] = "normalize"
                 st.vega_lite_chart(data=stacked_df, spec=stacked_spec, use_container_width=True)
             else:
-                st.info("Aucune donnée RAGAS disponible pour le stacked chart.")
+                st.info("Aucune donn├®e RAGAS disponible pour le stacked chart.")
 
-            st.markdown("#### Heatmap : score global (scénarios × modèles)")
-            heat_order = st.selectbox("Trier heatmap par", options=["Aucun", "Moyenne modèle", "Moyenne scénario"], index=1)
+            st.markdown("#### Heatmap : score global (sc├®narios ├ù mod├¿les)")
+            heat_order = st.selectbox("Trier heatmap par", options=["Aucun", "Moyenne mod├¿le", "Moyenne sc├®nario"], index=1)
             heat_df = (
                 filtered.pivot_table(
                     index="nom_cas_usage", columns="modele_nom", values="score_global_display", aggfunc="mean"
@@ -1658,30 +1661,30 @@ def main() -> None:
                 .reset_index()
                 .melt(id_vars=["nom_cas_usage"], var_name="modele_nom", value_name="score")
             )
-            heat_df = heat_df.rename(columns={"nom_cas_usage": "Scénario", "modele_nom": "Modèle", "score": "Score"})
+            heat_df = heat_df.rename(columns={"nom_cas_usage": "Sc├®nario", "modele_nom": "Mod├¿le", "score": "Score"})
             if not heat_df["Score"].isna().all():
-                if heat_order == "Moyenne modèle":
+                if heat_order == "Moyenne mod├¿le":
                     order = summary_model["modele_nom"].tolist()
-                    heat_df["Modèle"] = pd.Categorical(heat_df["Modèle"], categories=order, ordered=True)
-                elif heat_order == "Moyenne scénario":
+                    heat_df["Mod├¿le"] = pd.Categorical(heat_df["Mod├¿le"], categories=order, ordered=True)
+                elif heat_order == "Moyenne sc├®nario":
                     scen_order = summary_scenario["nom_cas_usage"].tolist()
-                    heat_df["Scénario"] = pd.Categorical(heat_df["Scénario"], categories=scen_order, ordered=True)
+                    heat_df["Sc├®nario"] = pd.Categorical(heat_df["Sc├®nario"], categories=scen_order, ordered=True)
                 heat_spec = {
                     "mark": "rect",
                     "encoding": {
-                        "x": {"field": "Modèle", "type": "nominal"},
-                        "y": {"field": "Scénario", "type": "nominal"},
+                        "x": {"field": "Mod├¿le", "type": "nominal"},
+                        "y": {"field": "Sc├®nario", "type": "nominal"},
                         "color": {"field": "Score", "type": "quantitative", "scale": {"scheme": palette}},
                         "tooltip": [
-                            {"field": "Modèle", "type": "nominal"},
-                            {"field": "Scénario", "type": "nominal"},
+                            {"field": "Mod├¿le", "type": "nominal"},
+                            {"field": "Sc├®nario", "type": "nominal"},
                             {"field": "Score", "type": "quantitative"},
                         ],
                     },
                 }
                 st.vega_lite_chart(data=heat_df, spec=heat_spec, use_container_width=True)
             else:
-                st.info("Aucune donnée de score global pour produire la heatmap.")
+                st.info("Aucune donn├®e de score global pour produire la heatmap.")
 
             st.markdown("#### Distributions : score global et latence")
             hist_col1, hist_col2 = st.columns(2)
@@ -1715,33 +1718,33 @@ def main() -> None:
     with scenarios_tab:
 
         if role == "Client":
-            st.markdown("## Comparaison scénarios")
-            st.write("Vue simplifiée des scénarios les plus performants.")
+            st.markdown("## Comparaison sc├®narios")
+            st.write("Vue simplifi├®e des sc├®narios les plus performants.")
             simple_scenarios = summary_scenario[["nom_cas_usage", "score_global_display"]].head(5).copy()
-            simple_scenarios["Qualité"] = simple_scenarios["score_global_display"].apply(score_to_label)
+            simple_scenarios["Qualit├®"] = simple_scenarios["score_global_display"].apply(score_to_label)
             st.table(
                 simple_scenarios.rename(
                     columns={
-                        "nom_cas_usage": "Scénario",
+                        "nom_cas_usage": "Sc├®nario",
                         "score_global_display": "Score global",
                     }
-                )[["Scénario", "Qualité"]]
+                )[["Sc├®nario", "Qualit├®"]]
             )
         else:
-            st.markdown("## Comparaison des scénarios")
-            st.write("Comparez les scénarios par score global, métriques dimensions et pertinence.")
+            st.markdown("## Comparaison des sc├®narios")
+            st.write("Comparez les sc├®narios par score global, m├®triques dimensions et pertinence.")
             st.dataframe(summary_scenario, use_container_width=True)
             st.divider()
-            st.markdown("### Top scénarios par score global")
+            st.markdown("### Top sc├®narios par score global")
             st.vega_lite_chart(
-                data=summary_scenario.rename(columns={"nom_cas_usage": "Scénario", "score_global_display": "Score global"}).head(5),
+                data=summary_scenario.rename(columns={"nom_cas_usage": "Sc├®nario", "score_global_display": "Score global"}).head(5),
                 spec={
                     "mark": "bar",
                     "encoding": {
                         "x": {"field": "Score global", "type": "quantitative"},
-                        "y": {"field": "Scénario", "type": "nominal", "sort": "-x"},
+                        "y": {"field": "Sc├®nario", "type": "nominal", "sort": "-x"},
                         "tooltip": [
-                            {"field": "Scénario", "type": "nominal"},
+                            {"field": "Sc├®nario", "type": "nominal"},
                             {"field": "Score global", "type": "quantitative"},
                         ],
                     },
@@ -1749,24 +1752,24 @@ def main() -> None:
                 use_container_width=True,
             )
             st.divider()
-            st.markdown("### Comparaison des critères RAGAS par scénario")
+            st.markdown("### Comparaison des crit├¿res RAGAS par sc├®nario")
             metrics_by_scenario = summary_scenario.melt(
                 id_vars=["nom_cas_usage"],
                 value_vars=["faithfulness", "answer_relevancy", "context_precision", "context_recall"],
-                var_name="Critère",
+                var_name="Crit├¿re",
                 value_name="Note",
-            ).rename(columns={"nom_cas_usage": "Scénario"})
+            ).rename(columns={"nom_cas_usage": "Sc├®nario"})
             st.vega_lite_chart(
                 data=metrics_by_scenario,
                 spec={
                     "mark": "bar",
                     "encoding": {
                         "x": {"field": "Note", "type": "quantitative"},
-                        "y": {"field": "Scénario", "type": "nominal", "sort": "-x"},
-                        "color": {"field": "Critère", "type": "nominal"},
+                        "y": {"field": "Sc├®nario", "type": "nominal", "sort": "-x"},
+                        "color": {"field": "Crit├¿re", "type": "nominal"},
                         "tooltip": [
-                            {"field": "Scénario", "type": "nominal"},
-                            {"field": "Critère", "type": "nominal"},
+                            {"field": "Sc├®nario", "type": "nominal"},
+                            {"field": "Crit├¿re", "type": "nominal"},
                             {"field": "Note", "type": "quantitative"},
                         ],
                     },
@@ -1774,10 +1777,10 @@ def main() -> None:
                 use_container_width=True,
             )
             st.divider()
-            st.markdown("### Top 3 scénarios")
+            st.markdown("### Top 3 sc├®narios")
             st.table(summary_scenario.head(3).rename(
                 columns={
-                    "nom_cas_usage": "Scénario",
+                    "nom_cas_usage": "Sc├®nario",
                     "score_global_display": "Score global",
                     "faithfulness": "Faithfulness",
                     "answer_relevancy": "Answer relevancy",
@@ -1792,112 +1795,112 @@ def main() -> None:
         if role == "Client":
             build_client_department_comparison(filtered)
             st.divider()
-            st.markdown("## Comparaison modèles (vue simplifiée)")
+            st.markdown("## Comparaison mod├¿les (vue simplifi├®e)")
             simple_model_table = summary_model[["modele_nom", "score_global_display", "latence_secondes"]].copy()
-            simple_model_table["Qualité"] = simple_model_table["score_global_display"].apply(score_to_label)
+            simple_model_table["Qualit├®"] = simple_model_table["score_global_display"].apply(score_to_label)
             simple_model_table["latence_secondes"] = simple_model_table["latence_secondes"].map(lambda v: f"{v:.2f}s")
             st.table(
                 simple_model_table.rename(
                     columns={
-                        "modele_nom": "Modèle",
+                        "modele_nom": "Mod├¿le",
                         "latence_secondes": "Latence (s)",
                     }
-                )[["Modèle", "Qualité", "Latence (s)"]]
+                )[["Mod├¿le", "Qualit├®", "Latence (s)"]]
             )
         else:
-            st.markdown("## Comparaison modèles")
-            st.write("Comparez les modèles par score global, métriques RAGAS, et latence.")
+            st.markdown("## Comparaison mod├¿les")
+            st.write("Comparez les mod├¿les par score global, m├®triques RAGAS, et latence.")
             st.dataframe(summary_model, use_container_width=True)
             st.divider()
-            st.markdown("### Comparaison des critères RAGAS par modèle")
-            chart_mode = st.selectbox("Type de graphique RAGAS", options=["Barres groupées", "Barres empilées", "Barres empilées normalisées", "Barres horizontales"], index=0)
-            group_by_metric = st.checkbox("Afficher par métrique (small multiples)", value=False)
+            st.markdown("### Comparaison des crit├¿res RAGAS par mod├¿le")
+            chart_mode = st.selectbox("Type de graphique RAGAS", options=["Barres group├®es", "Barres empil├®es", "Barres empil├®es normalis├®es", "Barres horizontales"], index=0)
+            group_by_metric = st.checkbox("Afficher par m├®trique (small multiples)", value=False)
             metrics_by_model = summary_model.melt(
                 id_vars=["modele_nom"],
                 value_vars=["faithfulness", "answer_relevancy", "context_precision", "context_recall"],
-                var_name="Critère",
+                var_name="Crit├¿re",
                 value_name="Note",
-            ).rename(columns={"modele_nom": "Modèle"})
+            ).rename(columns={"modele_nom": "Mod├¿le"})
             if group_by_metric:
                 small_spec = {
                     "mark": "bar",
                     "encoding": {
                         "x": {"field": "Note", "type": "quantitative"},
-                        "y": {"field": "Modèle", "type": "nominal", "sort": "-x"},
-                        "color": {"field": "Modèle", "type": "nominal", "legend": None},
-                        "column": {"field": "Critère", "type": "nominal"},
+                        "y": {"field": "Mod├¿le", "type": "nominal", "sort": "-x"},
+                        "color": {"field": "Mod├¿le", "type": "nominal", "legend": None},
+                        "column": {"field": "Crit├¿re", "type": "nominal"},
                         "tooltip": [
-                            {"field": "Modèle", "type": "nominal"},
-                            {"field": "Critère", "type": "nominal"},
+                            {"field": "Mod├¿le", "type": "nominal"},
+                            {"field": "Crit├¿re", "type": "nominal"},
                             {"field": "Note", "type": "quantitative"},
                         ],
                     },
                 }
                 st.vega_lite_chart(data=metrics_by_model, spec=small_spec, use_container_width=True)
             else:
-                if chart_mode == "Barres groupées":
+                if chart_mode == "Barres group├®es":
                     spec = {
                         "mark": "bar",
                         "encoding": {
                             "x": {"field": "Note", "type": "quantitative"},
-                            "y": {"field": "Modèle", "type": "nominal", "sort": "-x"},
-                            "color": {"field": "Critère", "type": "nominal", "scale": {"scheme": palette}},
+                            "y": {"field": "Mod├¿le", "type": "nominal", "sort": "-x"},
+                            "color": {"field": "Crit├¿re", "type": "nominal", "scale": {"scheme": palette}},
                             "tooltip": [
-                                {"field": "Modèle", "type": "nominal"},
-                                {"field": "Critère", "type": "nominal"},
+                                {"field": "Mod├¿le", "type": "nominal"},
+                                {"field": "Crit├¿re", "type": "nominal"},
                                 {"field": "Note", "type": "quantitative"},
                             ],
                         },
                     }
-                elif chart_mode == "Barres empilées" or chart_mode == "Barres empilées normalisées":
+                elif chart_mode == "Barres empil├®es" or chart_mode == "Barres empil├®es normalis├®es":
                     spec = {
                         "mark": "bar",
                         "encoding": {
-                            "y": {"field": "Modèle", "type": "nominal", "sort": "-x"},
+                            "y": {"field": "Mod├¿le", "type": "nominal", "sort": "-x"},
                             "x": {"aggregate": "sum", "field": "Note", "type": "quantitative"},
-                            "color": {"field": "Critère", "type": "nominal", "scale": {"scheme": palette}},
+                            "color": {"field": "Crit├¿re", "type": "nominal", "scale": {"scheme": palette}},
                             "tooltip": [
-                                {"field": "Modèle", "type": "nominal"},
-                                {"field": "Critère", "type": "nominal"},
+                                {"field": "Mod├¿le", "type": "nominal"},
+                                {"field": "Crit├¿re", "type": "nominal"},
                                 {"field": "Note", "type": "quantitative"},
                             ],
                         },
                     }
-                    if chart_mode == "Barres empilées normalisées":
+                    if chart_mode == "Barres empil├®es normalis├®es":
                         spec["encoding"]["x"]["stack"] = "normalize"
                 else:
                     spec = {
                         "mark": "bar",
                         "encoding": {
-                            "y": {"field": "Modèle", "type": "nominal", "sort": "-x"},
+                            "y": {"field": "Mod├¿le", "type": "nominal", "sort": "-x"},
                             "x": {"field": "Note", "type": "quantitative"},
-                            "color": {"field": "Critère", "type": "nominal", "scale": {"scheme": palette}},
+                            "color": {"field": "Crit├¿re", "type": "nominal", "scale": {"scheme": palette}},
                             "tooltip": [
-                                {"field": "Modèle", "type": "nominal"},
-                                {"field": "Critère", "type": "nominal"},
+                                {"field": "Mod├¿le", "type": "nominal"},
+                                {"field": "Crit├¿re", "type": "nominal"},
                                 {"field": "Note", "type": "quantitative"},
                             ],
                         },
                     }
                 st.vega_lite_chart(data=metrics_by_model, spec=spec, use_container_width=True)
             st.divider()
-            st.markdown("### Distribution des scores par modèle")
+            st.markdown("### Distribution des scores par mod├¿le")
             box_df = filtered[["modele_nom", "score_global_display"]].dropna()
             if not box_df.empty:
                 box_spec = {
                     "mark": "boxplot",
                     "encoding": {
-                        "x": {"field": "modele_nom", "type": "nominal", "title": "Modèle"},
+                        "x": {"field": "modele_nom", "type": "nominal", "title": "Mod├¿le"},
                         "y": {"field": "score_global_display", "type": "quantitative", "title": "Score global"},
                         "color": {"field": "modele_nom", "type": "nominal", "legend": None},
                     },
                 }
                 st.vega_lite_chart(data=box_df, spec=box_spec, use_container_width=True)
             else:
-                st.info("Pas assez de données pour afficher les distributions par modèle.")
+                st.info("Pas assez de donn├®es pour afficher les distributions par mod├¿le.")
 
             st.divider()
-            st.markdown("### Tendance temporelle des meilleurs modèles")
+            st.markdown("### Tendance temporelle des meilleurs mod├¿les")
             top_models = summary_model.head(5)["modele_nom"].tolist()
             ts_df = (
                 filtered.dropna(subset=["score_global_display"])
@@ -1911,7 +1914,7 @@ def main() -> None:
                     "encoding": {
                         "x": {"field": "date_execution", "type": "temporal", "title": "Date"},
                         "y": {"field": "score_global_display", "type": "quantitative", "title": "Score global"},
-                        "color": {"field": "modele_nom", "type": "nominal", "title": "Modèle"},
+                        "color": {"field": "modele_nom", "type": "nominal", "title": "Mod├¿le"},
                         "tooltip": [
                             {"field": "date_execution", "type": "temporal"},
                             {"field": "modele_nom", "type": "nominal"},
@@ -1921,16 +1924,16 @@ def main() -> None:
                 }
                 st.vega_lite_chart(data=ts_df[ts_df["modele_nom"].isin(top_models[:3])], spec=ts_spec, use_container_width=True)
             else:
-                st.info("Pas de séries temporelles disponibles pour les scores.")
+                st.info("Pas de s├®ries temporelles disponibles pour les scores.")
 
             st.divider()
-            st.markdown("### Top 5 modèles — résumé")
+            st.markdown("### Top 5 mod├¿les ÔÇö r├®sum├®")
             top5 = summary_model.head(5).copy()
             if not top5.empty:
                 top5["score_global_display"] = top5["score_global_display"].map(lambda v: f"{v:.3f}")
                 top5["latence_secondes"] = top5["latence_secondes"].map(lambda v: f"{v:.2f}s")
                 st.table(top5.rename(columns={
-                    "modele_nom": "Modèle",
+                    "modele_nom": "Mod├¿le",
                     "score_global_display": "Score global",
                     "faithfulness": "Faithfulness",
                     "answer_relevancy": "Answer relevancy",
@@ -1939,16 +1942,16 @@ def main() -> None:
                     "latence_secondes": "Latence",
                 }))
             else:
-                st.info("Aucun modèle disponible pour le Top 5.")
+                st.info("Aucun mod├¿le disponible pour le Top 5.")
 
     # ------------------------------------------------------------------
-    # "Détails des exécutions" : réservé Admin / Super Admin uniquement
-    # (données brutes/techniques retirées de l'interface Client).
+    # "D├®tails des ex├®cutions" : r├®serv├® Admin / Super Admin uniquement
+    # (donn├®es brutes/techniques retir├®es de l'interface Client).
     # ------------------------------------------------------------------
     
         with details_tab:
-            st.markdown("## Détail des exécutions")
-            st.write("Consultez la liste complète des exécutions récentes, puis sélectionnez une entrée pour voir la réponse et les scores détaillés.")
+            st.markdown("## D├®tail des ex├®cutions")
+            st.write("Consultez la liste compl├¿te des ex├®cutions r├®centes, puis s├®lectionnez une entr├®e pour voir la r├®ponse et les scores d├®taill├®s.")
 
             display_columns = [
                 "date_execution",
@@ -1974,11 +1977,11 @@ def main() -> None:
                 formatted_df.rename(
                     columns={
                         "date_execution": "Date",
-                        "modele_nom": "Modèle",
-                        "nom_cas_usage": "Scénario",
-                        "departement": "Département",
+                        "modele_nom": "Mod├¿le",
+                        "nom_cas_usage": "Sc├®nario",
+                        "departement": "D├®partement",
                         "latence_secondes": "Latence (s)",
-                        "cout_estime": "Coût estimé",
+                        "cout_estime": "Co├╗t estim├®",
                         "score_global_auto": "Score global",
                         "faithfulness": "Faithfulness",
                         "answer_relevancy": "Answer relevancy",
@@ -1990,29 +1993,29 @@ def main() -> None:
             )
 
             selected_execution = st.selectbox(
-                "Sélectionner une exécution",
+                "S├®lectionner une ex├®cution",
                 filtered["execution_id"].astype(str).tolist(),
             )
             execution_data = filtered[filtered["execution_id"] == int(selected_execution)].iloc[0]
 
             st.divider()
-            st.markdown("### Exécution sélectionnée")
+            st.markdown("### Ex├®cution s├®lectionn├®e")
             left_col, right_col = st.columns(2)
             left_col.markdown(
-                f"**Modèle** : {execution_data['modele_nom']}  \n"
-                f"**Scénario** : {execution_data['nom_cas_usage']}  \n"
-                f"**Département** : {execution_data['departement']}"
+                f"**Mod├¿le** : {execution_data['modele_nom']}  \n"
+                f"**Sc├®nario** : {execution_data['nom_cas_usage']}  \n"
+                f"**D├®partement** : {execution_data['departement']}"
             )
             right_col.markdown(
                 f"**Score global** : {safe_format_score(execution_data['score_global_auto'])}  \n"
                 f"**Latence** : {safe_format_latency(execution_data['latence_secondes'])}  \n"
-                f"**Coût estimé** : {safe_format_cost(execution_data['cout_estime'])}"
+                f"**Co├╗t estim├®** : {safe_format_cost(execution_data['cout_estime'])}"
             )
 
-            with st.expander("Réponse générée"):
+            with st.expander("R├®ponse g├®n├®r├®e"):
                 st.code(execution_data["reponse_generee"], language="text")
 
-            st.markdown("### Notes d'évaluation")
+            st.markdown("### Notes d'├®valuation")
             score_items = {
                 "Faithfulness": execution_data.get("faithfulness"),
                 "Answer relevancy": execution_data.get("answer_relevancy"),
@@ -2034,8 +2037,8 @@ def main() -> None:
         with pilotage_tab:
             st.markdown("## Pilotage du benchmark")
             st.write(
-                "Déclenchez une nouvelle exécution du pipeline multi-agents et gérez le "
-                "catalogue des scénarios et des modèles testés."
+                "D├®clenchez une nouvelle ex├®cution du pipeline multi-agents et g├®rez le "
+                "catalogue des sc├®narios et des mod├¿les test├®s."
             )
 
             # -----------------------------------------------------------------
@@ -2044,17 +2047,17 @@ def main() -> None:
             st.markdown("### Lancer un nouveau benchmark")
             st.caption(
                 "Appelle POST /benchmark/run sur l'API FastAPI (Sprint 3). "
-                "Laisse un champ vide pour utiliser la valeur par défaut de l'API "
-                "(tous les scénarios / tous les modèles Ollama installés)."
+                "Laisse un champ vide pour utiliser la valeur par d├®faut de l'API "
+                "(tous les sc├®narios / tous les mod├¿les Ollama install├®s)."
             )
 
             all_scenarios = admin_list_scenarios()
             departements_disponibles = sorted({s.departement for s in all_scenarios})
             selected_departements = st.multiselect(
-                "Départements à exécuter",
+                "D├®partements ├á ex├®cuter",
                 options=departements_disponibles,
                 key="run_departements",
-                help="Tous les scénarios du (des) département(s) sélectionné(s) seront inclus dans le benchmark.",
+                help="Tous les sc├®narios du (des) d├®partement(s) s├®lectionn├®(s) seront inclus dans le benchmark.",
 )
 
             selected_scenario_ids = [
@@ -2063,64 +2066,63 @@ def main() -> None:
 
             if selected_departements:
                 nb = len(selected_scenario_ids) if selected_scenario_ids else 0
-                st.caption(f"→ {nb} scénario(s) au total pour {len(selected_departements)} département(s) sélectionné(s).")
+                st.caption(f"ÔåÆ {nb} sc├®nario(s) au total pour {len(selected_departements)} d├®partement(s) s├®lectionn├®(s).")
             model_names_raw = st.text_input(
-                "Modèles à tester (noms séparés par des virgules, ex : llama3.1:8b, mistral:7b)",
+                "Mod├¿les ├á tester (noms s├®par├®s par des virgules, ex : llama3.1:8b, mistral:7b)",
                 key="run_model_names",
-                help="Ce champ attend les identifiants de modèles Ollama tels qu'utilisés par le pipeline "
-                "(pas forcément identiques aux noms affichés dans le catalogue ci-dessous).",
+                help="Ce champ attend les identifiants de mod├¿les Ollama tels qu'utilis├®s par le pipeline "
+                "(pas forc├®ment identiques aux noms affich├®s dans le catalogue ci-dessous).",
             )
             model_names_list = [m.strip() for m in model_names_raw.split(",") if m.strip()] or None
 
-            if st.button("🚀 Lancer le benchmark", key="run_benchmark_btn"):
-                with st.spinner("Exécution du benchmark en cours — cela peut prendre plusieurs minutes…"):
+            if st.button("­ƒÜÇ Lancer le benchmark", key="run_benchmark_btn"):
+                with st.spinner("Ex├®cution du benchmark en cours ÔÇö cela peut prendre plusieurs minutesÔÇª"):
                     ok, result = trigger_benchmark_run(
                         scenario_ids=selected_scenario_ids or None,
                         model_names=model_names_list,
                     )
                 if ok:
-                    st.success(f"Benchmark terminé — statut : {result.get('status', 'inconnu')}")
+                    st.success(f"Benchmark termin├® ÔÇö statut : {result.get('status', 'inconnu')}")
                     m1, m2, m3 = st.columns(3)
-                    m1.metric("Scénarios exécutés", result.get("nb_scenarios", 0))
-                    m2.metric("Modèles testés", result.get("nb_modeles", 0))
-                    m3.metric("Exécutions produites", result.get("nb_executions", 0))
+                    m1.metric("Sc├®narios ex├®cut├®s", result.get("nb_scenarios", 0))
+                    m2.metric("Mod├¿les test├®s", result.get("nb_modeles", 0))
+                    m3.metric("Ex├®cutions produites", result.get("nb_executions", 0))
                     if result.get("erreurs"):
-                        st.warning("Erreurs rencontrées pendant l'exécution :")
+                        st.warning("Erreurs rencontr├®es pendant l'ex├®cution :")
                         for err in result["erreurs"]:
                             st.write(f"- {err}")
                     if result.get("rapport"):
-                        with st.expander("Rapport détaillé (JSON)"):
+                        with st.expander("Rapport d├®taill├® (JSON)"):
                             st.json(result["rapport"])
-                    
-                    # Auto-clear cache and reload dashboard to show new executions immediately
-                    st.info("✅ Cache vidé automatiquement — les nouvelles données sont maintenant visibles dans tous les onglets.")
-                    st.cache_data.clear()
-                    st.rerun()
+                    st.info("Vide le cache pour voir les nouvelles ex├®cutions dans les autres onglets.")
+                    if st.button("­ƒöä Rafra├«chir les donn├®es du dashboard", key="refresh_after_run"):
+                        st.cache_data.clear()
+                        st.rerun()
                 else:
                     st.error(result)
 
             st.divider()
 
             # -----------------------------------------------------------------
-            # Complétude du catalogue de scénarios (ajout)
+            # Compl├®tude du catalogue de sc├®narios (ajout)
             # -----------------------------------------------------------------
-            st.markdown("### Complétude du catalogue de scénarios")
+            st.markdown("### Compl├®tude du catalogue de sc├®narios")
             st.caption(
-                f"Cible : {SCENARIOS_CIBLE_PAR_DEPARTEMENT} scénarios par département, "
-                "pour garantir une couverture suffisante des cas d'usage métier."
+                f"Cible : {SCENARIOS_CIBLE_PAR_DEPARTEMENT} sc├®narios par d├®partement, "
+                "pour garantir une couverture suffisante des cas d'usage m├®tier."
             )
             completeness_df = admin_scenarios_completeness()
             if not completeness_df.empty:
                 st.table(completeness_df)
             else:
-                st.info("Aucun scénario en base pour l'instant.")
+                st.info("Aucun sc├®nario en base pour l'instant.")
 
             st.divider()
 
             # -----------------------------------------------------------------
-            # Catalogue des scénarios
+            # Catalogue des sc├®narios
             # -----------------------------------------------------------------
-            st.markdown("### Catalogue des scénarios")
+            st.markdown("### Catalogue des sc├®narios")
             scenarios = admin_list_scenarios()
             if scenarios:
                 st.dataframe(
@@ -2128,8 +2130,8 @@ def main() -> None:
                         [
                             {
                                 "ID": s.id,
-                                "Département": s.departement,
-                                "Métier": s.metier,
+                                "D├®partement": s.departement,
+                                "M├®tier": s.metier,
                                 "Cas d'usage": s.nom_cas_usage,
                             }
                             for s in scenarios
@@ -2139,29 +2141,29 @@ def main() -> None:
                     hide_index=True,
                 )
             else:
-                st.info("Aucun scénario en base.")
+                st.info("Aucun sc├®nario en base.")
 
             scen_manage_col, scen_create_col = st.columns(2)
 
             with scen_manage_col:
-                st.markdown("#### Modifier / supprimer un scénario")
+                st.markdown("#### Modifier / supprimer un sc├®nario")
                 if scenarios:
                     scen_labels = [f"{s.nom_cas_usage} ({s.departement})" for s in scenarios]
                     scen_idx = st.selectbox(
-                        "Scénario",
+                        "Sc├®nario",
                         options=range(len(scenarios)),
                         format_func=lambda i: scen_labels[i],
                         key="scen_selected",
                     )
                     sel_scen = scenarios[scen_idx]
                     with st.form("edit_scenario_form"):
-                        e_departement = st.text_input("Département", value=sel_scen.departement)
-                        e_metier = st.text_input("Métier", value=sel_scen.metier or "")
+                        e_departement = st.text_input("D├®partement", value=sel_scen.departement)
+                        e_metier = st.text_input("M├®tier", value=sel_scen.metier or "")
                         e_nom = st.text_input("Nom du cas d'usage", value=sel_scen.nom_cas_usage)
                         e_prompt = st.text_area("Prompt", value=sel_scen.prompt, height=120)
                         e_sortie = st.text_area("Sortie attendue", value=sel_scen.sortie_attendue or "")
-                        e_critere = st.text_area("Critère de succès", value=sel_scen.critere_succes or "")
-                        scen_update_submitted = st.form_submit_button("Mettre à jour")
+                        e_critere = st.text_area("Crit├¿re de succ├¿s", value=sel_scen.critere_succes or "")
+                        scen_update_submitted = st.form_submit_button("Mettre ├á jour")
                     if scen_update_submitted:
                         ok, msg = admin_update_scenario(
                             sel_scen.id, e_departement, e_metier, e_nom, e_prompt, e_sortie, e_critere
@@ -2170,24 +2172,24 @@ def main() -> None:
                         if ok:
                             st.rerun()
 
-                    if st.button("🗑️ Supprimer ce scénario", key="delete_scenario_btn"):
+                    if st.button("­ƒùæ´©Å Supprimer ce sc├®nario", key="delete_scenario_btn"):
                         ok, msg = admin_delete_scenario(sel_scen.id)
                         st.success(msg) if ok else st.error(msg)
                         if ok:
                             st.rerun()
                 else:
-                    st.info("Aucun scénario à gérer pour le moment.")
+                    st.info("Aucun sc├®nario ├á g├®rer pour le moment.")
 
             with scen_create_col:
-                st.markdown("#### Ajouter un scénario")
+                st.markdown("#### Ajouter un sc├®nario")
                 with st.form("create_scenario_form"):
-                    c_departement = st.text_input("Département", key="c_departement")
-                    c_metier = st.text_input("Métier", key="c_metier")
+                    c_departement = st.text_input("D├®partement", key="c_departement")
+                    c_metier = st.text_input("M├®tier", key="c_metier")
                     c_nom = st.text_input("Nom du cas d'usage", key="c_nom")
                     c_prompt = st.text_area("Prompt", key="c_prompt", height=120)
                     c_sortie = st.text_area("Sortie attendue", key="c_sortie")
-                    c_critere = st.text_area("Critère de succès", key="c_critere")
-                    scen_create_submitted = st.form_submit_button("Créer le scénario")
+                    c_critere = st.text_area("Crit├¿re de succ├¿s", key="c_critere")
+                    scen_create_submitted = st.form_submit_button("Cr├®er le sc├®nario")
                 if scen_create_submitted:
                     ok, msg = admin_create_scenario(
                         c_departement, c_metier, c_nom, c_prompt, c_sortie, c_critere
@@ -2199,9 +2201,9 @@ def main() -> None:
             st.divider()
 
             # -----------------------------------------------------------------
-            # Catalogue des modèles
+            # Catalogue des mod├¿les
             # -----------------------------------------------------------------
-            st.markdown("### Catalogue des modèles")
+            st.markdown("### Catalogue des mod├¿les")
             models_catalog = admin_list_models()
             if models_catalog:
                 st.dataframe(
@@ -2212,7 +2214,7 @@ def main() -> None:
                                 "Nom": m.nom,
                                 "Fournisseur": m.fournisseur,
                                 "Version": m.version,
-                                "Coût / 1k tokens": m.cout_par_1k_tokens,
+                                "Co├╗t / 1k tokens": m.cout_par_1k_tokens,
                             }
                             for m in models_catalog
                         ]
@@ -2221,16 +2223,16 @@ def main() -> None:
                     hide_index=True,
                 )
             else:
-                st.info("Aucun modèle en base.")
+                st.info("Aucun mod├¿le en base.")
 
             model_manage_col, model_create_col = st.columns(2)
 
             with model_manage_col:
-                st.markdown("#### Modifier / supprimer un modèle")
+                st.markdown("#### Modifier / supprimer un mod├¿le")
                 if models_catalog:
                     model_labels = [m.nom for m in models_catalog]
                     model_idx = st.selectbox(
-                        "Modèle",
+                        "Mod├¿le",
                         options=range(len(models_catalog)),
                         format_func=lambda i: model_labels[i],
                         key="model_selected",
@@ -2241,34 +2243,34 @@ def main() -> None:
                         e_m_fournisseur = st.text_input("Fournisseur", value=sel_model.fournisseur or "")
                         e_m_version = st.text_input("Version", value=sel_model.version or "")
                         e_m_cout = st.number_input(
-                            "Coût / 1k tokens",
+                            "Co├╗t / 1k tokens",
                             value=float(sel_model.cout_par_1k_tokens or 0.0),
                             step=0.0001,
                             format="%.4f",
                         )
-                        model_update_submitted = st.form_submit_button("Mettre à jour")
+                        model_update_submitted = st.form_submit_button("Mettre ├á jour")
                     if model_update_submitted:
                         ok, msg = admin_update_model(sel_model.id, e_m_nom, e_m_fournisseur, e_m_version, e_m_cout)
                         st.success(msg) if ok else st.error(msg)
                         if ok:
                             st.rerun()
 
-                    if st.button("🗑️ Supprimer ce modèle", key="delete_model_btn"):
+                    if st.button("­ƒùæ´©Å Supprimer ce mod├¿le", key="delete_model_btn"):
                         ok, msg = admin_delete_model(sel_model.id)
                         st.success(msg) if ok else st.error(msg)
                         if ok:
                             st.rerun()
                 else:
-                    st.info("Aucun modèle à gérer pour le moment.")
+                    st.info("Aucun mod├¿le ├á g├®rer pour le moment.")
 
             with model_create_col:
-                st.markdown("#### Ajouter un modèle")
+                st.markdown("#### Ajouter un mod├¿le")
                 with st.form("create_model_form"):
                     c_m_nom = st.text_input("Nom", key="c_m_nom")
                     c_m_fournisseur = st.text_input("Fournisseur", key="c_m_fournisseur")
                     c_m_version = st.text_input("Version", key="c_m_version")
-                    c_m_cout = st.number_input("Coût / 1k tokens", key="c_m_cout", step=0.0001, format="%.4f")
-                    model_create_submitted = st.form_submit_button("Ajouter le modèle")
+                    c_m_cout = st.number_input("Co├╗t / 1k tokens", key="c_m_cout", step=0.0001, format="%.4f")
+                    model_create_submitted = st.form_submit_button("Ajouter le mod├¿le")
                 if model_create_submitted:
                     ok, msg = admin_create_model(c_m_nom, c_m_fournisseur, c_m_version, c_m_cout)
                     st.success(msg) if ok else st.error(msg)
@@ -2278,19 +2280,19 @@ def main() -> None:
     if is_super_admin and admin_tab is not None:
         with admin_tab:
             st.markdown("## Administration")
-            st.write("Outils et indicateurs réservés au super admin.")
+            st.write("Outils et indicateurs r├®serv├®s au super admin.")
             admin_metrics_col1, admin_metrics_col2 = st.columns(2)
-            admin_metrics_col1.metric("Exécutions chargées", len(df))
-            admin_metrics_col1.metric("Modèles", df["modele_nom"].nunique())
-            admin_metrics_col2.metric("Scénarios", df["nom_cas_usage"].nunique())
+            admin_metrics_col1.metric("Ex├®cutions charg├®es", len(df))
+            admin_metrics_col1.metric("Mod├¿les", df["modele_nom"].nunique())
+            admin_metrics_col2.metric("Sc├®narios", df["nom_cas_usage"].nunique())
             admin_metrics_col2.metric(
-                "Métriques RAGAS présentes",
+                "M├®triques RAGAS pr├®sentes",
                 int(df[["faithfulness", "answer_relevancy", "context_precision", "context_recall"]].count().sum()),
             )
-            st.markdown("### Export complet des données")
+            st.markdown("### Export complet des donn├®es")
             csv_all = df.to_csv(index=False).encode("utf-8")
             st.download_button(
-                "Télécharger toutes les exécutions (CSV)",
+                "T├®l├®charger toutes les ex├®cutions (CSV)",
                 data=csv_all,
                 file_name="executions_all.csv",
                 mime="text/csv",
@@ -2299,8 +2301,8 @@ def main() -> None:
             st.divider()
             st.markdown("### Gestion des utilisateurs")
             st.write(
-                "Les clients créent leur propre compte depuis l'écran de connexion. "
-                "Les comptes Administrateur et Super Admin sont provisionnés ici."
+                "Les clients cr├®ent leur propre compte depuis l'├®cran de connexion. "
+                "Les comptes Administrateur et Super Admin sont provisionn├®s ici."
             )
 
             users = admin_list_users()
@@ -2309,8 +2311,8 @@ def main() -> None:
                     {
                         "ID": u.id,
                         "Email": u.email,
-                        "Rôle": ROLE_DISPLAY.get(u.role, u.role),
-                        "Créé le": u.date_creation,
+                        "R├┤le": ROLE_DISPLAY.get(u.role, u.role),
+                        "Cr├®├® le": u.date_creation,
                     }
                     for u in users
                 ]
@@ -2335,12 +2337,12 @@ def main() -> None:
                     selected_user = users[selected_idx]
 
                     new_role_label = st.selectbox(
-                        "Nouveau rôle",
+                        "Nouveau r├┤le",
                         options=[ROLE_DISPLAY[r] for r in ROLE_OPTIONS],
                         index=ROLE_OPTIONS.index(selected_user.role) if selected_user.role in ROLE_OPTIONS else 0,
                         key="admin_new_role",
                     )
-                    if st.button("Mettre à jour le rôle", key="admin_update_role_btn"):
+                    if st.button("Mettre ├á jour le r├┤le", key="admin_update_role_btn"):
                         new_role = ROLE_OPTIONS[[ROLE_DISPLAY[r] for r in ROLE_OPTIONS].index(new_role_label)]
                         ok, msg = admin_update_role(selected_user.id, new_role)
                         st.success(msg) if ok else st.error(msg)
@@ -2349,30 +2351,30 @@ def main() -> None:
 
                     with st.form("admin_reset_password_form"):
                         new_password = st.text_input("Nouveau mot de passe", type="password")
-                        reset_submitted = st.form_submit_button("Réinitialiser le mot de passe")
+                        reset_submitted = st.form_submit_button("R├®initialiser le mot de passe")
                     if reset_submitted:
                         ok, msg = admin_reset_password(selected_user.id, new_password)
                         st.success(msg) if ok else st.error(msg)
 
-                    if st.button("🗑️ Supprimer ce compte", key="admin_delete_user_btn"):
+                    if st.button("­ƒùæ´©Å Supprimer ce compte", key="admin_delete_user_btn"):
                         ok, msg = admin_delete_user(selected_user.id, requester_email=email)
                         st.success(msg) if ok else st.error(msg)
                         if ok:
                             st.rerun()
                 else:
-                    st.info("Aucun compte à gérer pour le moment.")
+                    st.info("Aucun compte ├á g├®rer pour le moment.")
 
             with create_col:
-                st.markdown("#### Créer un nouveau compte")
+                st.markdown("#### Cr├®er un nouveau compte")
                 with st.form("admin_create_user_form"):
                     new_email = st.text_input("Adresse e-mail", key="admin_create_email")
                     new_password_create = st.text_input("Mot de passe", type="password", key="admin_create_password")
                     new_role_create_label = st.selectbox(
-                        "Rôle",
+                        "R├┤le",
                         options=[ROLE_DISPLAY[r] for r in ROLE_OPTIONS],
                         key="admin_create_role",
                     )
-                    create_submitted = st.form_submit_button("Créer le compte")
+                    create_submitted = st.form_submit_button("Cr├®er le compte")
                 if create_submitted:
                     new_role_create = ROLE_OPTIONS[[ROLE_DISPLAY[r] for r in ROLE_OPTIONS].index(new_role_create_label)]
                     ok, msg = admin_create_user(new_email, new_password_create, new_role_create)

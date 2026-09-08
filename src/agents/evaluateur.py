@@ -88,13 +88,11 @@ def agent_evaluateur(state: dict) -> dict:
     scores_list = []
     erreurs = state.get("erreurs", [])
 
-    # Index sur le scénario complet (pas juste chunks/prompt) pour accéder
-    # aussi à sortie_attendue, nécessaire pour context_recall.
-    index_scenarios = {s["id"]: s for s in state["scenarios"]}
+    index_scenarios = {s["id"]: s for s in state.get("scenarios", [])}
 
     try:
-        with engine.begin() as conn:  # Automatic transaction management
-            for execution in state["executions"]:
+        with engine.begin() as conn:
+            for execution in state.get("executions", []):
                 scenario_id = execution["scenario_id"]
                 scenario = index_scenarios.get(scenario_id, {})
                 chunks_rag = scenario.get("chunks_rag", [])
@@ -103,6 +101,7 @@ def agent_evaluateur(state: dict) -> dict:
 
                 logger.info(f"\n  → [{execution['scenario_nom']}] | {execution['modele']}")
 
+                resultat = {}
                 try:
                     resultat = evaluer_execution_ragas(
                         reponse=execution["reponse"],
@@ -111,31 +110,28 @@ def agent_evaluateur(state: dict) -> dict:
                         sortie_attendue=sortie_attendue,
                     )
 
-                    logger.info(f"     Faithfulness      : {resultat['faithfulness']['note']}")
-                    logger.info(f"     Answer relevancy  : {resultat['answer_relevancy']['note']}")
-                    logger.info(f"     Context precision : {resultat['context_precision']['note']}")
-                    logger.info(f"     Context recall    : {resultat['context_recall']['note']}")
-                    logger.info(f"     Toxicity          : {resultat['toxicity']['note']}")
-                    logger.info(f"     Harmfulness       : {resultat['harmfulness']['note']}")
-                    logger.info(f"     Score global      : {resultat['score_global']}")
+                    logger.info(f"     Faithfulness      : {resultat.get('faithfulness', {}).get('note')}")
+                    logger.info(f"     Answer relevancy  : {resultat.get('answer_relevancy', {}).get('note')}")
+                    logger.info(f"     Context precision : {resultat.get('context_precision', {}).get('note')}")
+                    logger.info(f"     Context recall    : {resultat.get('context_recall', {}).get('note')}")
+                    logger.info(f"     Toxicity          : {resultat.get('toxicity', {}).get('note')}")
+                    logger.info(f"     Harmfulness       : {resultat.get('harmfulness', {}).get('note')}")
+                    logger.info(f"     Score global      : {resultat.get('score_global')}")
 
                     execution_id = execution["execution_id"]
                     
                     criteres_a_inserer = {
-                        "faithfulness": resultat["faithfulness"],
-                        "answer_relevancy": resultat["answer_relevancy"],
-                        "context_precision": resultat["context_precision"],
-                        "context_recall": resultat["context_recall"],
-                        "toxicity": resultat["toxicity"],
-                        "harmfulness": resultat["harmfulness"],
+                        "faithfulness": resultat.get("faithfulness", {}),
+                        "answer_relevancy": resultat.get("answer_relevancy", {}),
+                        "context_precision": resultat.get("context_precision", {}),
+                        "context_recall": resultat.get("context_recall", {}),
+                        "toxicity": resultat.get("toxicity", {}),
+                        "harmfulness": resultat.get("harmfulness", {}),
                     }
 
                     nb_inseres = 0
                     for critere, detail in criteres_a_inserer.items():
-                        if detail["note"] is None:
-                            # Métrique non calculable (ex: pas de sortie_attendue
-                            # pour context_recall, ou erreur du juge) -> on ne
-                            # pollue pas la base avec une note fictive.
+                        if not detail or detail.get("note") is None:
                             logger.debug(f"Skipping {critere} (not computable)")
                             continue
                         conn.execute(
@@ -147,12 +143,12 @@ def agent_evaluateur(state: dict) -> dict:
                                 "exec_id": execution_id,
                                 "critere": critere,
                                 "note": float(detail["note"]),
-                                "commentaire": detail["justification"][:500],  # sécurité longueur
+                                "commentaire": str(detail.get("justification", ""))[:500],
                             }
                         )
                         nb_inseres += 1
 
-                    if resultat["score_global"] is not None:
+                    if resultat.get("score_global") is not None:
                         conn.execute(
                             text("""
                                 INSERT INTO scores (execution_id, critere, note, commentaire)
@@ -162,12 +158,12 @@ def agent_evaluateur(state: dict) -> dict:
                                 "exec_id": execution_id,
                                 "critere": "score_global",
                                 "note": float(resultat["score_global"]),
-                                "commentaire": "Moyenne des 4 métriques Ragas disponibles",
+                                "commentaire": "Moyenne des métriques Ragas disponibles",
                             }
                         )
                         nb_inseres += 1
 
-                    logger.info(f"     ✓ {nb_inseres} scores enregistrés (execution_id={execution_id})")
+                    logger.info(f"     [OK] {nb_inseres} scores enregistrés (execution_id={execution_id})")
                 except EvaluationException as e:
                     msg = f"Evaluation error for execution {execution['execution_id']}: {str(e)}"
                     erreurs.append(msg)

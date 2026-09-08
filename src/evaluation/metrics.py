@@ -32,8 +32,11 @@ import statistics
 import time
 import warnings
 import httpx
-from groq import Groq
+from groq import Groq, RateLimitError
 from src.config.settings import GROQ_API_KEY
+from src.utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 # Suppress SSL warnings (SSL verification is disabled for corporate MITM inspection compatibility)
 warnings.filterwarnings('ignore')
@@ -45,20 +48,47 @@ client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
 MODELE_JUGE = "qwen/qwen3.8-27b"  # TEMPORARY: switched from qwen3.6-27b due to quota exhaustion - revert or evaluate permanently after testing
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
-def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 1200) -> float | None:
-    """Un seul appel au juge, avec retry/backoff si l'API échoue.
+
+
+def _extraire_temps_attente(error_msg: str) -> float | None:
+    """Extrait le temps d'attente recommandé par l'API Groq en secondes."""
+    pattern = r"Please try again in (?:(\d+)\s*h\s*)?(?:(\d+)\s*m\s*)?(?:([\d.]+)\s*s)?"
+    match = re.search(pattern, error_msg, re.IGNORECASE)
+    if match:
+        h_str, m_str, s_str = match.groups()
+        if h_str or m_str or s_str:
+            hours = int(h_str) if h_str else 0
+            minutes = int(m_str) if m_str else 0
+            seconds = float(s_str) if s_str else 0.0
+            total_sec = hours * 3600 + minutes * 60 + seconds
+            if total_sec > 0:
+                return total_sec
+    return None
+
+
+def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 800) -> float | None:
+    """Un seul appel au juge, avec gestion intelligente du rate limit Groq et backoff adaptatif.
 
     Args:
         prompt_systeme: System prompt for the judge
         prompt_utilisateur: User prompt for the judge
-        max_tokens: Maximum tokens for response (default 1200, increase for context metrics which need longer reasoning)
+        max_tokens: Maximum tokens for response (cappé à 800 pour respecter la limite OTPM Groq de 1000)
 
-    Tente jusqu'à 3 appels côté Groq avec backoff exponentiel (5s,15s,45s).
+    Gestion des rate limits Groq :
+    - Pause exacte (+ marge 15s) si 'Please try again in Xm Ys' est fourni par Groq.
+    - Sinon, backoff adaptatif incluant des pauses longues de 5 min (300s) et 15 min (900s).
     Retourne la note float ou None si toutes les tentatives échouent.
     """
-    backoffs = [5, 15, 45]
+    # Plafond strict pour éviter l'erreur OTPM (Limit 1000) sur qwen3.8-27b
+    effective_max_tokens = min(max_tokens, 800)
+
+    # Tentatives normales puis pauses longues (5s, 15s, 45s, 300s [5 min], 900s [15 min])
+    backoffs = [5, 15, 45, 300, 900]
+    max_normal_attempts = len(backoffs)
+    attempt = 1
     last_exc = None
-    for attempt, wait in enumerate(backoffs, start=1):
+    
+    while attempt <= max_normal_attempts:
         try:
             response = client.chat.completions.create(
                 model=MODELE_JUGE,
@@ -66,7 +96,7 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
                     {"role": "system", "content": prompt_systeme},
                     {"role": "user", "content": prompt_utilisateur},
                 ],
-                max_tokens=max_tokens,
+                max_tokens=effective_max_tokens,
                 temperature=0,
                 seed=42,
             )
@@ -117,19 +147,46 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
             return max(0.0, min(1.0, note))        
         except Exception as e:
             last_exc = e
-            print(f"[JUGE] tentative {attempt}/{len(backoffs)} échouée : {type(e).__name__} - {e}")
-            # Si ce n'est pas la dernière tentative, attendre puis retry
-            if attempt < len(backoffs):                
+            error_msg = str(e)
+            is_rate_limit = isinstance(e, RateLimitError) or "rate limit" in error_msg.lower() or "429" in error_msg
+            
+            if is_rate_limit:
+                temps_recommande = _extraire_temps_attente(error_msg)
+                if temps_recommande is not None:
+                    wait_time = temps_recommande + 15  # 15s de marge de sécurité
+                    minutes = int(wait_time // 60)
+                    seconds = int(wait_time % 60)
+                    logger.warning(
+                        f"[JUGE] Rate limit Groq détecté. Pause demandée par l'API : {minutes}m {seconds}s..."
+                    )
+                    print(f"[JUGE] Rate limit Groq. Pause demandée par l'API : {minutes}m {seconds}s avant réessai...")
+                    try:
+                        time.sleep(wait_time)
+                    except Exception:
+                        pass
+                    attempt += 1
+                    continue
+            
+            wait = backoffs[attempt - 1]
+            if is_rate_limit and wait >= 300:
+                duree_min = wait // 60
+                logger.warning(f"[JUGE] Rate limit Groq persistant. Pause longue de {duree_min} minutes (tentative {attempt}/{max_normal_attempts})...")
+                print(f"[JUGE] Rate limit Groq. Pause longue de {duree_min} min avant tentative {attempt + 1}/{max_normal_attempts}...")
+            else:
+                logger.warning(f"[JUGE] tentative {attempt}/{max_normal_attempts} échouée : {type(e).__name__} - {e}")
+                print(f"[JUGE] tentative {attempt}/{max_normal_attempts} échouée : {type(e).__name__} - {e}")
+
+            if attempt < max_normal_attempts:                
                 try:
                     time.sleep(wait)
                 except Exception:
                     pass
-            else:
-                # toutes les tentatives ont échoué -> on retourne None
-                return None
+            attempt += 1
+
+    return None
 
 
-def _appeler_juge(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 1200) -> dict:
+def _appeler_juge(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 800) -> dict:
     """
     Appelle le juge REPETITIONS_JUGE fois (self-consistency) et retourne la
     médiane des notes obtenues, avec l'écart observé entre les tentatives
@@ -258,10 +315,8 @@ ici évalue simplement la proportion globale de chunks pertinents vs non pertine
 
 Réponds uniquement avec le JSON demandé."""
 
-    # Context precision requires longer reasoning (600+ tokens) due to analyzing multiple chunks
-    # Use max_tokens=1800 to allow full model output without truncation while minimizing token cost
-    # (600-850 token <think> block + ~50-100 token JSON output + safety margin)
-    return _appeler_juge(prompt_systeme, prompt_utilisateur, max_tokens=1800)
+    # Plafonné à 800 tokens pour respecter la limite Groq OTPM (1000)
+    return _appeler_juge(prompt_systeme, prompt_utilisateur, max_tokens=800)
 
 
 def evaluer_context_recall(contexte_chunks: list[str], sortie_attendue: str) -> dict:
@@ -304,10 +359,8 @@ RÉCUPÉRÉ. Cela mesure si le système RAG a récupéré tout ce qu'il fallait 
 
 Réponds uniquement avec le JSON demandé."""
 
-    # Context recall requires longer reasoning (850+ tokens) due to analyzing multiple chunks and comparing to expected output
-    # Use max_tokens=1800 to allow full model output without truncation while minimizing token cost
-    # (600-850 token <think> block + ~50-100 token JSON output + safety margin)
-    return _appeler_juge(prompt_systeme, prompt_utilisateur, max_tokens=1800)
+    # Plafonné à 800 tokens pour respecter la limite Groq OTPM (1000)
+    return _appeler_juge(prompt_systeme, prompt_utilisateur, max_tokens=800)
 
 
 def evaluer_toxicity(reponse: str) -> dict:

@@ -25,6 +25,8 @@ if str(_PROJECT_ROOT) not in sys.path:
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+from sqlalchemy import text
+from src.database.connection import engine
 
 from src.dashboard.admin_queries import (
     get_all_departments,
@@ -162,7 +164,35 @@ def render_admin_dashboard():
     
     st.header("📊 Department Overview")
     
-    # Show selected departments summary
+    # Check for unevaluated (orphan) executions and warn (Option B)
+    try:
+        with engine.connect() as conn:
+            orphan_stats = conn.execute(
+                text("""
+                    SELECT 
+                        COUNT(DISTINCT e.id) as total_executions,
+                        COUNT(DISTINCT CASE WHEN sc.id IS NOT NULL THEN e.id END) as scored_executions
+                    FROM executions e
+                    LEFT JOIN scores sc ON sc.execution_id = e.id 
+                        AND sc.methode = 'ragas'
+                        AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                """)
+            ).fetchone()
+            total_exec = orphan_stats[0] or 0
+            scored_exec = orphan_stats[1] or 0
+            orphan_count = total_exec - scored_exec
+    except Exception:
+        orphan_count = 0
+        total_exec = 0
+        scored_exec = 0
+
+    if orphan_count > 0:
+        pct = round(orphan_count / total_exec * 100) if total_exec > 0 else 0
+        st.info(
+            f"ℹ️ **{orphan_count} exécution(s) en attente d'évaluation RAGAS** ({pct}% du total).\n\n"
+            f"Les résultats affichés ne couvrent que les {scored_exec} exécutions évaluées. "
+            f"Lancez `python reevaluate_missing_scores.py --resume` pour évaluer les restantes."
+        )
     dept_summary_cols = st.columns(len(selected_depts))
     for idx, dept_name in enumerate(selected_depts):
         dept_info = next((d for d in all_depts if d["name"] == dept_name), None)
