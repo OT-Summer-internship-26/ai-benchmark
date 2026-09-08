@@ -46,7 +46,7 @@ warnings.filterwarnings('ignore')
 # NOTE: In production, consider using proper certificate pinning or firewall rules instead
 client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
-MODELE_JUGE = "llama3-70b-8192"  # Switched from qwen3.8-27b: separate Groq quota + avoids <think> truncation bug
+MODELE_JUGE = "qwen/qwen3.8-27b"  # Switched from qwen3.8-27b: separate Groq quota + avoids <think> truncation bug
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 
 
