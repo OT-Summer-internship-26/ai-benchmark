@@ -35,6 +35,7 @@ import time
 import warnings
 import httpx
 import urllib3
+import urllib3.connectionpool
 import requests
 from groq import Groq, RateLimitError
 from src.config.settings import GROQ_API_KEY
@@ -49,6 +50,12 @@ os.environ['REQUESTS_CA_BUNDLE'] = ''
 # Disable urllib3 SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+# Set permissive SSL ciphers
+try:
+    urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
+except AttributeError:
+    pass
+
 # Override default SSL context globally
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -58,12 +65,20 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 # Monkey-patch requests.Session to force verify=False on all requests
-# This ensures google-generativeai SDK doesn't verify SSL certificates
 old_request = requests.Session.request
 def unverified_request(self, *args, **kwargs):
     kwargs['verify'] = False
     return old_request(self, *args, **kwargs)
 requests.Session.request = unverified_request
+
+# LOW-LEVEL PATCH: Force urllib3 HTTPSConnectionPool to never verify certificates
+# This is the definitive fix for Avast MITM SSL interception
+original_init = urllib3.connectionpool.HTTPSConnectionPool.__init__
+def patched_init(self, *args, **kwargs):
+    kwargs['cert_reqs'] = ssl.CERT_NONE
+    kwargs['assert_hostname'] = False
+    original_init(self, *args, **kwargs)
+urllib3.connectionpool.HTTPSConnectionPool.__init__ = patched_init
 
 logger = setup_logger(__name__)
 
