@@ -29,6 +29,7 @@ dans les limites connues du rapport de stage.
 import json
 import os
 import re
+import ssl
 import statistics
 import time
 import warnings
@@ -36,6 +37,11 @@ import httpx
 from groq import Groq, RateLimitError
 from src.config.settings import GROQ_API_KEY
 from src.utils.logger import setup_logger
+
+# Disable SSL verification globally to bypass Avast MITM inspection
+os.environ['PYTHONHTTPSVERIFY'] = '0'
+os.environ['GRPC_DEFAULT_SSL_ROOTS_FILE_PATH'] = ''
+ssl._create_default_https_context = ssl._create_unverified_context
 
 logger = setup_logger(__name__)
 
