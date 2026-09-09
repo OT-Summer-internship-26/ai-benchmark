@@ -46,8 +46,22 @@ warnings.filterwarnings('ignore')
 # NOTE: In production, consider using proper certificate pinning or firewall rules instead
 client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
-MODELE_JUGE = "llama-3.2-3b-preview"  # Llama 3.2 3B preview model on Groq
+MODELE_JUGE = "qwen/qwen3.8-27b"  # Seul modèle fonctionnel sur notre compte Groq
+MODELE_JUGE_GEMINI = "gemini-1.5-flash"  # Alternative Gemini pour éviter les rate limits Groq
+USE_GEMINI_JUDGE = bool(os.getenv("GEMINI_API_KEY") and os.getenv("GEMINI_API_KEY") not in ["", "xxx"])  # Auto-detect Gemini availability
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
+
+# Initialize Gemini client if available
+gemini_client = None
+if USE_GEMINI_JUDGE:
+    try:
+        import google.generativeai as genai
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        gemini_client = genai.GenerativeModel(MODELE_JUGE_GEMINI)
+        logger.info(f"✓ Gemini client initialized ({MODELE_JUGE_GEMINI}) - will use for judge calls to avoid Groq rate limits")
+    except Exception as e:
+        logger.warning(f"Failed to initialize Gemini client: {e}. Falling back to Groq.")
+        USE_GEMINI_JUDGE = False
 
 
 def _extraire_temps_attente(error_msg: str) -> float | None:
@@ -67,23 +81,67 @@ def _extraire_temps_attente(error_msg: str) -> float | None:
 
 
 def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 800) -> float | None:
-    """Un seul appel au juge, avec gestion intelligente du rate limit Groq et backoff adaptatif.
+    """Un seul appel au juge, avec support Gemini pour éviter les rate limits Groq.
 
     Args:
         prompt_systeme: System prompt for the judge
         prompt_utilisateur: User prompt for the judge
-        max_tokens: Maximum tokens for response (cappé à 800 pour respecter la limite OTPM Groq de 1000)
+        max_tokens: Maximum tokens for response
 
-    Gestion des rate limits Groq :
-    - Pause exacte (+ marge 15s) si 'Please try again in Xm Ys' est fourni par Groq.
-    - Sinon, backoff adaptatif incluant des pauses longues de 5 min (300s) et 15 min (900s).
+    Si USE_GEMINI_JUDGE est True, utilise Gemini au lieu de Groq (rate limits plus généreux).
+    Sinon, utilise Groq avec gestion adaptative du rate limit.
+    
     Retourne la note float ou None si toutes les tentatives échouent.
     """
-    # Plafond strict pour éviter l'erreur OTPM (Limit 1000) sur qwen3.8-27b
+    # Use Gemini if available (bypasses Groq rate limits)
+    if USE_GEMINI_JUDGE and gemini_client:
+        try:
+            prompt_complet = f"{prompt_systeme}\n\n{prompt_utilisateur}"
+            response = gemini_client.generate_content(
+                prompt_complet,
+                generation_config={
+                    "temperature": 0,
+                    "max_output_tokens": max_tokens,
+                }
+            )
+            contenu = response.text.strip()
+            
+            # Parse JSON response
+            contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
+            try:
+                resultat = json.loads(contenu_nettoye)
+            except json.JSONDecodeError:
+                json_matches = list(re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', contenu_nettoye, re.DOTALL))
+                if json_matches:
+                    for json_match in reversed(json_matches):
+                        try:
+                            resultat = json.loads(json_match.group(0))
+                            break
+                        except json.JSONDecodeError:
+                            continue
+                    else:
+                        raise ValueError(f"Pas de JSON valide trouvé dans: {contenu_nettoye[:100]}")
+                else:
+                    raise ValueError(f"Pas de JSON trouvé dans: {contenu_nettoye[:100]}")
+            
+            note = resultat.get("note")
+            if note is None:
+                logger.warning(f"Gemini judge returned None for note field")
+                raise ValueError(f"Judge returned invalid response: note=None in JSON")
+            
+            note = float(note)
+            time.sleep(0.5)  # Lighter throttle for Gemini (more generous rate limits)
+            return max(0.0, min(1.0, note))
+            
+        except Exception as e:
+            logger.warning(f"Gemini judge call failed: {e}. Falling back to Groq.")
+            # Fall through to Groq logic below
+    
+    # Groq fallback logic (original)
     effective_max_tokens = min(max_tokens, 800)
-
-    # Tentatives normales puis pauses longues (5s, 15s, 45s, 300s [5 min], 900s [15 min])
-    backoffs = [5, 15, 45, 300, 900]
+    
+    # Reduced backoffs - no more 5min/15min waits for non-rate-limit errors
+    backoffs = [2, 5, 10]  # Much faster retries
     max_normal_attempts = len(backoffs)
     attempt = 1
     last_exc = None
@@ -102,25 +160,19 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
             )
             contenu = response.choices[0].message.content.strip()
 
-            # Qwen3 et autres modèles "reasoning" entourent leur raisonnement de
-            # balises <think>...</think> avant la réponse finale -> on les retire.
-            # Remove <think>...</think> or just <think>... if unclosed
+            # Remove <think>...</think> tags
             contenu = re.sub(r"<think>.*?(?=</think>|{)", "", contenu, flags=re.DOTALL).strip()
-            # Clean any remaining markup
             contenu = re.sub(r"</think>", "", contenu).strip()
 
-            # Le juge répond parfois avec des ```json ... ``` autour du JSON -> on nettoie
+            # Clean JSON markers
             contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
 
-            # Tentative de parsing JSON avec fallback
+            # Parse JSON
             try:
                 resultat = json.loads(contenu_nettoye)
             except json.JSONDecodeError:
-                # Si le parsing échoue, chercher un objet JSON valide dans le contenu
-                # Strategy: find the LAST valid JSON object (usually the real response, not examples)
                 json_matches = list(re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', contenu_nettoye, re.DOTALL))
                 if json_matches:
-                    # Try each match from last to first (most likely to be real response)
                     for json_match in reversed(json_matches):
                         try:
                             resultat = json.loads(json_match.group(0))
@@ -134,7 +186,6 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
             
             note = resultat.get("note")
             
-            # Validate judge returned a valid numeric note
             if note is None:
                 logger.warning(
                     f"Judge returned None for note field. "
@@ -143,44 +194,35 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
                 raise ValueError(f"Judge returned invalid response: note=None in JSON")
             
             note = float(note)
-            time.sleep(1.5)  # throttle pour éviter le rate limit Groq sur les gros batches
+            time.sleep(1.0)  # Reduced from 1.5s
             return max(0.0, min(1.0, note))        
         except Exception as e:
             last_exc = e
             error_msg = str(e)
             is_rate_limit = isinstance(e, RateLimitError) or "rate limit" in error_msg.lower() or "429" in error_msg
             
+            # Only wait for actual rate limits, not other errors
             if is_rate_limit:
                 temps_recommande = _extraire_temps_attente(error_msg)
                 if temps_recommande is not None:
-                    wait_time = temps_recommande + 15  # 15s de marge de sécurité
+                    wait_time = temps_recommande + 15  # 15s safety margin
                     minutes = int(wait_time // 60)
                     seconds = int(wait_time % 60)
                     logger.warning(
-                        f"[JUGE] Rate limit Groq détecté. Pause demandée par l'API : {minutes}m {seconds}s..."
+                        f"[JUGE] Rate limit Groq detected. API requested pause: {minutes}m {seconds}s..."
                     )
-                    print(f"[JUGE] Rate limit Groq. Pause demandée par l'API : {minutes}m {seconds}s avant réessai...")
-                    try:
-                        time.sleep(wait_time)
-                    except Exception:
-                        pass
+                    print(f"[JUGE] Rate limit. Pausing {minutes}m {seconds}s as requested by API...")
+                    time.sleep(wait_time)
                     attempt += 1
                     continue
             
-            wait = backoffs[attempt - 1]
-            if is_rate_limit and wait >= 300:
-                duree_min = wait // 60
-                logger.warning(f"[JUGE] Rate limit Groq persistant. Pause longue de {duree_min} minutes (tentative {attempt}/{max_normal_attempts})...")
-                print(f"[JUGE] Rate limit Groq. Pause longue de {duree_min} min avant tentative {attempt + 1}/{max_normal_attempts}...")
-            else:
-                logger.warning(f"[JUGE] tentative {attempt}/{max_normal_attempts} échouée : {type(e).__name__} - {e}")
-                print(f"[JUGE] tentative {attempt}/{max_normal_attempts} échouée : {type(e).__name__} - {e}")
+            # For non-rate-limit errors, use short backoffs
+            wait = backoffs[attempt - 1] if attempt <= len(backoffs) else backoffs[-1]
+            logger.warning(f"[JUGE] attempt {attempt}/{max_normal_attempts} failed: {type(e).__name__} - {str(e)[:100]}")
+            print(f"[JUGE] attempt {attempt}/{max_normal_attempts} failed: {type(e).__name__} - {str(e)[:100]}")
 
-            if attempt < max_normal_attempts:                
-                try:
-                    time.sleep(wait)
-                except Exception:
-                    pass
+            if attempt < max_normal_attempts:
+                time.sleep(wait)
             attempt += 1
 
     return None
