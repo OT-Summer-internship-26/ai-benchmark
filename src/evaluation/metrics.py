@@ -91,7 +91,7 @@ warnings.filterwarnings('ignore')
 client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
 MODELE_JUGE = "qwen/qwen3.8-27b"  # Seul modèle fonctionnel sur notre compte Groq
-MODELE_JUGE_GEMINI = "gemini-1.5-flash"  # Alternative Gemini pour éviter les rate limits Groq
+MODELE_JUGE_GEMINI = "gemini-1.5-flash-latest"  # Alternative Gemini avec identifiant API REST v1beta stable
 USE_GEMINI_JUDGE = bool(os.getenv("GEMINI_API_KEY") and os.getenv("GEMINI_API_KEY") not in ["", "xxx"])  # Auto-detect Gemini availability
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 
