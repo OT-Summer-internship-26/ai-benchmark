@@ -46,7 +46,7 @@ warnings.filterwarnings('ignore')
 # NOTE: In production, consider using proper certificate pinning or firewall rules instead
 client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
-MODELE_JUGE = "llama-3.3-70b-versatile"  # High-quality judge model with 128k context window
+MODELE_JUGE = "llama3-8b-8192"  # Llama 3 8B with 8k context window on Groq
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 
 
