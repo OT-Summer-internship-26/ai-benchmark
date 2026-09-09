@@ -98,6 +98,9 @@ USE_GEMINI_JUDGE = True  # Activer Gemini pour contourner les limitations Groq
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 
 # Initialize Gemini client if available
+# NOTE: Gemini client requires SSL verification disabled when Avast or similar antivirus
+# software performs SSL/TLS interception (MITM). We configure a custom httpx client
+# with verify=False, similar to the Groq client configuration above.
 gemini_client = None
 if USE_GEMINI_JUDGE:
     try:
@@ -107,9 +110,15 @@ if USE_GEMINI_JUDGE:
             USE_GEMINI_JUDGE = False
         else:
             print(f"✅ [OK] GEMINI_API_KEY trouvée (longueur: {len(GEMINI_API_KEY)} caractères)")
-            gemini_client = genai.Client(api_key=GEMINI_API_KEY)
-            logger.info(f"[OK] Gemini client initialized ({MODELE_JUGE_GEMINI}) - will use for judge calls to avoid Groq rate limits")
-            print(f"✅ [OK] Client Gemini initialisé avec modèle {MODELE_JUGE_GEMINI}")
+            # Create Gemini client with SSL verification disabled for corporate MITM compatibility
+            # The google-genai SDK uses httpx internally - we pass a custom client via http_options
+            gemini_http_client = httpx.Client(verify=False, timeout=60.0)
+            gemini_client = genai.Client(
+                api_key=GEMINI_API_KEY,
+                http_options=gemini_http_client
+            )
+            logger.info(f"[OK] Gemini client initialized ({MODELE_JUGE_GEMINI}) with SSL verification disabled - will use for judge calls to avoid Groq rate limits")
+            print(f"✅ [OK] Client Gemini initialisé avec modèle {MODELE_JUGE_GEMINI} (SSL verification disabled)")
     except Exception as e:
         logger.warning(f"Failed to initialize Gemini client: {e}. Falling back to Groq.")
         print(f"⚠️ [ERREUR] Échec initialisation Gemini: {e}")
