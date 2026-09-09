@@ -38,7 +38,8 @@ import urllib3
 import urllib3.connectionpool
 import requests
 from groq import Groq, RateLimitError
-from src.config.settings import GROQ_API_KEY
+from google import genai
+from src.config.settings import GROQ_API_KEY, GEMINI_API_KEY
 from src.utils.logger import setup_logger
 
 # Disable SSL verification globally to bypass Avast MITM inspection
@@ -46,6 +47,7 @@ os.environ['PYTHONHTTPSVERIFY'] = '0'
 os.environ['GRPC_DEFAULT_SSL_ROOTS_FILE_PATH'] = ''
 os.environ['CURL_CA_BUNDLE'] = ''
 os.environ['REQUESTS_CA_BUNDLE'] = ''
+os.environ['GOOGLE_API_USE_CLIENT_CERTIFICATE'] = 'false'  # Force REST for Google API, disable gRPC
 
 # Disable urllib3 SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -90,22 +92,27 @@ warnings.filterwarnings('ignore')
 # NOTE: In production, consider using proper certificate pinning or firewall rules instead
 client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
-MODELE_JUGE = "qwen/qwen3.8-27b"  # Seul modèle fonctionnel sur notre compte Groq
-MODELE_JUGE_GEMINI = "gemini-1.5-flash-latest"  # Alternative Gemini avec identifiant API REST v1beta stable
-USE_GEMINI_JUDGE = bool(os.getenv("GEMINI_API_KEY") and os.getenv("GEMINI_API_KEY") not in ["", "xxx"])  # Auto-detect Gemini availability
+MODELE_JUGE = "qwen/qwen3.8-27b"  # Configuration d'origine qui fonctionnait (Groq)
+MODELE_JUGE_GEMINI = "gemini-1.5-flash"  # Modèle Gemini pour éviter les rate limits Groq
+USE_GEMINI_JUDGE = True  # Activer Gemini pour contourner les limitations Groq
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 
 # Initialize Gemini client if available
 gemini_client = None
 if USE_GEMINI_JUDGE:
     try:
-        import google.generativeai as genai
-        # Use REST transport instead of gRPC to avoid SSL certificate issues with Avast MITM
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"), transport='rest')
-        gemini_client = genai.GenerativeModel(MODELE_JUGE_GEMINI)
-        logger.info(f"[OK] Gemini client initialized ({MODELE_JUGE_GEMINI}) with REST transport - will use for judge calls to avoid Groq rate limits")
+        if not GEMINI_API_KEY or GEMINI_API_KEY.strip() in ["", "xxx"]:
+            print("⚠️ [ERREUR CRITIQUE] GEMINI_API_KEY est introuvable dans .env !")
+            logger.error("GEMINI_API_KEY not found in environment variables")
+            USE_GEMINI_JUDGE = False
+        else:
+            print(f"✅ [OK] GEMINI_API_KEY trouvée (longueur: {len(GEMINI_API_KEY)} caractères)")
+            gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+            logger.info(f"[OK] Gemini client initialized ({MODELE_JUGE_GEMINI}) - will use for judge calls to avoid Groq rate limits")
+            print(f"✅ [OK] Client Gemini initialisé avec modèle {MODELE_JUGE_GEMINI}")
     except Exception as e:
         logger.warning(f"Failed to initialize Gemini client: {e}. Falling back to Groq.")
+        print(f"⚠️ [ERREUR] Échec initialisation Gemini: {e}")
         USE_GEMINI_JUDGE = False
 
 
@@ -125,37 +132,50 @@ def _extraire_temps_attente(error_msg: str) -> float | None:
     return None
 
 
-def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 800) -> float | None:
-    """Un seul appel au juge, avec support Gemini pour éviter les rate limits Groq.
-
-    Args:
-        prompt_systeme: System prompt for the judge
-        prompt_utilisateur: User prompt for the judge
-        max_tokens: Maximum tokens for response
-
-    Si USE_GEMINI_JUDGE est True, utilise Gemini au lieu de Groq (rate limits plus généreux).
-    Sinon, utilise Groq avec gestion adaptative du rate limit.
+def _appeler_juge_gemini_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 1200) -> float | None:
+    """Appel unique au juge Gemini avec parsing JSON identique à Groq.
     
-    Retourne la note float ou None si toutes les tentatives échouent.
+    Combine les prompts système et utilisateur, puis parse la réponse JSON
+    avec la même logique que Groq (nettoyage <think>, extraction regex, etc.).
+    
+    Retry: 3 tentatives avec backoffs [2s, 5s, 10s] pour erreurs non-rate-limit.
+    Pour rate limits, respecte le temps demandé par l'API + 15s de marge.
+    
+    Returns:
+        float: Note entre 0.0 et 1.0, ou None si échec complet
     """
-    # Use Gemini if available (bypasses Groq rate limits)
-    if USE_GEMINI_JUDGE and gemini_client:
+    backoffs = [2, 5, 10]
+    max_attempts = len(backoffs)
+    
+    for attempt in range(1, max_attempts + 1):
         try:
+            # Combine system and user prompts (Gemini doesn't have separate system role in generate_content)
             prompt_complet = f"{prompt_systeme}\n\n{prompt_utilisateur}"
-            response = gemini_client.generate_content(
-                prompt_complet,
-                generation_config={
+            
+            response = gemini_client.models.generate_content(
+                model=MODELE_JUGE_GEMINI,
+                contents=prompt_complet,
+                config={
                     "temperature": 0,
                     "max_output_tokens": max_tokens,
                 }
             )
+            
             contenu = response.text.strip()
             
-            # Parse JSON response
+            # Même logique de nettoyage que Groq
+            # Remove <think>...</think> tags
+            contenu = re.sub(r"<think>.*?(?=</think>|{)", "", contenu, flags=re.DOTALL).strip()
+            contenu = re.sub(r"</think>", "", contenu).strip()
+            
+            # Clean JSON markers
             contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
+            
+            # Parse JSON - même logique qu'avec Groq
             try:
                 resultat = json.loads(contenu_nettoye)
             except json.JSONDecodeError:
+                # Fallback: chercher le dernier JSON valide dans la réponse
                 json_matches = list(re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', contenu_nettoye, re.DOTALL))
                 if json_matches:
                     for json_match in reversed(json_matches):
@@ -171,16 +191,68 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
             
             note = resultat.get("note")
             if note is None:
-                logger.warning(f"Gemini judge returned None for note field")
+                logger.warning(f"[GEMINI] Judge returned None for note field")
                 raise ValueError(f"Judge returned invalid response: note=None in JSON")
             
             note = float(note)
-            time.sleep(0.5)  # Lighter throttle for Gemini (more generous rate limits)
+            time.sleep(0.5)  # Lighter throttle for Gemini (more generous rate limits than Groq)
             return max(0.0, min(1.0, note))
             
         except Exception as e:
-            logger.warning(f"Gemini judge call failed: {e}. Falling back to Groq.")
-            # Fall through to Groq logic below
+            error_msg = str(e)
+            is_rate_limit = "rate limit" in error_msg.lower() or "429" in error_msg or "quota" in error_msg.lower()
+            
+            # Si rate limit, respecter la pause demandée par l'API
+            if is_rate_limit:
+                temps_recommande = _extraire_temps_attente(error_msg)
+                if temps_recommande is not None:
+                    wait_time = temps_recommande + 15  # 15s safety margin
+                    minutes = int(wait_time // 60)
+                    seconds = int(wait_time % 60)
+                    logger.warning(f"[GEMINI] Rate limit detected. API requested pause: {minutes}m {seconds}s...")
+                    print(f"[GEMINI] Rate limit. Pausing {minutes}m {seconds}s as requested by API...")
+                    time.sleep(wait_time)
+                    continue
+                else:
+                    # Rate limit sans temps précis - utiliser backoff standard
+                    wait = 60  # 1 minute par défaut pour rate limits
+                    logger.warning(f"[GEMINI] Rate limit detected (no specific wait time). Pausing {wait}s...")
+                    print(f"[GEMINI] Rate limit. Pausing {wait}s...")
+                    time.sleep(wait)
+                    continue
+            
+            # Pour erreurs non-rate-limit, utiliser backoffs courts
+            logger.warning(f"[GEMINI] attempt {attempt}/{max_attempts} failed: {type(e).__name__} - {str(e)[:100]}")
+            print(f"[GEMINI] attempt {attempt}/{max_attempts} failed: {type(e).__name__} - {str(e)[:100]}")
+            
+            if attempt < max_attempts:
+                wait = backoffs[attempt - 1]
+                time.sleep(wait)
+    
+    return None
+
+
+def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 800) -> float | None:
+    """Un seul appel au juge, avec support Gemini pour éviter les rate limits Groq.
+
+    Args:
+        prompt_systeme: System prompt for the judge
+        prompt_utilisateur: User prompt for the judge
+        max_tokens: Maximum tokens for response
+
+    Si USE_GEMINI_JUDGE est True, utilise Gemini au lieu de Groq (rate limits plus généreux).
+    Sinon, utilise Groq avec gestion adaptative du rate limit.
+    
+    Retourne la note float ou None si toutes les tentatives échouent.
+    """
+    # Use Gemini if available (bypasses Groq rate limits)
+    if USE_GEMINI_JUDGE and gemini_client:
+        note = _appeler_juge_gemini_une_fois(prompt_systeme, prompt_utilisateur, max_tokens=max_tokens)
+        if note is not None:
+            return note
+        # Si Gemini échoue complètement, fallback sur Groq
+        logger.warning("[GEMINI] All attempts failed, falling back to Groq")
+        print("⚠️ [GEMINI] Échec complet, bascule vers Groq...")
     
     # Groq fallback logic (original)
     effective_max_tokens = min(max_tokens, 800)
