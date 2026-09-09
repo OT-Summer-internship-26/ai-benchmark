@@ -57,6 +57,14 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
+# Monkey-patch requests.Session to force verify=False on all requests
+# This ensures google-generativeai SDK doesn't verify SSL certificates
+old_request = requests.Session.request
+def unverified_request(self, *args, **kwargs):
+    kwargs['verify'] = False
+    return old_request(self, *args, **kwargs)
+requests.Session.request = unverified_request
+
 logger = setup_logger(__name__)
 
 # Suppress SSL warnings (SSL verification is disabled for corporate MITM inspection compatibility)
