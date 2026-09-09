@@ -27,6 +27,7 @@ dans les limites connues du rapport de stage.
 """
 
 import json
+import os
 import re
 import statistics
 import time
