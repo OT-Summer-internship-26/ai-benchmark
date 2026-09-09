@@ -63,9 +63,10 @@ gemini_client = None
 if USE_GEMINI_JUDGE:
     try:
         import google.generativeai as genai
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        # Use REST transport instead of gRPC to avoid SSL certificate issues with Avast MITM
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"), transport='rest')
         gemini_client = genai.GenerativeModel(MODELE_JUGE_GEMINI)
-        logger.info(f"[OK] Gemini client initialized ({MODELE_JUGE_GEMINI}) - will use for judge calls to avoid Groq rate limits")
+        logger.info(f"[OK] Gemini client initialized ({MODELE_JUGE_GEMINI}) with REST transport - will use for judge calls to avoid Groq rate limits")
     except Exception as e:
         logger.warning(f"Failed to initialize Gemini client: {e}. Falling back to Groq.")
         USE_GEMINI_JUDGE = False
