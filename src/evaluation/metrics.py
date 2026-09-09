@@ -59,7 +59,7 @@ if USE_GEMINI_JUDGE:
         import google.generativeai as genai
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
         gemini_client = genai.GenerativeModel(MODELE_JUGE_GEMINI)
-        logger.info(f"✓ Gemini client initialized ({MODELE_JUGE_GEMINI}) - will use for judge calls to avoid Groq rate limits")
+        logger.info(f"[OK] Gemini client initialized ({MODELE_JUGE_GEMINI}) - will use for judge calls to avoid Groq rate limits")
     except Exception as e:
         logger.warning(f"Failed to initialize Gemini client: {e}. Falling back to Groq.")
         USE_GEMINI_JUDGE = False
