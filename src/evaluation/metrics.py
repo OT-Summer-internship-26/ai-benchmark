@@ -39,19 +39,17 @@ import requests
 from groq import Groq, RateLimitError
 from src.config.settings import GROQ_API_KEY
 from src.utils.logger import setup_logger
-from requests.adapters import HTTPAdapter
-from urllib3.util import ssl_ as urllib3_ssl
 
 # Disable SSL verification globally to bypass Avast MITM inspection
 os.environ['PYTHONHTTPSVERIFY'] = '0'
 os.environ['GRPC_DEFAULT_SSL_ROOTS_FILE_PATH'] = ''
-ssl._create_default_https_context = ssl._create_unverified_context
+os.environ['CURL_CA_BUNDLE'] = ''
+os.environ['REQUESTS_CA_BUNDLE'] = ''
 
 # Disable urllib3 SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# Patch requests / urllib3 to ignore SSL globally
-urllib3_ssl.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+# Override default SSL context globally
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
