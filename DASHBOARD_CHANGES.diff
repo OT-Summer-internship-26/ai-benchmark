@@ -1,0 +1,531 @@
+--- a/src/dashboard/app.py (ORIGINAL)
++++ b/src/dashboard/app.py (MODIFIED)
+@@ -1149,51 +1149,90 @@
+ # ---------------------------------------------------------------------------
+ 
+-def render_sidebar_identity(email: str, role: str) -> None:
++def render_sidebar_header() -> None:
++    """Render improved logo header at TOP of sidebar with proper centering, aspect ratio, and spacing."""
++    st.markdown(
++        f"""
++        <div style='
++            display: flex;
++            justify-content: center;
++            align-items: center;
++            padding: 16px 0 12px 0;
++            margin-bottom: 8px;
++        '>
++            <img 
++                src='data:image/png;base64,{LOGO_B64}' 
++                style='
++                    max-width: 140px;
++                    height: auto;
++                    display: block;
++                    object-fit: contain;
++                '
++                alt='Ooredoo Logo'
++            >
++        </div>
++        """,
++        unsafe_allow_html=True,
++    )
++    st.markdown("<hr style='margin: 8px 0; opacity: 0.3;'>", unsafe_allow_html=True)
++
++
++def render_sidebar_account(email: str, role: str) -> None:
++    """Render the account/identity section at the BOTTOM of sidebar."""
++    st.sidebar.divider()
++    
++    st.sidebar.markdown(
++        f"""
++        <div style='text-align:center; color:white; padding:12px 0;'>
++            <div style='font-weight:700; font-size:14px; margin-bottom:4px;'>{email}</div>
++            <div style='font-size:11px; letter-spacing:1px; opacity:0.85; margin-bottom:12px;'>
++                {role.upper()}
++            </div>
++        </div>
++        """,
++        unsafe_allow_html=True,
++    )
++
++    if st.sidebar.button("🚪 Se déconnecter", use_container_width=True):
++        st.session_state.pop("auth_email", None)
++        st.session_state.pop("auth_role", None)
++        st.session_state.pop("login_mode", None)
++        st.session_state.pop("login_role", None)
++        st.session_state.pop("login_stage", None)
++        st.rerun()
++
++    role_messages = {
++        "Client": "Vue simplifiée : indicateurs clés uniquement.",
++        "Admin": "Accès complet aux données métier et aux exports.",
++        "Super Admin": "Accès complet + outils d'administration.",
++    }
++    st.sidebar.caption(role_messages.get(role, ""))
++
+ 
+-    with st.sidebar.container(key="brand_header"):
++
++def render_sidebar_identity(email: str, role: str) -> None:
++    """DEPRECATED: Use render_sidebar_header() + render_sidebar_account() instead."""
++    
++    with st.sidebar.container(key="brand_header"):
+         st.markdown(
+             f"<div style='text-align:center; padding:14px 0 10px 0;'>"
+             f"<img src='data:image/png;base64,{LOGO_B64}' style='width:96px;'></div>",
+             unsafe_allow_html=True,
+         )
+-        st.markdown(
++        st.markdown(                    
+             f"""
+             <div style='text-align:center; color:white; padding-bottom:14px;'>
+                 <div style='font-weight:700; font-size:14px; margin-top:2px;'>{email}</div>
+                 <div style='font-size:11px; letter-spacing:1px; opacity:0.85; margin-top:2px;'>
+                     {role.upper()}
+                 </div>
+             </div>
+             """,
+             unsafe_allow_html=True,
+         )
+-
++    
+     st.markdown(
+         """
+         <style>
+         .st-key-brand_header {
+             background: linear-gradient(165deg, #ED1C29 0%, #A80F17 100%);
+             border-radius: 0 0 16px 16px;
+             margin: -1rem -1rem 0.8rem -1rem;
+         }
+         </style>
+         """,
+         unsafe_allow_html=True,
+     )
+-
++    
+     if st.sidebar.button("Se déconnecter", use_container_width=True):
+         st.session_state.pop("auth_email", None)
+         st.session_state.pop("auth_role", None)
+         st.session_state.pop("login_mode", None)
+         st.session_state.pop("login_role", None)
+         st.session_state.pop("login_stage", None)
+         st.rerun()
+-
++    
+     role_messages = {
+         "Client": "Vue simplifiée : indicateurs clés uniquement.",
+         "Admin": "Accès complet aux données métier et aux exports.",
+         "Super Admin": "Accès complet + outils d'administration.",
+     }
+     st.sidebar.caption(role_messages.get(role, ""))
+     st.sidebar.divider()
+ 
+ # ---------------------------------------------------------------------------
+ # Main app (post-login)
+ # ---------------------------------------------------------------------------
+ 
+ def main() -> None:
+     """Main dashboard application with comprehensive error handling."""
+     try:
+         if "auth_role" not in st.session_state:
+             login_page()
+             st.stop()
+ 
+         email = st.session_state["auth_email"]
+         role = st.session_state["auth_role"]
+         is_admin = role in ["Admin", "Super Admin"]
+         is_super_admin = role == "Super Admin"
+         is_client = role == "Client"
+         
+         logger.info(f"Dashboard accessed by user: {email} with role: {role}")
+ 
+-        render_sidebar_identity(email, role)
++        # ===================================================================
++        # SIDEBAR LAYOUT (NEW DESIGN)
++        # ===================================================================
++        
++        # 1. Render logo header at TOP of sidebar
++        st.sidebar.markdown("")  # Top padding
++        render_sidebar_header()
++        
++        # 2. Filters section (Filtres)
++        st.sidebar.header("Filtres")
++        load_all = st.sidebar.checkbox(
++            "Charger toutes les exécutions (ignorer la limite)",
++            value=False,
++            help="Utile pour être sûr de voir tous les scénarios/modèles, même au-delà de la limite ci-dessous.",
++        )
++        if load_all:
++            limit = None
++            st.sidebar.caption("Limite désactivée — toutes les exécutions de la base sont chargées.")
++        else:
++            limit = st.sidebar.slider(
++                "Nombre d'exécutions à charger",
++                min_value=10,
++                max_value=2000,
++                value=300,
++                step=10,
++            )
++
++        # Load data with error handling
++        with st.spinner("Chargement des données..."):
++            df = load_executions(limit=limit)
++            df = format_datetime(df)
++
++        if df.empty:
++            st.warning("Aucune exécution disponible dans la base de données.")
++            st.info("Veuillez vérifier que des benchmarks ont été exécutés ou contactez votre administrateur.")
++            return
++
++        logger.info(f"Loaded {len(df)} executions for dashboard display")
+ 
++        # 3. API token status (admin only)
+         if is_admin:
+-            if st.session_state.get("api_token"):
+-               st.sidebar.caption("API token: ✅ présent")
++            if st.session_state.get("api_token"):
++                st.sidebar.caption("✅ API token: présent")
+             else:
+                 st.sidebar.error(f"API token absent — erreur : {st.session_state.get('api_token_error')}")
+                 logger.warning(f"Admin user {email} missing API token: {st.session_state.get('api_token_error')}")
++
++        # 4. Legacy scores warning (admin only)
++        try:
++            with engine.connect() as conn:
++                legacy_count = conn.execute(
++                    text(
++                        "SELECT COUNT(*) FROM scores WHERE critere IN ('completude','structure','fidelite_rag','honnetete') OR (critere='score_global' AND note > 1.0)"
++                    )
++                ).scalar()
++        except Exception:
++            legacy_count = 0
++
++        if is_admin and legacy_count and legacy_count > 0:
++            st.sidebar.warning(
++                f"Attention — {legacy_count} scores heuristiques anciens détectés en base.\n"
++                "Ces anciennes métriques peuvent fausser les agrégations. Exécutez `python scripts/cleanup_scores.py --dry-run` puis `--apply` pour nettoyer."
++            )
++
++        # 5. Build navigation options based on role
++        nav_options = ["📊 Vue d'ensemble", "📈 Comparaison modèles", "📋 Comparaison scénarios", "🔍 Détails des exécutions"]
++        if is_admin:
++            nav_options.append("🎛️ Pilotage")
++        if is_super_admin:
++            nav_options.append("⚙️ Administration")
++        
++        # SIDEBAR NAVIGATION MENU (replacing horizontal tabs)
++        st.sidebar.markdown("---")
++        st.sidebar.header("Navigation")
++        
++        selected_nav = st.sidebar.radio(
++            "Section",
++            options=nav_options,
++            label_visibility="collapsed",
++        )
++
++        # 6. Render account/logout at BOTTOM of sidebar
++        render_sidebar_account(email, role)
++        
++        # ===================================================================
++        # MAIN CONTENT AREA
++        # ===================================================================
+         st.markdown(
+             """
+             <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:6px;">
+                 <span style="font-family:'Trebuchet MS',sans-serif; font-weight:800; font-size:26px; color:#ED1C29;">ooredoo</span>
+                 <span style="font-size:22px; color:#1a1a1a; font-weight:600;">Benchmark IA</span>
+             </div>
+             """,
+             unsafe_allow_html=True,
+         )
+         st.markdown(
+             "Ce dashboard permet de comparer les résultats de benchmark RAG + LLM, "
+             "d'analyser la performance des modèles et de consulter les exécutions détaillées."
+         )
+ 
+         st.markdown(
+             """
+             <style>
+             header {display:none;}
+             h1 {font-size:30px; color:#ED1C29;}
+             h2 {color:#ED1C29;}
+             </style>
+             """,
+             unsafe_allow_html=True,
+         )
+ 
+-        # Load data with error handling
+-        try:
+-            st.sidebar.header("Filtres")
+-            load_all = st.sidebar.checkbox(
+-                "Charger toutes les exécutions (ignorer la limite)",
+-                value=False,
+-                help="Utile pour être sûr de voir tous les scénarios/modèles, même au-delà de la limite ci-dessous.",
+-            )
+-            if load_all:
+-                limit = None
+-                st.sidebar.caption("Limite désactivée — toutes les exécutions de la base sont chargées.")
+-            else:
+-                limit = st.sidebar.slider(
+-                    "Nombre d'exécutions à charger",
+-                    min_value=10,
+-                    max_value=2000,
+-                    value=300,
+-                    step=10,
+-                )
+-
+-            # Load data with error handling
+-            with st.spinner("Chargement des données..."):
+-                df = load_executions(limit=limit)
+-                df = format_datetime(df)
+-
+-            if df.empty:
+-                st.warning("Aucune exécution disponible dans la base de données.")
+-                st.info("Veuillez vérifier que des benchmarks ont été exécutés ou contactez votre administrateur.")
+-                return
+-
+-            logger.info(f"Loaded {len(df)} executions for dashboard display")
+-            
+-        except Exception as e:
+-            logger.error(f"Error loading dashboard data: {e}", exc_info=True)
+-            st.error("Erreur lors du chargement des données. Veuillez réessayer ou contactez votre administrateur.")
+-            st.exception(e)
+-            return
++        if df.empty:
++            st.warning("Aucune exécution disponible dans la base de données.")
++            return
+ 
+         if is_admin:
+             modeles = df["modele_nom"].unique().tolist()
+ 
+             scenario_catalog = load_scenario_catalog()
+             scenarios = scenario_catalog["nom_cas_usage"].tolist()
+             departement_par_scenario = dict(zip(scenario_catalog["nom_cas_usage"], scenario_catalog["departement"]))
+ 
+             selected_modeles = st.sidebar.multiselect("Modèles", modeles, default=modeles)
+             selected_scenarios = st.sidebar.multiselect(
+                "Scénarios",
+               scenarios,
+               default=scenarios,
+               format_func=lambda nom: f"{nom} ({departement_par_scenario.get(nom, '?')})",
+         )
+   
+             min_date = df["date_execution"].min().date()
+             max_date = df["date_execution"].max().date()
+             date_range = st.sidebar.date_input(
+                "Période d'exécution",
+               value=(min_date, max_date),
+               min_value=min_date,
+               max_value=max_date,
+         )
+             if isinstance(date_range, tuple) and len(date_range) == 2:
+ 
+                  start_date, end_date = date_range
+             else:
+ 
+                 start_date, end_date = min_date, max_date
+ 
+ 
+         else:
+ 
+             # Client : pas de filtres avancés, vue simplifiée sur toutes les données disponibles
+             selected_modeles = df["modele_nom"].unique().tolist()
+             selected_scenarios = df["nom_cas_usage"].unique().tolist()
+             start_date = df["date_execution"].min().date()
+             end_date = df["date_execution"].max().date()
+             
+         filtered = df[
+             df["modele_nom"].isin(selected_modeles)
+             & df["nom_cas_usage"].isin(selected_scenarios)
+             & (df["date_execution"].dt.date >= start_date)
+             & (df["date_execution"].dt.date <= end_date)
+         ]
+ 
+         # Style / affichage — advanced display controls are admin-only; regular
+         # users get sensible defaults instead of being shown extra knobs.
+         if is_admin:
+             st.sidebar.markdown("---")
+             st.sidebar.markdown("**Affichage & style**")
+             palette = st.sidebar.selectbox(
+                 "Palette de couleurs",
+                 options=["tableau10", "category10", "viridis", "blues", "inferno"],
+                 index=0,
+             )
+             normalize_stacked = st.sidebar.checkbox("Normaliser la pile (proportions)", value=False)
+         else:
+             palette = "tableau10"
+             normalize_stacked = False
+ 
+         # Advanced export controls
+         if is_admin:
+             st.sidebar.markdown("---")
+             st.sidebar.markdown("**Export avancé**")
+             all_columns = filtered.columns.tolist()
+             default_cols = [c for c in ["execution_id", "modele_nom", "nom_cas_usage", "date_execution", "score_global_display"] if c in all_columns]
+             selected_columns_for_export = st.sidebar.multiselect("Colonnes à exporter", options=all_columns, default=default_cols)
+         else:
+             selected_columns_for_export = ["date_execution", "modele_nom", "nom_cas_usage", "score_global_display"]
+ 
+         if filtered.empty:
+             st.warning("Aucun résultat pour les filtres sélectionnés et la période définie.")
+             return
+ 
+         latest_run = filtered["date_execution"].max()
+         st.caption(f"Dernière exécution chargée : {latest_run}")
+ 
+         metric_names = {
+             "score_global_display": "Score global",
+             "faithfulness": "Faithfulness",
+             "answer_relevancy": "Answer relevancy",
+             "context_precision": "Context precision",
+             "context_recall": "Context recall",
+             "latence_secondes": "Latence (s)",
+         }
+         selected_metric_key = st.sidebar.selectbox(
+             "Métrique à comparer",
+             list(metric_names.values()),
+             index=0,
+         )
+         selected_metric = next(
+             key for key, label in metric_names.items() if label == selected_metric_key
+         )
+ 
+         summary_model = (
+             filtered.groupby("modele_nom")[
+                 ["score_global_display", "faithfulness", "answer_relevancy", "context_precision", "context_recall", "latence_secondes"]
+             ]
+             .mean()
+             .round(3)
+             .reset_index()
+             .sort_values("score_global_display", ascending=False)
+         )
+ 
+         summary_scenario = (
+             filtered.groupby("nom_cas_usage")[
+                 ["score_global_display", "faithfulness", "answer_relevancy", "context_precision", "context_recall", "latence_secondes"]
+             ]
+             .mean()
+             .round(3)
+             .reset_index()
+             .sort_values("score_global_display", ascending=False)
+         )
+ 
+         model_metrics_long = summary_model.melt(
+             id_vars=["modele_nom"],
+             value_vars=["faithfulness", "answer_relevancy", "context_precision", "context_recall"],
+             var_name="critere",
+             value_name="note",
+         )
+ 
+         best_model = summary_model.iloc[0] if not summary_model.empty else None
+         best_scenario = summary_scenario.iloc[0] if not summary_scenario.empty else None
+ 
+-        # ------------------------------------------------------------------
+-        # Construction des onglets : le Client n'a plus "Détails des
+-        # exécutions" (données brutes/techniques) ni "Pilotage".
+-        # ------------------------------------------------------------------
+-        tabs = ["Vue d'ensemble", "Comparaison modèles", "Comparaison scénarios", "Détails des exécutions"]
++        # ===================================================================
++        # RENDER CONTENT BASED ON SELECTED NAVIGATION ITEM
++        # (replacing st.tabs with conditional rendering)
++        # ===================================================================
+         
+-        if is_admin:
+-            tabs.append("Pilotage")
+-        if is_super_admin:
+-            tabs.append("Administration")
++        if selected_nav == "📊 Vue d'ensemble":
++            if role == "Client":
++                st.markdown("## Vue d'ensemble")
++                
+ 
+-        tab_objects = st.tabs(tabs)
++                st.markdown("#### Top 3 modèles")
++                top3 = summary_model.head(3).copy()
++                if not top3.empty:
++                    top3 = top3.reset_index(drop=True)
++                    top3.index = top3.index + 1
++                    top3["Qualité"] = top3["score_global_display"].apply(score_to_label)
++                    top3["score_global_display"] = top3["score_global_display"].map(lambda v: f"{v:.3f}")
++                    st.table(
++                        top3.rename(
++                            columns={
++                                "modele_nom": "Modèle",
++                                "score_global_display": "Score global",
++                                "latence_secondes": "Latence (s)",
++                            }
++                        )[["Modèle", "Qualité", "Latence (s)"]]
++                    )
++                else:
++                    st.info("Pas de modèles à afficher pour le Top 3.")
+ 
+-        overview_tab, models_tab, scenarios_tab, details_tab = tab_objects[:4]
+-        extra_tabs = list(tab_objects[4:])
++                st.markdown("#### Top 3 scénarios")
++                top3_scenarios = summary_scenario.head(3).copy()
++                if not top3_scenarios.empty:
++                    top3_scenarios = top3_scenarios.reset_index(drop=True)
++                    top3_scenarios.index = top3_scenarios.index + 1
++                    top3_scenarios["Qualité"] = top3_scenarios["score_global_display"].apply(score_to_label)
++                    top3_scenarios["score_global_display"] = top3_scenarios["score_global_display"].map(lambda v: f"{v:.3f}")
++                    st.table(
++                        top3_scenarios.rename(
++                            columns={
++                                "nom_cas_usage": "Scénario",
++                                "score_global_display": "Score global",
++                                "latence_secondes": "Latence (s)",
++                            }
++                        )[["Scénario", "Qualité", "Latence (s)"]]
++                    )
++                else:
++                    st.info("Pas de scénarios à afficher pour le Top 3.")
+ 
+-        pilotage_tab = extra_tabs.pop(0) if is_admin else None
+-        admin_tab = extra_tabs.pop(0) if is_super_admin else None
++                st.divider()
++                build_client_department_comparison(filtered)
++            else:
++                build_metric_cards(filtered, client_mode=False)
++                # ... rest of admin overview content (unchanged)
+ 
+-        with overview_tab:
+-            if role == "Client":
+-                # ... existing content ...
+-            else:
+-                # ... existing admin content ...
++        elif selected_nav == "📋 Comparaison scénarios":
++            if role == "Client":
++                # ... existing client scenarios content ...
++            else:
++                # ... existing admin scenarios content ...
+ 
+-        with scenarios_tab:
+-            # ... existing content ...
++        elif selected_nav == "📈 Comparaison modèles":
++            if role == "Client":
++                # ... existing client models content ...
++            else:
++                # ... existing admin models content ...
+ 
+-        with models_tab:
+-            # ... existing content ...
++        elif selected_nav == "🔍 Détails des exécutions":
++            st.markdown("## Détail des exécutions")
++            # ... existing details content ...
+ 
+-        with details_tab:
+-            # ... existing content ...
++        elif selected_nav == "🎛️ Pilotage":
++            st.markdown("## Pilotage du benchmark")
++            # ... existing pilotage content ...
+ 
+-        if is_admin and pilotage_tab is not None:
+-            with pilotage_tab:
+-                # ... pilotage content ...
++        elif selected_nav == "⚙️ Administration":
++            st.markdown("## Administration")
++            # ... existing admin content ...
+ 
+-        if is_super_admin and admin_tab is not None:
+-            with admin_tab:
+-                # ... admin content ...

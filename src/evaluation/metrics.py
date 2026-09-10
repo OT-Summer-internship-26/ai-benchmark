@@ -38,6 +38,24 @@ import urllib3
 import urllib3.connectionpool
 import requests
 from groq import Groq, RateLimitError
+# --- Contournement SSL pour environnement corporate (inspection MITM) ---
+# Force verify=False sur TOUS les clients httpx créés dans ce process,
+# y compris ceux créés en interne par le SDK google-genai (qui n'expose
+# pas de moyen fiable de le configurer via ses propres paramètres).
+import httpx
+
+_original_client_init = httpx.Client.__init__
+def _patched_client_init(self, *args, **kwargs):
+    kwargs["verify"] = False
+    _original_client_init(self, *args, **kwargs)
+httpx.Client.__init__ = _patched_client_init
+
+_original_async_client_init = httpx.AsyncClient.__init__
+def _patched_async_client_init(self, *args, **kwargs):
+    kwargs["verify"] = False
+    _original_async_client_init(self, *args, **kwargs)
+httpx.AsyncClient.__init__ = _patched_async_client_init
+# --- Fin contournement SSL ---
 from google import genai
 from src.config.settings import GROQ_API_KEY, GEMINI_API_KEY
 from src.utils.logger import setup_logger
@@ -93,7 +111,7 @@ warnings.filterwarnings('ignore')
 client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
 MODELE_JUGE = "qwen/qwen3.8-27b"  # Configuration d'origine qui fonctionnait (Groq)
-MODELE_JUGE_GEMINI = "gemini-1.5-flash"  # Modèle Gemini pour éviter les rate limits Groq
+MODELE_JUGE_GEMINI = "gemini-3.1-flash-lite"  # Modèle Gemini pour éviter les rate limits Groq
 USE_GEMINI_JUDGE = True  # Activer Gemini pour contourner les limitations Groq
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 

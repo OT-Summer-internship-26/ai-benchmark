@@ -1,0 +1,90 @@
+[
+  {
+    "exec_id": 4,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_precision",
+    "scenario": "R\u00e9daction de fiche de poste",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1883
+  },
+  {
+    "exec_id": 4,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_recall",
+    "scenario": "R\u00e9daction de fiche de poste",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1883
+  },
+  {
+    "exec_id": 8,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_precision",
+    "scenario": "R\u00e9daction de fiche de poste",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1665
+  },
+  {
+    "exec_id": 8,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_recall",
+    "scenario": "R\u00e9daction de fiche de poste",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1665
+  },
+  {
+    "exec_id": 12,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_precision",
+    "scenario": "G\u00e9n\u00e9ration de code",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1099
+  },
+  {
+    "exec_id": 12,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_recall",
+    "scenario": "G\u00e9n\u00e9ration de code",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1099
+  },
+  {
+    "exec_id": 16,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_precision",
+    "scenario": "R\u00e9solution d'incidents complexes",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1963
+  },
+  {
+    "exec_id": 16,
+    "model": "Qwen2.5 7B (Ollama)",
+    "metric": "context_recall",
+    "scenario": "R\u00e9solution d'incidents complexes",
+    "root_cause": "rag_search_error",
+    "sortie_status": "PRESENT",
+    "chunks_status": "ERROR",
+    "chunks_count": 0,
+    "response_len": 1963
+  }
+]

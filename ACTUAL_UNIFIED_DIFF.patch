@@ -1,0 +1,289 @@
+--- a/src/dashboard/app.py
++++ b/src/dashboard/app.py
+@@ -1149,6 +1149,62 @@ def login_page() -> None:
+ 
++def render_sidebar_header() -> None:
++    """Render improved logo header at TOP of sidebar with proper centering, aspect ratio, and spacing."""
++    st.markdown(
++        f"""
++        <div style='
++            display: flex;
++            justify-content: center;
++            align-items: center;
++            padding: 16px 0 12px 0;
++            margin-bottom: 8px;
++        '>
++            <img 
++                src='data:image/png;base64,{LOGO_B64}' 
++                style='
++                    max-width: 140px;
++                    height: auto;
++                    display: block;
++                    object-fit: contain;
++                '
++                alt='Ooredoo Logo'
++            >
++        </div>
++        """,
++        unsafe_allow_html=True,
++    )
++    st.markdown("<hr style='margin: 8px 0; opacity: 0.3;'>", unsafe_allow_html=True)
++
++
++def render_sidebar_account(email: str, role: str) -> None:
++    """Render the account/identity section at the BOTTOM of sidebar."""
++    st.sidebar.divider()
++    
++    st.sidebar.markdown(
++        f"""
++        <div style='text-align:center; color:white; padding:12px 0;'>
++            <div style='font-weight:700; font-size:14px; margin-bottom:4px;'>{email}</div>
++            <div style='font-size:11px; letter-spacing:1px; opacity:0.85; margin-bottom:12px;'>
++                {role.upper()}
++            </div>
++        </div>
++        """,
++        unsafe_allow_html=True,
++    )
++
++    if st.sidebar.button("🚪 Se déconnecter", use_container_width=True):
++        st.session_state.pop("auth_email", None)
++        st.session_state.pop("auth_role", None)
++        st.session_state.pop("login_mode", None)
++        st.session_state.pop("login_role", None)
++        st.session_state.pop("login_stage", None)
++        st.rerun()
++
++    role_messages = {
++        "Client": "Vue simplifiée : indicateurs clés uniquement.",
++        "Admin": "Accès complet aux données métier et aux exports.",
++        "Super Admin": "Accès complet + outils d'administration.",
++    }
++    st.sidebar.caption(role_messages.get(role, ""))
++
+ 
+ def render_sidebar_identity(email: str, role: str) -> None:
++    """DEPRECATED: Use render_sidebar_header() + render_sidebar_account() instead."""
+     with st.sidebar.container(key="brand_header"):
+@@ -1193,7 +1249,145 @@ def main() -> None:
+         
+         logger.info(f"Dashboard accessed by user: {email} with role: {role}")
+ 
+-        render_sidebar_identity(email, role)
++        # ===================================================================
++        # SIDEBAR LAYOUT (NEW DESIGN)
++        # ===================================================================
++        
++        # 1. Render logo header at TOP of sidebar
++        st.sidebar.markdown("")  # Top padding
++        render_sidebar_header()
++        
++        # 2. Filters section (Filtres)
++        st.sidebar.header("Filtres")
++        load_all = st.sidebar.checkbox(
++            "Charger toutes les exécutions (ignorer la limite)",
++            value=False,
++            help="Utile pour être sûr de voir tous les scénarios/modèles, même au-delà de la limite ci-dessous.",
++        )
++        if load_all:
++            limit = None
++            st.sidebar.caption("Limite désactivée — toutes les exécutions de la base sont chargées.")
++        else:
++            limit = st.sidebar.slider(
++                "Nombre d'exécutions à charger",
++                min_value=10,
++                max_value=2000,
++                value=300,
++                step=10,
++            )
++
++        # Load data with error handling
++        with st.spinner("Chargement des données..."):
++            df = load_executions(limit=limit)
++            df = format_datetime(df)
++
++        if df.empty:
++            st.warning("Aucune exécution disponible dans la base de données.")
++            st.info("Veuillez vérifier que des benchmarks ont été exécutés ou contactez votre administrateur.")
++            return
++
++        logger.info(f"Loaded {len(df)} executions for dashboard display")
+ 
++        # 3. API token status (admin only)
+         if is_admin:
+             if st.session_state.get("api_token"):
+-               st.sidebar.caption("API token: ✅ présent")
++                st.sidebar.caption("✅ API token: présent")
+             else:
+                 st.sidebar.error(f"API token absent — erreur : {st.session_state.get('api_token_error')}")
+                 logger.warning(f"Admin user {email} missing API token: {st.session_state.get('api_token_error')}")
++
++        # 4. Legacy scores warning (admin only)
++        try:
++            with engine.connect() as conn:
++                legacy_count = conn.execute(
++                    text(
++                        "SELECT COUNT(*) FROM scores WHERE critere IN ('completude','structure','fidelite_rag','honnetete') OR (critere='score_global' AND note > 1.0)"
++                    )
++                ).scalar()
++        except Exception:
++            legacy_count = 0
++
++        if is_admin and legacy_count and legacy_count > 0:
++            st.sidebar.warning(
++                f"Attention — {legacy_count} scores heuristiques anciens détectés en base.\n"
++                "Ces anciennes métriques peuvent fausser les agrégations. Exécutez `python scripts/cleanup_scores.py --dry-run` puis `--apply` pour nettoyer."
++            )
++
++        # 5. Build navigation options based on role
++        nav_options = ["📊 Vue d'ensemble", "📈 Comparaison modèles", "📋 Comparaison scénarios", "🔍 Détails des exécutions"]
++        if is_admin:
++            nav_options.append("🎛️ Pilotage")
++        if is_super_admin:
++            nav_options.append("⚙️ Administration")
++        
++        # SIDEBAR NAVIGATION MENU (replacing horizontal tabs)
++        st.sidebar.markdown("---")
++        st.sidebar.header("Navigation")
++        
++        selected_nav = st.sidebar.radio(
++            "Section",
++            options=nav_options,
++            label_visibility="collapsed",
++        )
++
++        # 6. Render account/logout at BOTTOM of sidebar
++        render_sidebar_account(email, role)
++        
++        # ===================================================================
++        # MAIN CONTENT AREA
++        # ===================================================================
+ 
+         st.markdown(
+             """
+@@ -1211,33 +1405,6 @@ def main() -> None:
+             """,
+             unsafe_allow_html=True,
+         )
+-
+-        # Load data with error handling
+-        try:
+-            st.sidebar.header("Filtres")
+-            load_all = st.sidebar.checkbox(
+-                "Charger toutes les exécutions (ignorer la limite)",
+-                value=False,
+-                help="Utile pour être sûr de voir tous les scénarios/modèles, même au-delà de la limite ci-dessous.",
+-            )
+-            if load_all:
+-                limit = None
+-                st.sidebar.caption("Limite désactivée — toutes les exécutions de la base sont chargées.")
+-            else:
+-                limit = st.sidebar.slider(
+-                    "Nombre d'exécutions à charger",
+-                    min_value=10,
+-                    max_value=2000,
+-                    value=300,
+-                    step=10,
+-                )
+-
+-            # Load data with error handling
+-            with st.spinner("Chargement des données..."):
+-                df = load_executions(limit=limit)
+-                df = format_datetime(df)
+ 
+             if df.empty:
+                 st.warning("Aucune exécution disponible dans la base de données.")
+@@ -1245,15 +1412,6 @@ def main() -> None:
+ 
+             logger.info(f"Loaded {len(df)} executions for dashboard display")
+             
+-        except Exception as e:
+-            logger.error(f"Error loading dashboard data: {e}", exc_info=True)
+-            st.error("Erreur lors du chargement des données. Veuillez réessayer ou contactez votre administrateur.")
+-            st.exception(e)
+-            return
+-
+-        # Continue with the rest of the main function...
+-        # (The rest remains unchanged for now, but with proper error handling wrapping)
+-        
+     except Exception as e:
+         logger.error(f"Critical error in main dashboard: {e}", exc_info=True)
+         st.error("Une erreur critique s'est produite dans le dashboard.")
+@@ -1470,27 +1628,10 @@ def main() -> None:
+         best_model = summary_model.iloc[0] if not summary_model.empty else None
+         best_scenario = summary_scenario.iloc[0] if not summary_scenario.empty else None
+ 
+-    # ------------------------------------------------------------------
+-    # Construction des onglets : le Client n'a plus "Détails des
+-    # exécutions" (données brutes/techniques) ni "Pilotage".
+-    # ------------------------------------------------------------------
+-    tabs = ["Vue d'ensemble", "Comparaison modèles", "Comparaison scénarios", "Détails des exécutions"]
+-
+-    if is_admin:
+-        tabs.append("Pilotage")
+-    if is_super_admin:
+-        tabs.append("Administration")
+-
+-    tab_objects = st.tabs(tabs)
+-
+-    overview_tab, models_tab, scenarios_tab, details_tab = tab_objects[:4]
+-    extra_tabs = list(tab_objects[4:])
+-
+-    pilotage_tab = extra_tabs.pop(0) if is_admin else None
+-    admin_tab = extra_tabs.pop(0) if is_super_admin else None
+-
+-    with overview_tab:
++    # ===================================================================
++    # RENDER CONTENT BASED ON SELECTED NAVIGATION ITEM
++    # (replacing st.tabs with conditional rendering)
++    # ===================================================================
++    
++    if selected_nav == "📊 Vue d'ensemble":
+         if role == "Client":
+             st.markdown("## Vue d'ensemble")
+             
+@@ -1644,7 +1785,7 @@ def main() -> None:
+                 st.info("Pas de latences pour l'histogramme.")
+             st.divider()
+ 
+-    with scenarios_tab:
++    elif selected_nav == "📋 Comparaison scénarios":
+ 
+         if role == "Client":
+             st.markdown("## Comparaison scénarios")
+@@ -1709,7 +1850,7 @@ def main() -> None:
+             ))
+ 
+ 
+-    with models_tab:
++    elif selected_nav == "📈 Comparaison modèles":
+         if role == "Client":
+             build_client_department_comparison(filtered)
+             st.divider()
+@@ -1865,7 +2006,7 @@ def main() -> None:
+     # "Détails des exécutions" : réservé Admin / Super Admin uniquement
+     # (données brutes/techniques retirées de l'interface Client).
+     # ------------------------------------------------------------------
+     
+-        with details_tab:
++    elif selected_nav == "🔍 Détails des exécutions":
+             st.markdown("## Détail des exécutions")
+             st.write("Consultez la liste complète des exécutions récentes, puis sélectionnez une entrée pour voir la réponse et les scores détaillés.")
+ 
+@@ -1956,7 +2097,7 @@ def main() -> None:
+             st.write(f"- **Score Global** : {formatted_global}")
+ 
+-    if is_admin and pilotage_tab is not None:
+-        with pilotage_tab:
++    elif selected_nav == "🎛️ Pilotage":
+             st.markdown("## Pilotage du benchmark")
+             st.write(
+                 "Déclenchez une nouvelle exécution du pipeline multi-agents et gérez le "
+@@ -2200,8 +2341,7 @@ def main() -> None:
+                         if ok:
+                             st.rerun()
+ 
+-    if is_super_admin and admin_tab is not None:
+-        with admin_tab:
++    elif selected_nav == "⚙️ Administration":
+             st.markdown("## Administration")

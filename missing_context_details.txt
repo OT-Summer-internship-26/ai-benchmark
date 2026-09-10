@@ -1,0 +1,8 @@
+4|Qwen2.5 7B (Ollama)|context_precision|1
+4|Qwen2.5 7B (Ollama)|context_recall|1
+8|Qwen2.5 7B (Ollama)|context_precision|1
+8|Qwen2.5 7B (Ollama)|context_recall|1
+12|Qwen2.5 7B (Ollama)|context_precision|8
+12|Qwen2.5 7B (Ollama)|context_recall|8
+16|Qwen2.5 7B (Ollama)|context_precision|11
+16|Qwen2.5 7B (Ollama)|context_recall|11
