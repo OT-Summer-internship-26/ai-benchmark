@@ -1730,7 +1730,13 @@ def main() -> None:
         else:
             st.markdown("## Comparaison des scénarios")
             st.write("Comparez les scénarios par score global, métriques dimensions et pertinence.")
-            st.dataframe(summary_scenario, use_container_width=True)
+            _display_scenario = summary_scenario.copy()
+            for _col in ["score_global_display", "faithfulness", "answer_relevancy", "context_precision", "context_recall"]:
+                if _col in _display_scenario.columns:
+                    _display_scenario[_col] = _display_scenario[_col].apply(lambda x: safe_format_score(x, as_percentage=True))
+            if "latence_secondes" in _display_scenario.columns:
+                _display_scenario["latence_secondes"] = _display_scenario["latence_secondes"].apply(safe_format_latency)
+            st.dataframe(_display_scenario, use_container_width=True)
             st.divider()
             st.markdown("### Top scénarios par score global")
             st.vega_lite_chart(
@@ -1807,7 +1813,13 @@ def main() -> None:
         else:
             st.markdown("## Comparaison modèles")
             st.write("Comparez les modèles par score global, métriques RAGAS, et latence.")
-            st.dataframe(summary_model, use_container_width=True)
+            _display_model = summary_model.copy()
+            for _col in ["score_global_display", "faithfulness", "answer_relevancy", "context_precision", "context_recall"]:
+                if _col in _display_model.columns:
+                    _display_model[_col] = _display_model[_col].apply(lambda x: safe_format_score(x, as_percentage=True))
+            if "latence_secondes" in _display_model.columns:
+                _display_model["latence_secondes"] = _display_model["latence_secondes"].apply(safe_format_latency)
+            st.dataframe(_display_model, use_container_width=True)
             st.divider()
             st.markdown("### Comparaison des critères RAGAS par modèle")
             chart_mode = st.selectbox("Type de graphique RAGAS", options=["Barres groupées", "Barres empilées", "Barres empilées normalisées", "Barres horizontales"], index=0)

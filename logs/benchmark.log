@@ -6563,3 +6563,208 @@ TypeError: 'str' object is not callable
 2026-09-10 01:28:42 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
 2026-09-10 01:28:42 - __main__ - INFO - Loaded 219 executions for dashboard display
 2026-09-10 01:36:47 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-10 21:04:35 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-10 21:04:35 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-10 21:04:35 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-10 21:04:35 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-10 21:04:36 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-10 21:04:38 - __main__ - WARNING - Failed to obtain API token: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /auth/login (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée"))
+2026-09-10 21:04:38 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-10 21:04:39 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:04:39 - __main__ - WARNING - Admin user superadmin@ooredoo.com missing API token: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /auth/login (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée"))
+2026-09-10 21:04:39 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-10 21:04:39 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-10 21:04:39 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-10 21:04:39 - __main__ - DEBUG - Loading scenario catalog
+2026-09-10 21:04:39 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-10 21:08:00 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-10 21:08:00 - src.api.main - INFO - Benchmark API starting up...
+2026-09-10 21:08:00 - src.api.main - INFO - Environment: development
+2026-09-10 21:10:15 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-10 21:10:15 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-10 21:10:15 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-10 21:10:15 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-10 21:10:16 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-10 21:10:17 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-10 21:10:17 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-10 21:10:17 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-10 21:10:17 - __main__ - DEBUG - API token obtained successfully
+2026-09-10 21:10:17 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-10 21:10:17 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:10:17 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-10 21:10:18 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-10 21:10:18 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-10 21:10:18 - __main__ - DEBUG - Loading scenario catalog
+2026-09-10 21:10:18 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-10 21:14:08 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-10 21:14:46 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-09-10 21:15:06 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 104
+2026-09-10 21:15:07 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-09-10 21:15:25 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 96
+2026-09-10 21:15:25 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-09-10 21:15:39 - src.evaluation.metrics - WARNING - [GEMINI] attempt 1/3 failed: ServerError - 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high deman
+2026-09-10 21:15:41 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-10 21:16:31 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:16:37 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-10 21:16:37 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-10 21:16:37 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-10 21:16:37 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-10 21:16:38 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-10 21:16:39 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-10 21:16:39 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-10 21:16:39 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-10 21:16:39 - __main__ - DEBUG - API token obtained successfully
+2026-09-10 21:16:39 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-10 21:16:39 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:16:39 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-10 21:16:45 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 105
+2026-09-10 21:16:45 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-09-10 21:16:57 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 99
+2026-09-10 21:16:57 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-09-10 21:17:10 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 69
+2026-09-10 21:17:10 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-10 21:17:21 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-10 21:18:23 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 70
+2026-09-10 21:18:23 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-09-10 21:18:33 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 71
+2026-09-10 21:18:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-09-10 21:18:44 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 72
+2026-09-10 21:18:44 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Réseau / Support Technique (NOC)
+2026-09-10 21:18:57 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 29
+2026-09-10 21:18:57 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Réseau / Support Technique (NOC)
+2026-09-10 21:19:07 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 26
+2026-09-10 21:19:07 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-09-10 21:19:14 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-10 21:20:18 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 24
+2026-09-10 21:20:18 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Réseau / Support Technique (NOC)
+2026-09-10 21:20:43 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 22
+2026-09-10 21:20:43 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-09-10 21:20:57 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 20
+2026-09-10 21:20:57 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-09-10 21:21:11 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 19
+2026-09-10 21:21:11 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Réseau / Support Technique (NOC)
+2026-09-10 21:21:26 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 14
+2026-09-10 21:21:26 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-09-10 21:21:28 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-10 21:21:54 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:22:01 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-10 21:22:01 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-10 21:22:01 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-10 21:22:01 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-10 21:22:02 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-10 21:22:03 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-10 21:22:03 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-10 21:22:03 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-10 21:22:03 - __main__ - DEBUG - API token obtained successfully
+2026-09-10 21:22:03 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-10 21:22:04 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:22:04 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-10 21:22:43 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 6
+2026-09-10 21:22:43 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=RH & Communication
+2026-09-10 21:22:56 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 4
+2026-09-10 21:28:40 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:28:47 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-10 21:28:47 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-10 21:28:47 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-10 21:28:47 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-10 21:28:48 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-10 21:28:49 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-10 21:28:49 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-10 21:28:49 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-10 21:28:49 - __main__ - DEBUG - API token obtained successfully
+2026-09-10 21:28:49 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-10 21:28:50 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-10 21:28:50 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-13 19:12:24 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-13 19:12:25 - src.api.main - INFO - Benchmark API starting up...
+2026-09-13 19:12:25 - src.api.main - INFO - Environment: development
+2026-09-13 19:13:30 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-13 19:13:30 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-13 19:13:30 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-13 19:13:30 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-13 19:13:31 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-13 19:13:32 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-13 19:13:32 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-13 19:13:32 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-13 19:13:32 - __main__ - DEBUG - API token obtained successfully
+2026-09-13 19:13:32 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-13 19:13:33 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-13 19:13:33 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-13 19:13:33 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-13 19:13:33 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-13 19:13:33 - __main__ - DEBUG - Loading scenario catalog
+2026-09-13 19:13:33 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-13 23:46:21 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-13 23:46:21 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-13 23:46:21 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-13 23:46:21 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-13 23:46:22 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-13 23:46:24 - __main__ - WARNING - Failed to obtain API token: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /auth/login (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée"))
+2026-09-13 23:46:24 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-13 23:46:24 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-13 23:46:24 - __main__ - WARNING - Admin user superadmin@ooredoo.com missing API token: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /auth/login (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=8000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée"))
+2026-09-13 23:46:24 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-13 23:46:24 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-13 23:46:24 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-13 23:46:24 - __main__ - DEBUG - Loading scenario catalog
+2026-09-13 23:46:24 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-13 23:47:14 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-13 23:47:14 - src.api.main - INFO - Benchmark API starting up...
+2026-09-13 23:47:14 - src.api.main - INFO - Environment: development
+2026-09-13 23:48:23 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-13 23:48:23 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-13 23:48:23 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-13 23:48:23 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-13 23:48:24 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-13 23:48:25 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-13 23:48:25 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-13 23:48:25 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-13 23:48:25 - __main__ - DEBUG - API token obtained successfully
+2026-09-13 23:48:25 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-13 23:48:25 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-13 23:48:25 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-13 23:48:26 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-13 23:48:26 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-13 23:48:26 - __main__ - DEBUG - Loading scenario catalog
+2026-09-13 23:48:26 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-13 23:50:18 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-13 23:50:18 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-13 23:50:19 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-13 23:50:19 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-13 23:50:19 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-13 23:50:21 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-13 23:50:21 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-13 23:50:21 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-13 23:50:21 - __main__ - DEBUG - API token obtained successfully
+2026-09-13 23:50:21 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-13 23:50:21 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-13 23:50:21 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-13 23:50:22 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-13 23:50:22 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-13 23:50:22 - __main__ - DEBUG - Loading scenario catalog
+2026-09-13 23:50:22 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-13 23:56:04 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-13 23:56:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=IT & Architecture
+2026-09-14 00:09:49 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-14 00:11:10 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-14 00:11:10 - src.api.main - INFO - Benchmark API starting up...
+2026-09-14 00:11:10 - src.api.main - INFO - Environment: development
+2026-09-14 00:11:11 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-14 00:12:06 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-14 00:12:06 - src.api.main - INFO - Benchmark API starting up...
+2026-09-14 00:12:06 - src.api.main - INFO - Environment: development
+2026-09-14 00:24:28 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-14 00:24:28 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-14 00:24:28 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-14 00:24:28 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-14 00:24:28 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-14 00:24:29 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-14 00:24:29 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-14 00:24:29 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-14 00:24:29 - __main__ - DEBUG - API token obtained successfully
+2026-09-14 00:24:29 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-14 00:24:30 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-14 00:24:30 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-14 00:24:50 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-14 00:24:50 - __main__ - DEBUG - Loading executions with limit: None
+2026-09-14 00:24:50 - __main__ - INFO - Successfully loaded 323 executions with scores

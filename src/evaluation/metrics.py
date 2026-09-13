@@ -110,9 +110,21 @@ warnings.filterwarnings('ignore')
 # NOTE: In production, consider using proper certificate pinning or firewall rules instead
 client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False))
 
-MODELE_JUGE = "qwen/qwen3.8-27b"  # Configuration d'origine qui fonctionnait (Groq)
-MODELE_JUGE_GEMINI = "gemini-3.1-flash-lite"  # Modèle Gemini pour éviter les rate limits Groq
-USE_GEMINI_JUDGE = True  # Activer Gemini pour contourner les limitations Groq
+# ---------------------------------------------------------------------------
+# Judge model configuration
+#
+# USE_GEMINI_JUDGE=True  → Gemini is the PRIMARY judge for every evaluation
+# run.  MODELE_JUGE_GROQ_FALLBACK is only reached if _appeler_juge_gemini_une_fois()
+# exhausts all 3 retry attempts.  Under normal operation (valid GEMINI_API_KEY)
+# Groq is NEVER called by the judge path.
+#
+# Use get_active_judge_name() wherever you need to log or display which judge
+# model was actually used (reports, DB inserts, audit traces).
+# Do NOT read MODELE_JUGE_GROQ_FALLBACK for that purpose — it would be wrong.
+# ---------------------------------------------------------------------------
+MODELE_JUGE_GROQ_FALLBACK = "qwen/qwen3.8-27b"    # Groq fallback — NOT the active judge
+MODELE_JUGE_GEMINI        = "gemini-3.1-flash-lite" # Primary judge (always used when key is valid)
+USE_GEMINI_JUDGE          = True
 REPETITIONS_JUGE = 1  # temporairement réduit de 2 à 1 pour limiter le volume d'appels pendant le rattrapage
 
 # Initialize Gemini client if available
@@ -141,6 +153,21 @@ if USE_GEMINI_JUDGE:
         logger.warning(f"Failed to initialize Gemini client: {e}. Falling back to Groq.")
         print(f"⚠️ [ERREUR] Échec initialisation Gemini: {e}")
         USE_GEMINI_JUDGE = False
+
+
+def get_active_judge_name() -> str:
+    """Return the name of the judge model that will actually be called.
+
+    Use this in logs, reports, and DB inserts instead of reading
+    MODELE_JUGE_GROQ_FALLBACK, which names the inactive Groq fallback.
+
+    Examples:
+        >>> get_active_judge_name()
+        'gemini-3.1-flash-lite'   # when USE_GEMINI_JUDGE=True and key is valid
+    """
+    if USE_GEMINI_JUDGE and gemini_client:
+        return MODELE_JUGE_GEMINI
+    return MODELE_JUGE_GROQ_FALLBACK
 
 
 def _extraire_temps_attente(error_msg: str) -> float | None:
