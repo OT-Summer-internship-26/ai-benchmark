@@ -1529,10 +1529,23 @@ def main() -> None:
                 st.vega_lite_chart(
                     data=daily_mean,
                     spec={
-                        "mark": {"type": "line", "point": True},
+                        # Point-only mark: avoids connecting lines between sparse
+                        # dates which would imply false continuity between days
+                        # that have zero executions in between.
+                        "mark": {"type": "point", "filled": True, "size": 80},
                         "encoding": {
                             "x": {"field": "date_execution", "type": "temporal", "title": "Date"},
-                            "y": {"field": "score_global_display", "type": "quantitative", "title": "Score moyen"},
+                            "y": {
+                                "field": "score_global_display",
+                                "type": "quantitative",
+                                "title": "Score moyen",
+                                "scale": {"domain": [0, 1]},
+                            },
+                            "tooltip": [
+                                {"field": "date_execution", "type": "temporal", "title": "Date"},
+                                {"field": "score_global_display", "type": "quantitative",
+                                 "title": "Score moyen", "format": ".1%"},
+                            ],
                         },
                     },
                     use_container_width=True,
@@ -1564,7 +1577,10 @@ def main() -> None:
             if not top3.empty:
                 top3 = top3.reset_index(drop=True)
                 top3.index = top3.index + 1
-                top3["score_global_display"] = top3["score_global_display"].map(lambda v: f"{v:.3f}")
+                for _score_col in ["score_global_display", "faithfulness", "answer_relevancy",
+                                   "context_precision", "context_recall"]:
+                    if _score_col in top3.columns:
+                        top3[_score_col] = top3[_score_col].apply(safe_format_score)
                 top3["latence_secondes"] = top3["latence_secondes"].map(lambda v: f"{v:.2f}s")
                 st.table(
                     top3.rename(
@@ -1594,7 +1610,7 @@ def main() -> None:
                 .reset_index()
             )
             if not best_per_scenario.empty:
-                best_per_scenario["score_global_display"] = best_per_scenario["score_global_display"].map(lambda v: f"{v:.3f}")
+                best_per_scenario["score_global_display"] = best_per_scenario["score_global_display"].apply(safe_format_score)
                 st.table(best_per_scenario.rename(columns={"nom_cas_usage": "Scénario", "modele_nom": "Meilleur modèle", "score_global_display": "Score"}))
             else:
                 st.info("Pas assez de données pour déterminer le meilleur modèle par scénario.")
@@ -1767,13 +1783,26 @@ def main() -> None:
                 spec={
                     "mark": "bar",
                     "encoding": {
-                        "x": {"field": "Note", "type": "quantitative"},
+                        "x": {
+                            "field": "Note",
+                            "type": "quantitative",
+                            "scale": {"domain": [0, 1]},
+                            "title": "Score (0–1)",
+                        },
                         "y": {"field": "Scénario", "type": "nominal", "sort": "-x"},
-                        "color": {"field": "Critère", "type": "nominal"},
+                        # xOffset groups bars by Critère instead of stacking them.
+                        # Without this, Vega-Lite stacks the 4 metrics by default,
+                        # producing x-axis totals up to 4.0.
+                        "xOffset": {"field": "Critère"},
+                        "color": {
+                            "field": "Critère",
+                            "type": "nominal",
+                            "scale": {"scheme": palette},
+                        },
                         "tooltip": [
                             {"field": "Scénario", "type": "nominal"},
                             {"field": "Critère", "type": "nominal"},
-                            {"field": "Note", "type": "quantitative"},
+                            {"field": "Note", "type": "quantitative", "format": ".1%"},
                         ],
                     },
                 },
@@ -1781,7 +1810,14 @@ def main() -> None:
             )
             st.divider()
             st.markdown("### Top 3 scénarios")
-            st.table(summary_scenario.head(3).rename(
+            _top3_scen = summary_scenario.head(3).copy()
+            for _score_col in ["score_global_display", "faithfulness", "answer_relevancy",
+                               "context_precision", "context_recall"]:
+                if _score_col in _top3_scen.columns:
+                    _top3_scen[_score_col] = _top3_scen[_score_col].apply(safe_format_score)
+            if "latence_secondes" in _top3_scen.columns:
+                _top3_scen["latence_secondes"] = _top3_scen["latence_secondes"].apply(safe_format_latency)
+            st.table(_top3_scen.rename(
                 columns={
                     "nom_cas_usage": "Scénario",
                     "score_global_display": "Score global",
@@ -1939,7 +1975,10 @@ def main() -> None:
             st.markdown("### Top 5 modèles — résumé")
             top5 = summary_model.head(5).copy()
             if not top5.empty:
-                top5["score_global_display"] = top5["score_global_display"].map(lambda v: f"{v:.3f}")
+                for _score_col in ["score_global_display", "faithfulness", "answer_relevancy",
+                                   "context_precision", "context_recall"]:
+                    if _score_col in top5.columns:
+                        top5[_score_col] = top5[_score_col].apply(safe_format_score)
                 top5["latence_secondes"] = top5["latence_secondes"].map(lambda v: f"{v:.2f}s")
                 st.table(top5.rename(columns={
                     "modele_nom": "Modèle",

@@ -92,7 +92,7 @@ def get_scenarios_for_departments(departments: list[str]) -> list[dict]:
                       AND sc.methode = 'ragas'
                       AND COALESCE(sc.is_legacy, FALSE) = FALSE
                       AND sc.note BETWEEN 0 AND 1
-                ) = 4 THEN e.id END) as scored_execution_count
+                ) >= 1 THEN e.id END) as scored_execution_count
             FROM scenarios s
             LEFT JOIN executions e ON e.scenario_id = s.id
             WHERE s.departement = ANY(:departments)
@@ -206,19 +206,22 @@ def get_department_model_comparison(
                   AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
               )
             GROUP BY m.nom
-            ORDER BY (
-                COALESCE(AVG(CASE WHEN f.critere = 'faithfulness' THEN f.note END), 0) + 
-                COALESCE(AVG(CASE WHEN ar.critere = 'answer_relevancy' THEN ar.note END), 0) + 
-                COALESCE(AVG(CASE WHEN cp.critere = 'context_precision' THEN cp.note END), 0) + 
-                COALESCE(AVG(CASE WHEN cr.critere = 'context_recall' THEN cr.note END), 0)
-            ) / 4.0 DESC
         """)
         
         df = pd.read_sql(query, conn, params={"department": department})
         
-        # Compute global score
+        # Compute global_score: average only the non-NULL metrics (skipna=True is the
+        # pandas default, but stated explicitly here for clarity).  This matches the
+        # semantics of load_executions_* in queries.py — a legitimately absent metric
+        # (e.g. context_recall when sortie_attendue is empty) is excluded from the
+        # average rather than treated as 0.
         ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
-        df["global_score"] = df[ragas_cols].mean(axis=1).round(3)
+        df["global_score"] = df[ragas_cols].mean(axis=1, skipna=True).round(3)
+        
+        # Sort descending by the same NULL-aware score that is displayed, so the
+        # ordering is driven by one single computation instead of duplicating the
+        # COALESCE/4.0 logic inside SQL where it could silently diverge.
+        df = df.sort_values("global_score", ascending=False, ignore_index=True)
         
         return df
 
@@ -281,23 +284,39 @@ def get_department_leaderboard(
                 GROUP BY s.departement, m.nom
             )
             SELECT
-                ROW_NUMBER() OVER (PARTITION BY departement ORDER BY 
-                    (COALESCE(faithfulness, 0) + COALESCE(answer_relevancy, 0) + 
-                     COALESCE(context_precision, 0) + COALESCE(context_recall, 0)) / 4.0 DESC
-                ) as rank,
                 departement,
                 model_name,
-                (COALESCE(faithfulness, 0) + COALESCE(answer_relevancy, 0) + 
-                 COALESCE(context_precision, 0) + COALESCE(context_recall, 0)) / 4.0 as global_score,
-                execution_count,
                 faithfulness,
                 answer_relevancy,
                 context_precision,
-                context_recall
+                context_recall,
+                execution_count
             FROM scored_models
-            ORDER BY departement, rank
+            ORDER BY departement, model_name
         """)
         
         df = pd.read_sql(query, conn, params=params if params else None)
-        
+    
+    if df.empty:
+        df["global_score"] = pd.Series(dtype="float64")
+        df["rank"] = pd.Series(dtype="int64")
         return df
+    
+    # Compute global_score: average only the non-NULL metrics, matching the
+    # skipna=True semantics used in queries.py and get_department_model_comparison.
+    # A NULL metric (legitimately absent for a given scenario) is excluded from
+    # the average rather than zeroed out.
+    ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+    df["global_score"] = df[ragas_cols].mean(axis=1, skipna=True).round(3)
+    
+    # Sort within each department by descending global_score, then assign rank.
+    # A single Python sort is the sole ranking authority — no COALESCE/4.0 in SQL
+    # means there is no risk of the two formulas silently diverging.
+    df = df.sort_values(["departement", "global_score"], ascending=[True, False])
+    df["rank"] = df.groupby("departement").cumcount() + 1
+    df = df[["rank", "departement", "model_name", "global_score",
+             "execution_count", "faithfulness", "answer_relevancy",
+             "context_precision", "context_recall"]].reset_index(drop=True)
+    
+    return df
+
