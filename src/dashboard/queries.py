@@ -21,6 +21,14 @@ RAGAS_CRITERIA = (
     "context_recall",
 )
 
+# Standardized SQL condition for filtering valid RAGAS scores across all queries
+RAGAS_SCORE_SQL_CONDITION = """
+    sc.methode = 'ragas'
+    AND COALESCE(sc.is_legacy, FALSE) = FALSE
+    AND sc.critere IN ('faithfulness', 'answer_relevancy', 'context_precision', 'context_recall')
+    AND sc.note BETWEEN 0 AND 1
+"""
+
 
 def get_scenario_catalog() -> pd.DataFrame:
     """Return every configured scenario directly from ``scenarios``.
@@ -125,11 +133,12 @@ def get_client_recommendation(
                     JOIN scenarios s ON s.departement = cs.departement
                     JOIN executions e ON e.scenario_id = s.id
                     JOIN scores sc ON sc.execution_id = e.id
-                    WHERE sc.critere IN (
-                        'faithfulness', 'answer_relevancy',
-                        'context_precision', 'context_recall'
-                    )
-                      
+                    WHERE sc.methode = 'ragas'
+                      AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                      AND sc.critere IN (
+                          'faithfulness', 'answer_relevancy',
+                          'context_precision', 'context_recall'
+                      )
                       AND sc.note BETWEEN 0 AND 1
                     GROUP BY e.id, e.modele_id
                     HAVING COUNT(DISTINCT sc.critere) = 4
@@ -234,7 +243,9 @@ def load_executions_by_department(
                   AND e.id IN (
                     SELECT DISTINCT sc.execution_id FROM scores sc
                     WHERE sc.methode = 'ragas'
-                    AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                      AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                      AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                      AND sc.note BETWEEN 0 AND 1
                   )
                 ORDER BY e.date_execution DESC
                 {limit_clause}
@@ -253,17 +264,15 @@ def load_executions_by_department(
         # Fetch scores, filtering by methode if ragas_only
         execution_ids = executions["execution_id"].tolist()
         
-        where_clause = "AND methode = 'ragas'" if ragas_only else ""
+        where_clause = "AND methode = 'ragas' AND COALESCE(is_legacy, FALSE) = FALSE" if ragas_only else ""
         
         scores_query = text(
             f"""
             SELECT execution_id, critere, note, commentaire 
             FROM scores 
             WHERE execution_id IN :ids
-            AND (
-                critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
-                OR (critere='score_global' AND note <= 1.0)
-            )
+            AND critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+            AND note BETWEEN 0 AND 1
             {where_clause}
             """
         ).bindparams(bindparam("ids", expanding=True))
@@ -343,7 +352,9 @@ def load_executions_for_departments(
                   AND e.id IN (
                     SELECT DISTINCT sc.execution_id FROM scores sc
                     WHERE sc.methode = 'ragas'
-                    AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                      AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                      AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                      AND sc.note BETWEEN 0 AND 1
                   )
                 ORDER BY e.date_execution DESC
                 {limit_clause}
@@ -364,17 +375,15 @@ def load_executions_for_departments(
 
         execution_ids = executions["execution_id"].tolist()
         
-        where_clause = "AND methode = 'ragas'" if ragas_only else ""
+        where_clause = "AND methode = 'ragas' AND COALESCE(is_legacy, FALSE) = FALSE" if ragas_only else ""
         
         scores_query = text(
             f"""
             SELECT execution_id, critere, note, commentaire 
             FROM scores 
             WHERE execution_id IN :ids
-            AND (
-                critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
-                OR (critere='score_global' AND note <= 1.0)
-            )
+            AND critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+            AND note BETWEEN 0 AND 1
             {where_clause}
             """
         ).bindparams(bindparam("ids", expanding=True))
@@ -452,15 +461,17 @@ def get_best_model_for_department(
             FROM executions e
             JOIN modeles m ON m.id = e.modele_id
             JOIN scenarios s ON s.id = e.scenario_id
-            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas'
-            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas'
-            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas'
-            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas'
+            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND COALESCE(f.is_legacy, FALSE) = FALSE AND f.note BETWEEN 0 AND 1
+            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND COALESCE(ar.is_legacy, FALSE) = FALSE AND ar.note BETWEEN 0 AND 1
+            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND COALESCE(cp.is_legacy, FALSE) = FALSE AND cp.note BETWEEN 0 AND 1
+            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND COALESCE(cr.is_legacy, FALSE) = FALSE AND cr.note BETWEEN 0 AND 1
             WHERE s.departement = :department
               AND e.id IN (
                 SELECT DISTINCT sc.execution_id FROM scores sc
                 WHERE sc.methode = 'ragas'
-                AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                  AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                  AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                  AND sc.note BETWEEN 0 AND 1
               )
             GROUP BY m.id, m.nom
             HAVING COUNT(DISTINCT e.id) >= :min_executions
@@ -482,10 +493,10 @@ def get_best_model_for_department(
                 AVG((f.note + ar.note + cp.note + cr.note) / 4.0) as scenario_score
             FROM executions e
             JOIN scenarios s ON s.id = e.scenario_id
-            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas'
-            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas'
-            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas'
-            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas'
+            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND COALESCE(f.is_legacy, FALSE) = FALSE AND f.note BETWEEN 0 AND 1
+            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND COALESCE(ar.is_legacy, FALSE) = FALSE AND ar.note BETWEEN 0 AND 1
+            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND COALESCE(cp.is_legacy, FALSE) = FALSE AND cp.note BETWEEN 0 AND 1
+            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND COALESCE(cr.is_legacy, FALSE) = FALSE AND cr.note BETWEEN 0 AND 1
             WHERE e.modele_id = :model_id
             AND s.departement = :department
             GROUP BY s.id, s.nom_cas_usage

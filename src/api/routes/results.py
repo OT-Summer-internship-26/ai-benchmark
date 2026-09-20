@@ -157,7 +157,9 @@ def get_results(
                 # Fetch RAGAS scores
                 query_scores = text(
                     "SELECT execution_id, critere, note, commentaire "
-                    "FROM scores WHERE execution_id IN :ids AND critere IN :criteria"
+                    "FROM scores WHERE execution_id IN :ids AND critere IN :criteria "
+                    "AND methode = 'ragas' AND COALESCE(is_legacy, FALSE) = FALSE "
+                    "AND note BETWEEN 0 AND 1"
                 ).bindparams(bindparam("ids", expanding=True), bindparam("criteria", expanding=True))
 
                 scores_rows = [
@@ -168,7 +170,7 @@ def get_results(
                 # Fetch legacy score markers
                 query_legacy = text(
                     "SELECT execution_id, critere, note "
-                    "FROM scores WHERE execution_id IN :ids AND (critere IN :legacy OR (critere='score_global' AND note > 1.0))"
+                    "FROM scores WHERE execution_id IN :ids AND (critere IN :legacy OR is_legacy = TRUE OR note > 1.0)"
                 ).bindparams(bindparam("ids", expanding=True), bindparam("legacy", expanding=True))
 
                 legacy_rows = [

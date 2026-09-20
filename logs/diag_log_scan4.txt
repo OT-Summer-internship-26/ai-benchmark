@@ -1,0 +1,38 @@
+﻿=== LOG LINES 315-335 (before first Skipping) ===
+L   315: 2026-08-19 10:40:53 - src.models_clients.ollama_client - ERROR - Ollama request timed out: HTTPConnectionPool(host='localhost', port=11434): Read time
+L   316: 2026-08-19 10:40:53 - src.agents.executeur - ERROR - LLM error for scenario 13 / mod´┐¢le qwen3:8b: Ollama timeout after 60s
+L   317: 2026-08-19 10:40:57 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+L   318: 2026-08-19 10:41:30 - src.models_clients.ollama_client - DEBUG - Ollama response received (106 chars)
+L   319: 2026-08-19 10:41:34 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+L   320: 2026-08-19 10:41:54 - src.models_clients.ollama_client - DEBUG - Ollama response received (297 chars)
+L   321: 2026-08-19 10:41:58 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+L   322: 2026-08-19 10:42:16 - src.models_clients.ollama_client - DEBUG - Ollama response received (123 chars)
+L   323: 2026-08-19 10:42:16 - src.agents.executeur - INFO - [EXECUTEUR] 11 ex´┐¢cutions termin´┐¢es, 5 erreurs.
+L   324: 2026-08-19 10:42:16 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 11 ex´┐¢cutions (Ragas)...
+L   325: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   326: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   327: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Context precision : None
+L   328: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Context recall    : None
+L   329: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Score global      : None
+L   330: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   331: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   332: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   333: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   334: 2026-08-19 10:47:44 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   335: 2026-08-19 10:47:44 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+
+=== SEARCHING for executions from July 2026 in logs ===
+Total July/early-Aug lines in log: 0 (log starts 2026-08-17 11:57:01 )
+  => NONE -- confirms the log file does NOT contain the early executions (log was rotated/replaced)
+
+Evaluateur run markers in current log:
+  L84: 2026-08-18 00:52:06 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 0 ex´┐¢cutions (Ragas)...
+  L85: 2026-08-18 00:52:06 - src.agents.evaluateur - INFO - [EVALUATEUR] 0 ´┐¢valuations termin´┐¢es.
+  L324: 2026-08-19 10:42:16 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 11 ex´┐¢cutions (Ragas)...
+  L424: 2026-08-19 11:12:16 - src.agents.evaluateur - INFO - [EVALUATEUR] 11 ´┐¢valuations termin´┐¢es.
+  L611: 2026-08-21 13:51:03 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 1 ex´┐¢cutions (Ragas)...
+  L619: 2026-08-21 13:53:52 - src.agents.evaluateur - INFO - [EVALUATEUR] 1 ´┐¢valuations termin´┐¢es.
+  L839: 2026-08-24 10:46:16 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 16 ex´┐¢cutions (Ragas)...
+  L1047: 2026-08-24 10:58:22 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 15 ex´┐¢cutions (Ragas)...
+  L1051: 2026-08-24 10:58:38 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 15 ex´┐¢cutions (Ragas)...
+  L1143: 2026-08-24 11:05:06 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 13 ex´┐¢cutions (Ragas)...

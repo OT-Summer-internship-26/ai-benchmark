@@ -1,0 +1,37 @@
+﻿Total lines in log: 7216
+First line: 2026-08-17 11:57:01 - src.api.main - INFO - Benchmark API starting up...
+Last line: 2026-09-18 00:59:52 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+
+Judge-related lines: 695
+  L   330: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   332: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   333: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   339: 2026-08-19 10:47:44 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   341: 2026-08-19 10:47:44 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   342: 2026-08-19 10:47:44 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   348: 2026-08-19 10:50:28 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   350: 2026-08-19 10:50:28 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   351: 2026-08-19 10:50:28 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   357: 2026-08-19 10:53:11 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   359: 2026-08-19 10:53:11 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   360: 2026-08-19 10:53:11 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   366: 2026-08-19 10:55:55 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   368: 2026-08-19 10:55:55 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   369: 2026-08-19 10:55:55 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   375: 2026-08-19 10:58:40 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   377: 2026-08-19 10:58:40 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   378: 2026-08-19 10:58:40 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   384: 2026-08-19 11:01:23 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   386: 2026-08-19 11:01:23 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   387: 2026-08-19 11:01:23 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   393: 2026-08-19 11:04:05 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   395: 2026-08-19 11:04:05 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   396: 2026-08-19 11:04:05 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   402: 2026-08-19 11:06:49 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   404: 2026-08-19 11:06:49 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   405: 2026-08-19 11:06:49 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+  L   411: 2026-08-19 11:09:32 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+  L   413: 2026-08-19 11:09:32 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+  L   414: 2026-08-19 11:09:32 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+
+None/Echec lines: 0

@@ -8,6 +8,7 @@ evaluation vocabulary in this view.
 import streamlit as st
 
 from src.dashboard.queries import get_client_department, get_client_recommendation
+from src.dashboard.justifications import generate_client_justification
 
 
 def render_client_recommendation_page(client_email: str) -> None:
@@ -22,8 +23,6 @@ def render_client_recommendation_page(client_email: str) -> None:
     with st.sidebar:
         st.header("Votre espace")
         if department:
-            # This selector has one permitted option only: a client cannot
-            # select another team's data.
             st.selectbox("Votre département", [department], key="client_department")
         else:
             st.caption("Aucun département n’est associé à ce compte.")
@@ -54,32 +53,33 @@ def render_client_recommendation_page(client_email: str) -> None:
     if status == "insufficient_data":
         st.info(
             "Les tests disponibles ne permettent pas encore de recommander "
-            "un modèle avec suffisamment de confiance."
+            "un modèle avec suffisamment de confiance pour votre département."
         )
         return
 
     recommendation = result["recommendation"]
     model_name = recommendation["model_name"]
-    speed_reason = (
-        "Ses réponses sont aussi plus rapides que la moyenne des modèles évalués."
-        if recommendation["is_faster_than_peers"]
-        else "Son délai de réponse convient aux besoins évalués de votre équipe."
-    )
+
+    # Obtenir l'analyse dynamique basée sur les chiffres concrets du département
+    justification_data = generate_client_justification(department, model_name)
+    appreciation = justification_data.get("appreciation", "🟢 Modèle recommandé")
+    points = justification_data.get("points", [])
 
     with st.container(border=True):
-        st.subheader("Modèle recommandé")
-        st.header(model_name)
-        st.write(
-            f"Pour les besoins de {department}, ce modèle est le choix recommandé : "
-            "il donne les réponses les plus fiables parmi les solutions testées."
-        )
-        st.markdown("**Pourquoi ce choix ?**")
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.subheader("Modèle recommandé pour votre équipe")
+            st.header(model_name)
+        with col2:
+            st.markdown(f"### {appreciation}")
+
         st.markdown(
-            "\n".join(
-                [
-                    "- Il a donné les meilleurs résultats sur les cas d’usage évalués de votre département.",
-                    f"- {speed_reason}",
-                    "- Cette recommandation est fondée uniquement sur les besoins de votre équipe.",
-                ]
-            )
+            f"Pour les besoins spécifiques de **{department}**, ce modèle apporte les réponses "
+            "les plus sûres et les plus adaptées parmi l'ensemble des solutions évaluées."
         )
+        
+        st.markdown("---")
+        st.markdown(f"#### {justification_data.get('title', 'Pourquoi ce choix ?')}")
+        for pt in points:
+            st.markdown(f"- {pt}")
+

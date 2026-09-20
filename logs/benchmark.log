@@ -6768,3 +6768,970 @@ TypeError: 'str' object is not callable
 2026-09-14 00:24:50 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
 2026-09-14 00:24:50 - __main__ - DEBUG - Loading executions with limit: None
 2026-09-14 00:24:50 - __main__ - INFO - Successfully loaded 323 executions with scores
+2026-09-14 00:24:50 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 21:21:50 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-16 21:21:50 - src.api.main - INFO - Benchmark API starting up...
+2026-09-16 21:21:50 - src.api.main - INFO - Environment: development
+2026-09-16 21:22:10 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-16 21:22:10 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-16 21:22:10 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-16 21:22:10 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-16 21:22:11 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-16 21:22:11 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-16 21:22:11 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-16 21:22:11 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-16 21:22:12 - __main__ - DEBUG - API token obtained successfully
+2026-09-16 21:22:12 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-16 21:22:12 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:22:12 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-16 21:22:13 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-16 21:22:13 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-16 21:22:13 - __main__ - DEBUG - Loading scenario catalog
+2026-09-16 21:22:13 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-16 21:23:22 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:23:22 - __main__ - DEBUG - Loading executions with limit: None
+2026-09-16 21:23:22 - __main__ - INFO - Successfully loaded 323 executions with scores
+2026-09-16 21:23:22 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 21:27:02 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:27:03 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 21:27:14 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:27:14 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 21:27:14 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:27:14 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 21:27:16 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-09-16 21:27:16 - src.api.routes.benchmark - INFO - Benchmark: 16 scenarios, 1 models by superadmin@ooredoo.com
+2026-09-16 21:27:17 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 16 scénarios...
+2026-09-16 21:27:29 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:29 - src.agents.collecteur - INFO - [OK] Scenario 36 (Analyse de mots-clés depuis un brief client) — 8 chunks RAG récupérés
+2026-09-16 21:27:30 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:30 - src.agents.collecteur - INFO - [OK] Scenario 42 (Chatbot FAQ produit marketing (RAG)) — 8 chunks RAG récupérés
+2026-09-16 21:27:30 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:30 - src.agents.collecteur - INFO - [OK] Scenario 6 (Génération de copies publicitaires) — 8 chunks RAG récupérés
+2026-09-16 21:27:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:31 - src.agents.collecteur - INFO - [OK] Scenario 35 (Génération de méta-descriptions optimisées SEO) — 8 chunks RAG récupérés
+2026-09-16 21:27:31 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:31 - src.agents.collecteur - INFO - [OK] Scenario 31 (Génération de posts réseaux sociaux multi-formats) — 8 chunks RAG récupérés
+2026-09-16 21:27:32 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:32 - src.agents.collecteur - INFO - [OK] Scenario 29 (Génération de titres publicitaires A/B testing) — 8 chunks RAG récupérés
+2026-09-16 21:27:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:33 - src.agents.collecteur - INFO - [OK] Scenario 38 (Identification de personas marketing) — 8 chunks RAG récupérés
+2026-09-16 21:27:33 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:33 - src.agents.collecteur - INFO - [OK] Scenario 41 (Modération et catégorisation de commentaires clients) — 8 chunks RAG récupérés
+2026-09-16 21:27:34 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:34 - src.agents.collecteur - INFO - [OK] Scenario 7 (Rédaction d'article de blog / FAQ) — 8 chunks RAG récupérés
+2026-09-16 21:27:34 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:34 - src.agents.collecteur - INFO - [OK] Scenario 30 (Rédaction de description produit e-commerce) — 8 chunks RAG récupérés
+2026-09-16 21:27:35 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:35 - src.agents.collecteur - INFO - [OK] Scenario 39 (Rédaction d'email de relance panier abandonné) — 8 chunks RAG récupérés
+2026-09-16 21:27:35 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:35 - src.agents.collecteur - INFO - [OK] Scenario 34 (Rédaction de newsletter client mensuelle) — 8 chunks RAG récupérés
+2026-09-16 21:27:36 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:36 - src.agents.collecteur - INFO - [OK] Scenario 33 (Rédaction de script vidéo publicitaire courte) — 8 chunks RAG récupérés
+2026-09-16 21:27:37 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:37 - src.agents.collecteur - INFO - [OK] Scenario 40 (Rédaction de slogan de campagne) — 8 chunks RAG récupérés
+2026-09-16 21:27:37 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:37 - src.agents.collecteur - INFO - [OK] Scenario 32 (Réponse à commentaire négatif sur réseaux sociaux) — 8 chunks RAG récupérés
+2026-09-16 21:27:38 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement=Marketing & Digital
+2026-09-16 21:27:38 - src.agents.collecteur - INFO - [OK] Scenario 37 (Synthèse d'étude de satisfaction client) — 8 chunks RAG récupérés
+2026-09-16 21:27:38 - src.agents.collecteur - INFO - [COLLECTEUR] 16 scénarios collectés.
+2026-09-16 21:27:38 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-16 21:27:38 - src.agents.executeur - INFO -   16 scénarios × 1 modèles = 16 exécutions
+2026-09-16 21:27:38 - src.agents.executeur - INFO - 
+  -> Scenario [36] Analyse de mots-clés depuis un brief client | Modele : mistral:7b (ollama)
+2026-09-16 21:27:45 - src.observability.langfuse_client - INFO - [Langfuse] Client initialisé (host=https://cloud.langfuse.com)
+2026-09-16 21:27:45 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:29:37 - src.models_clients.ollama_client - DEBUG - Ollama response received (1169 chars, 3105 tokens, 112.02s)
+2026-09-16 21:29:37 - src.agents.executeur - INFO -      OK - Reponse generee en 116.74s (3105 tokens, coût estimé: $0.000621)
+2026-09-16 21:29:37 - src.agents.executeur - INFO - 
+  -> Scenario [42] Chatbot FAQ produit marketing (RAG) | Modele : mistral:7b (ollama)
+2026-09-16 21:29:41 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:29:56 - src.models_clients.ollama_client - DEBUG - Ollama response received (542 chars, 3102 tokens, 15.57s)
+2026-09-16 21:29:56 - src.agents.executeur - INFO -      OK - Reponse generee en 17.64s (3102 tokens, coût estimé: $0.000620)
+2026-09-16 21:29:56 - src.agents.executeur - INFO - 
+  -> Scenario [6] Génération de copies publicitaires | Modele : mistral:7b (ollama)
+2026-09-16 21:30:01 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:30:49 - src.models_clients.ollama_client - DEBUG - Ollama response received (1739 chars, 3402 tokens, 47.99s)
+2026-09-16 21:30:49 - src.agents.executeur - INFO -      OK - Reponse generee en 50.08s (3402 tokens, coût estimé: $0.000680)
+2026-09-16 21:30:49 - src.agents.executeur - INFO - 
+  -> Scenario [35] Génération de méta-descriptions optimisées SEO | Modele : mistral:7b (ollama)
+2026-09-16 21:30:53 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:31:20 - src.models_clients.ollama_client - DEBUG - Ollama response received (1061 chars, 2967 tokens, 27.03s)
+2026-09-16 21:31:20 - src.agents.executeur - INFO -      OK - Reponse generee en 29.09s (2967 tokens, coût estimé: $0.000593)
+2026-09-16 21:31:20 - src.agents.executeur - INFO - 
+  -> Scenario [31] Génération de posts réseaux sociaux multi-formats | Modele : mistral:7b (ollama)
+2026-09-16 21:31:24 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:31:51 - src.models_clients.ollama_client - DEBUG - Ollama response received (853 chars, 3747 tokens, 27.20s)
+2026-09-16 21:31:51 - src.agents.executeur - INFO -      OK - Reponse generee en 29.31s (3747 tokens, coût estimé: $0.000749)
+2026-09-16 21:31:51 - src.agents.executeur - INFO - 
+  -> Scenario [29] Génération de titres publicitaires A/B testing | Modele : mistral:7b (ollama)
+2026-09-16 21:31:55 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:32:09 - src.models_clients.ollama_client - DEBUG - Ollama response received (370 chars, 3101 tokens, 13.90s)
+2026-09-16 21:32:09 - src.agents.executeur - INFO -      OK - Reponse generee en 15.98s (3101 tokens, coût estimé: $0.000620)
+2026-09-16 21:32:09 - src.agents.executeur - INFO - 
+  -> Scenario [38] Identification de personas marketing | Modele : mistral:7b (ollama)
+2026-09-16 21:32:14 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:32:59 - src.models_clients.ollama_client - DEBUG - Ollama response received (1917 chars, 3246 tokens, 45.38s)
+2026-09-16 21:32:59 - src.agents.executeur - INFO -      OK - Reponse generee en 47.48s (3246 tokens, coût estimé: $0.000649)
+2026-09-16 21:32:59 - src.agents.executeur - INFO - 
+  -> Scenario [41] Modération et catégorisation de commentaires clients | Modele : mistral:7b (ollama)
+2026-09-16 21:33:03 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:33:30 - src.models_clients.ollama_client - DEBUG - Ollama response received (887 chars, 3212 tokens, 26.84s)
+2026-09-16 21:33:30 - src.agents.executeur - INFO -      OK - Reponse generee en 29.04s (3212 tokens, coût estimé: $0.000642)
+2026-09-16 21:33:30 - src.agents.executeur - INFO - 
+  -> Scenario [7] Rédaction d'article de blog / FAQ | Modele : mistral:7b (ollama)
+2026-09-16 21:33:35 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:34:32 - src.models_clients.ollama_client - DEBUG - Ollama response received (2922 chars, 3496 tokens, 57.59s)
+2026-09-16 21:34:32 - src.agents.executeur - INFO -      OK - Reponse generee en 59.87s (3496 tokens, coût estimé: $0.000699)
+2026-09-16 21:34:32 - src.agents.executeur - INFO - 
+  -> Scenario [30] Rédaction de description produit e-commerce | Modele : mistral:7b (ollama)
+2026-09-16 21:34:37 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:35:00 - src.models_clients.ollama_client - DEBUG - Ollama response received (977 chars, 2983 tokens, 23.70s)
+2026-09-16 21:35:00 - src.agents.executeur - INFO -      OK - Reponse generee en 25.78s (2983 tokens, coût estimé: $0.000597)
+2026-09-16 21:35:00 - src.agents.executeur - INFO - 
+  -> Scenario [39] Rédaction d'email de relance panier abandonné | Modele : mistral:7b (ollama)
+2026-09-16 21:35:05 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:35:40 - src.models_clients.ollama_client - DEBUG - Ollama response received (1430 chars, 3200 tokens, 35.52s)
+2026-09-16 21:35:40 - src.agents.executeur - INFO -      OK - Reponse generee en 37.59s (3200 tokens, coût estimé: $0.000640)
+2026-09-16 21:35:40 - src.agents.executeur - INFO - 
+  -> Scenario [34] Rédaction de newsletter client mensuelle | Modele : mistral:7b (ollama)
+2026-09-16 21:35:44 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:36:10 - src.models_clients.ollama_client - DEBUG - Ollama response received (1009 chars, 3396 tokens, 25.13s)
+2026-09-16 21:36:10 - src.agents.executeur - INFO -      OK - Reponse generee en 27.20s (3396 tokens, coût estimé: $0.000679)
+2026-09-16 21:36:10 - src.agents.executeur - INFO - 
+  -> Scenario [33] Rédaction de script vidéo publicitaire courte | Modele : mistral:7b (ollama)
+2026-09-16 21:36:14 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:37:21 - src.models_clients.ollama_client - DEBUG - Ollama response received (1360 chars, 3004 tokens, 67.63s)
+2026-09-16 21:37:21 - src.agents.executeur - INFO -      OK - Reponse generee en 69.68s (3004 tokens, coût estimé: $0.000601)
+2026-09-16 21:37:21 - src.agents.executeur - INFO - 
+  -> Scenario [40] Rédaction de slogan de campagne | Modele : mistral:7b (ollama)
+2026-09-16 21:37:21 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:37:22 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 21:37:26 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:37:38 - src.models_clients.ollama_client - DEBUG - Ollama response received (247 chars, 2882 tokens, 11.72s)
+2026-09-16 21:37:38 - src.agents.executeur - INFO -      OK - Reponse generee en 14.00s (2882 tokens, coût estimé: $0.000576)
+2026-09-16 21:37:38 - src.agents.executeur - INFO - 
+  -> Scenario [32] Réponse à commentaire négatif sur réseaux sociaux | Modele : mistral:7b (ollama)
+2026-09-16 21:37:42 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:38:09 - src.models_clients.ollama_client - DEBUG - Ollama response received (1120 chars, 3348 tokens, 26.71s)
+2026-09-16 21:38:09 - src.agents.executeur - INFO -      OK - Reponse generee en 28.96s (3348 tokens, coût estimé: $0.000670)
+2026-09-16 21:38:09 - src.agents.executeur - INFO - 
+  -> Scenario [37] Synthèse d'étude de satisfaction client | Modele : mistral:7b (ollama)
+2026-09-16 21:38:13 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-16 21:39:06 - src.models_clients.ollama_client - DEBUG - Ollama response received (2242 chars, 3776 tokens, 52.83s)
+2026-09-16 21:39:06 - src.agents.executeur - INFO -      OK - Reponse generee en 54.98s (3776 tokens, coût estimé: $0.000755)
+2026-09-16 21:39:06 - src.agents.executeur - INFO - [EXECUTEUR] 16 exécutions terminées, 0 erreurs.
+2026-09-16 21:39:06 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 16 exécutions (Ragas)...
+2026-09-16 21:39:25 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:39:25 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-16 21:39:25 - src.agents.evaluateur - INFO -      Context precision : 0.875
+2026-09-16 21:39:25 - src.agents.evaluateur - INFO -      Context recall    : 1.0
+2026-09-16 21:39:25 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:39:26 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:39:26 - src.agents.evaluateur - INFO -      Score global      : 0.469
+2026-09-16 21:39:26 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=354)
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      Score global      : 0.25
+2026-09-16 21:39:56 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=355)
+2026-09-16 21:40:06 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      Faithfulness      : 0.6
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      Context precision : 0.125
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      Context recall    : 0.2
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      Score global      : 0.356
+2026-09-16 21:41:17 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=356)
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      Context precision : 0.1
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      Harmfulness       : 0.1
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      Score global      : 0.15
+2026-09-16 21:41:54 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=357)
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      Context precision : 0.25
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      Context recall    : 1.0
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      Score global      : 0.562
+2026-09-16 21:42:09 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=358)
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      Score global      : 0.0
+2026-09-16 21:42:30 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=359)
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      Faithfulness      : 0.5
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      Context precision : 0.1
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      Context recall    : 0.2
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      Score global      : 0.325
+2026-09-16 21:42:49 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=360)
+2026-09-16 21:42:54 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      Harmfulness       : 0.3
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      Score global      : 0.0
+2026-09-16 21:44:11 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=361)
+2026-09-16 21:44:38 - src.evaluation.metrics - WARNING - [GEMINI] attempt 1/3 failed: ConnectError - [Errno 11001] getaddrinfo failed
+2026-09-16 21:44:58 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:44:58 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.7
+2026-09-16 21:44:58 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:44:58 - src.agents.evaluateur - INFO -      Context recall    : 0.6
+2026-09-16 21:44:58 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:44:58 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:44:59 - src.agents.evaluateur - INFO -      Score global      : 0.325
+2026-09-16 21:44:59 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=362)
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      Faithfulness      : 0.8
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      Context recall    : 1.0
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      Score global      : 0.45
+2026-09-16 21:45:08 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=363)
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      Score global      : 0.125
+2026-09-16 21:45:18 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=364)
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      Faithfulness      : 1.0
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      Score global      : 0.375
+2026-09-16 21:45:27 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=365)
+2026-09-16 21:45:32 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      Score global      : 0.125
+2026-09-16 21:46:37 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=366)
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      Score global      : 0.25
+2026-09-16 21:46:47 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=367)
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      Faithfulness      : 0.4
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      Harmfulness       : 0.4
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      Score global      : 0.225
+2026-09-16 21:46:56 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=368)
+2026-09-16 21:46:58 - src.evaluation.metrics - WARNING - [GEMINI] Rate limit detected (no specific wait time). Pausing 60s...
+2026-09-16 21:49:29 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:49:29 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 21:50:07 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-16 21:50:08 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-16 21:50:08 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-16 21:50:08 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-16 21:50:12 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-16 21:50:15 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-16 21:50:15 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-16 21:50:15 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-16 21:50:15 - __main__ - DEBUG - API token obtained successfully
+2026-09-16 21:50:15 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-16 21:50:17 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 21:50:17 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      Faithfulness      : 0.4
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.2
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      Context recall    : 0.2
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      Score global      : 0.2
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=369)
+2026-09-16 21:50:35 - src.agents.evaluateur - INFO - [EVALUATEUR] 16 évaluations terminées.
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - 
+============================================================
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 1 modèle(s) testé(s)
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - ============================================================
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - 
+#1 mistral:7b
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Exécutions         : 16
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Latence moy.       : 40.84s
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Score global       : 0.262/1.0
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Faithfulness       : 0.231/1.0
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Answer relevancy   : 0.463/1.0
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Context precision  : 0.091/1.0
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Context recall     : 0.263/1.0
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO -    Scénarios          : Analyse de mots-clés depuis un brief client, Chatbot FAQ produit marketing (RAG), Génération de copies publicitaires, Génération de méta-descriptions optimisées SEO, Génération de posts réseaux sociaux multi-formats, Génération de titres publicitaires A/B testing, Identification de personas marketing, Modération et catégorisation de commentaires clients, Rédaction d'article de blog / FAQ, Rédaction de description produit e-commerce, Rédaction d'email de relance panier abandonné, Rédaction de newsletter client mensuelle, Rédaction de script vidéo publicitaire courte, Rédaction de slogan de campagne, Réponse à commentaire négatif sur réseaux sociaux, Synthèse d'étude de satisfaction client
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - 
+============================================================
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - RECOMMANDATION : mistral:7b est le modèle le plus performant
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - avec un score global moyen de 0.262/1.0
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - et une latence moyenne de 40.84s
+2026-09-16 21:50:35 - src.agents.consolidateur - INFO - ============================================================
+
+2026-09-16 21:50:35 - src.api.routes.benchmark - INFO - Benchmark completed: 16 executions, 0 errors
+2026-09-16 22:15:09 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-16 22:15:37 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-16 22:15:37 - src.api.main - INFO - Benchmark API starting up...
+2026-09-16 22:15:37 - src.api.main - INFO - Environment: development
+2026-09-16 22:18:52 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-16 22:18:52 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-16 22:18:52 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-16 22:18:52 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-16 22:18:55 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-16 22:18:57 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-16 22:18:57 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-16 22:18:57 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-16 22:18:57 - __main__ - DEBUG - API token obtained successfully
+2026-09-16 22:18:57 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-16 22:18:58 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 22:18:58 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-16 22:18:58 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-16 22:18:58 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-16 22:18:58 - __main__ - DEBUG - Loading scenario catalog
+2026-09-16 22:18:58 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-16 22:50:13 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-16 22:50:13 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-16 22:50:13 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-16 22:50:13 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-16 22:50:14 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-16 22:50:16 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-16 22:50:16 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-16 22:50:16 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-16 22:50:16 - __main__ - DEBUG - API token obtained successfully
+2026-09-16 22:50:16 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-16 22:50:16 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 22:50:16 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-16 22:50:20 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-16 22:50:20 - __main__ - DEBUG - Loading executions with limit: None
+2026-09-16 22:50:20 - __main__ - INFO - Successfully loaded 323 executions with scores
+2026-09-16 22:50:21 - __main__ - INFO - Loaded 323 executions for dashboard display
+2026-09-16 23:49:22 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-16 23:51:21 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-16 23:51:21 - src.api.main - INFO - Benchmark API starting up...
+2026-09-16 23:51:21 - src.api.main - INFO - Environment: development
+2026-09-16 23:51:21 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-16 23:53:08 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-16 23:53:08 - src.api.main - INFO - Benchmark API starting up...
+2026-09-16 23:53:08 - src.api.main - INFO - Environment: development
+2026-09-16 23:53:08 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-16 23:54:33 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-16 23:54:33 - src.api.main - INFO - Benchmark API starting up...
+2026-09-16 23:54:33 - src.api.main - INFO - Environment: development
+2026-09-17 00:13:14 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-17 00:13:14 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-17 00:13:14 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-17 00:13:14 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-17 00:13:15 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-17 00:13:16 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-17 00:13:16 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-17 00:13:16 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-17 00:13:17 - __main__ - DEBUG - API token obtained successfully
+2026-09-17 00:13:17 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-17 00:13:17 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-17 00:13:17 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-17 00:13:17 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-17 00:13:17 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-17 00:13:17 - __main__ - DEBUG - Loading scenario catalog
+2026-09-17 00:13:17 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-17 00:30:23 - src.evaluation.metrics - WARNING - Failed to initialize Gemini client: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>. Falling back to Groq.
+2026-09-17 00:30:40 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-17 00:30:55 - src.evaluation.metrics - WARNING - Failed to initialize Gemini client: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>. Falling back to Groq.
+2026-09-17 00:31:12 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-17 00:31:29 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-17 00:41:05 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-17 00:42:12 - src.evaluation.metrics - INFO - [OK] GEMINI_API_KEY trouvée (longueur: 53 caractères)
+2026-09-17 00:42:17 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-17 00:42:18 - src.api.main - INFO - Benchmark API starting up...
+2026-09-17 00:42:18 - src.api.main - INFO - Environment: development
+2026-09-17 00:42:18 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-17 00:43:30 - src.evaluation.metrics - INFO - [OK] GEMINI_API_KEY trouvée (longueur: 53 caractères)
+2026-09-17 00:43:36 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-17 00:43:36 - src.api.main - INFO - Benchmark API starting up...
+2026-09-17 00:43:36 - src.api.main - INFO - Environment: development
+2026-09-17 00:43:36 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-17 00:44:46 - src.evaluation.metrics - INFO - [OK] GEMINI_API_KEY trouvée (longueur: 53 caractères)
+2026-09-17 00:44:51 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-17 00:44:51 - src.api.main - INFO - Benchmark API starting up...
+2026-09-17 00:44:51 - src.api.main - INFO - Environment: development
+2026-09-17 00:55:13 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-17 00:55:13 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-17 00:55:13 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-17 00:55:13 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-17 00:55:14 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-17 00:55:15 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-17 00:55:15 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-17 00:55:15 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-17 00:55:15 - __main__ - DEBUG - API token obtained successfully
+2026-09-17 00:55:15 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-17 00:55:16 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-17 00:55:16 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-18 00:30:08 - src.auth.utils - WARNING - Login attempt with non-existent email: admin@example.com
+2026-09-18 00:35:13 - src.evaluation.metrics - INFO - [OK] GEMINI_API_KEY trouvée (longueur: 53 caractères)
+2026-09-18 00:35:26 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-18 00:35:26 - src.api.main - INFO - Benchmark API starting up...
+2026-09-18 00:35:26 - src.api.main - INFO - Environment: development
+2026-09-18 00:54:47 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-18 00:55:16 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-18 00:55:16 - src.api.main - INFO - Benchmark API starting up...
+2026-09-18 00:55:16 - src.api.main - INFO - Environment: development
+2026-09-18 00:59:50 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-18 00:59:50 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-18 00:59:50 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-18 00:59:50 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-18 00:59:51 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-18 00:59:52 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-18 00:59:52 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-18 00:59:52 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-18 00:59:52 - __main__ - DEBUG - API token obtained successfully
+2026-09-18 00:59:52 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-18 00:59:52 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-18 00:59:52 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-18 00:59:52 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-18 00:59:52 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-18 00:59:52 - __main__ - DEBUG - Loading scenario catalog
+2026-09-18 00:59:52 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-20 18:59:15 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-20 18:59:15 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 18:59:15 - src.api.main - INFO - Environment: development
+2026-09-20 18:59:55 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-20 18:59:55 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-20 18:59:55 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-20 18:59:55 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-20 18:59:56 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-20 18:59:58 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-20 18:59:58 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-20 18:59:58 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-20 18:59:58 - __main__ - DEBUG - API token obtained successfully
+2026-09-20 18:59:58 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-20 18:59:59 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-20 18:59:59 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-20 18:59:59 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-20 18:59:59 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-20 18:59:59 - __main__ - DEBUG - Loading scenario catalog
+2026-09-20 18:59:59 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-20 19:02:26 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-20 19:02:34 - __main__ - INFO - Login form submitted for email: client@ooredoo.com, role: client
+2026-09-20 19:02:34 - __main__ - INFO - Login attempt for email: client@ooredoo.com, expected_role: client
+2026-09-20 19:02:34 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-20 19:02:34 - __main__ - DEBUG - User role verification: found=client, expected=client
+2026-09-20 19:02:36 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-09-20 19:02:37 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-09-20 19:02:37 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-09-20 19:02:37 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-09-20 19:02:37 - __main__ - DEBUG - API token obtained successfully
+2026-09-20 19:02:37 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
+2026-09-20 19:02:37 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: Utilisateur
+2026-09-20 19:02:38 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-20 19:02:50 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: Utilisateur
+2026-09-20 19:02:57 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-20 19:02:57 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-20 19:02:57 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-20 19:02:57 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-20 19:02:58 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-20 19:02:59 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-20 19:02:59 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-20 19:02:59 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-20 19:02:59 - __main__ - DEBUG - API token obtained successfully
+2026-09-20 19:02:59 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-20 19:02:59 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-20 19:02:59 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-20 23:12:36 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-20 23:16:10 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-20 23:16:10 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 23:16:10 - src.api.main - INFO - Environment: development
+2026-09-20 23:16:10 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-20 23:16:19 - src.evaluation.metrics - WARNING - Failed to initialize Gemini client: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>. Falling back to Groq.
+2026-09-20 23:17:30 - src.evaluation.metrics - INFO - [OK] Gemini client initialized (gemini-3.1-flash-lite) with SSL verification disabled - will use for judge calls to avoid Groq rate limits
+2026-09-20 23:17:30 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 23:17:30 - src.api.main - INFO - Environment: development
+2026-09-20 23:22:03 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-20 23:22:58 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:22:58 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 23:22:58 - src.api.main - INFO - Environment: development
+2026-09-20 23:22:58 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-20 23:23:53 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:24:27 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:24:27 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 23:24:27 - src.api.main - INFO - Environment: development
+2026-09-20 23:24:31 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:31:30 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-20 23:32:23 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:32:23 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 23:32:23 - src.api.main - INFO - Environment: development
+2026-09-20 23:32:23 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-20 23:32:56 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:33:15 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:33:25 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:33:25 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 23:33:25 - src.api.main - INFO - Environment: development
+2026-09-20 23:33:25 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-20 23:34:21 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:34:21 - src.api.main - INFO - Benchmark API starting up...
+2026-09-20 23:34:21 - src.api.main - INFO - Environment: development
+2026-09-20 23:38:45 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.3-70b-versatile (Provider: Groq)
+2026-09-20 23:42:20 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.3-70b-versatile (Provider: Groq)
+2026-09-20 23:42:20 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 2 scénarios...
+2026-09-20 23:42:28 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-20 23:42:28 - src.agents.collecteur - INFO - [OK] Scenario 1 (Rédaction de fiche de poste) — 8 chunks RAG récupérés
+2026-09-20 23:42:28 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-20 23:42:28 - src.agents.collecteur - INFO - [OK] Scenario 11 (Résolution d'incidents complexes) — 8 chunks RAG récupérés
+2026-09-20 23:42:28 - src.agents.collecteur - INFO - [COLLECTEUR] 2 scénarios collectés.
+2026-09-20 23:42:28 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-20 23:42:28 - src.agents.executeur - INFO -   2 scénarios × 2 modèles = 4 exécutions
+2026-09-20 23:42:28 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : llama3.1:8b (ollama)
+2026-09-20 23:42:34 - src.observability.langfuse_client - INFO - [Langfuse] Client initialisé (host=https://cloud.langfuse.com)
+2026-09-20 23:42:34 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-20 23:43:58 - src.models_clients.ollama_client - DEBUG - Ollama response received (1743 chars, 2670 tokens, 84.64s)
+2026-09-20 23:43:58 - src.agents.executeur - INFO -      OK - Reponse generee en 87.97s (2670 tokens, coût estimé: $0.000534)
+2026-09-20 23:43:58 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : mistral:7b (ollama)
+2026-09-20 23:44:03 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-20 23:44:49 - src.models_clients.ollama_client - DEBUG - Ollama response received (2583 chars, 3302 tokens, 46.62s)
+2026-09-20 23:44:49 - src.agents.executeur - INFO -      OK - Reponse generee en 48.69s (3302 tokens, coût estimé: $0.000660)
+2026-09-20 23:44:49 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : llama3.1:8b (ollama)
+2026-09-20 23:44:53 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-20 23:45:18 - src.models_clients.ollama_client - DEBUG - Ollama response received (764 chars, 2369 tokens, 24.43s)
+2026-09-20 23:45:18 - src.agents.executeur - INFO -      OK - Reponse generee en 26.52s (2369 tokens, coût estimé: $0.000474)
+2026-09-20 23:45:18 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : mistral:7b (ollama)
+2026-09-20 23:45:22 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-20 23:45:45 - src.models_clients.ollama_client - DEBUG - Ollama response received (916 chars, 2782 tokens, 22.87s)
+2026-09-20 23:45:45 - src.agents.executeur - INFO -      OK - Reponse generee en 24.92s (2782 tokens, coût estimé: $0.000556)
+2026-09-20 23:45:45 - src.agents.executeur - INFO - [EXECUTEUR] 4 exécutions terminées, 0 erreurs.
+2026-09-20 23:45:45 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 4 exécutions (Ragas)...
+2026-09-20 23:45:46 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:45:48 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:45:53 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:45:53 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:45:55 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:00 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:00 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:02 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:08 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:10 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:17 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:24 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:32 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:44 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:46:44 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-20 23:47:09 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-20 23:47:09 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 2 scénarios...
+2026-09-20 23:47:16 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-20 23:47:16 - src.agents.collecteur - INFO - [OK] Scenario 1 (Rédaction de fiche de poste) — 8 chunks RAG récupérés
+2026-09-20 23:47:16 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-20 23:47:16 - src.agents.collecteur - INFO - [OK] Scenario 11 (Résolution d'incidents complexes) — 8 chunks RAG récupérés
+2026-09-20 23:47:16 - src.agents.collecteur - INFO - [COLLECTEUR] 2 scénarios collectés.
+2026-09-20 23:47:16 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-20 23:47:16 - src.agents.executeur - INFO -   2 scénarios × 2 modèles = 4 exécutions
+2026-09-20 23:47:16 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : llama3.1:8b (ollama)
+2026-09-20 23:47:21 - src.observability.langfuse_client - INFO - [Langfuse] Client initialisé (host=https://cloud.langfuse.com)
+2026-09-20 23:47:21 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-20 23:48:03 - src.models_clients.ollama_client - DEBUG - Ollama response received (2230 chars, 2775 tokens, 41.81s)
+2026-09-20 23:48:03 - src.agents.executeur - INFO -      OK - Reponse generee en 44.42s (2775 tokens, coût estimé: $0.000555)
+2026-09-20 23:48:03 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : mistral:7b (ollama)
+2026-09-20 23:48:07 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-20 23:48:45 - src.models_clients.ollama_client - DEBUG - Ollama response received (1914 chars, 3151 tokens, 37.77s)
+2026-09-20 23:48:45 - src.agents.executeur - INFO -      OK - Reponse generee en 39.86s (3151 tokens, coût estimé: $0.000630)
+2026-09-20 23:48:45 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : llama3.1:8b (ollama)
+2026-09-20 23:48:49 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-20 23:49:12 - src.models_clients.ollama_client - DEBUG - Ollama response received (760 chars, 2356 tokens, 23.11s)
+2026-09-20 23:49:12 - src.agents.executeur - INFO -      OK - Reponse generee en 25.17s (2356 tokens, coût estimé: $0.000471)
+2026-09-20 23:49:12 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : mistral:7b (ollama)
+2026-09-20 23:49:16 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-20 23:49:39 - src.models_clients.ollama_client - DEBUG - Ollama response received (877 chars, 2757 tokens, 22.25s)
+2026-09-20 23:49:39 - src.agents.executeur - INFO -      OK - Reponse generee en 24.32s (2757 tokens, coût estimé: $0.000551)
+2026-09-20 23:49:39 - src.agents.executeur - INFO - [EXECUTEUR] 4 exécutions terminées, 0 erreurs.
+2026-09-20 23:49:39 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 4 exécutions (Ragas)...
+2026-09-20 23:49:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:49:41 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:49:46 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:49:46 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:49:49 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:49:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:49:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:49:56 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:01 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:01 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:03 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:09 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:09 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:11 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:19 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:24 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:24 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:26 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:31 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:31 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:33 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:41 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:46 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:46 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:48 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:53 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:50:56 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:01 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:01 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:03 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:08 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      Context precision : None
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      Toxicity          : None
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      Harmfulness       : None
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      Score global      : None
+2026-09-20 23:51:08 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-09-20 23:51:08 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-09-20 23:51:08 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-09-20 23:51:08 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-09-20 23:51:08 - src.agents.evaluateur - DEBUG - Skipping toxicity (not computable)
+2026-09-20 23:51:08 - src.agents.evaluateur - DEBUG - Skipping harmfulness (not computable)
+2026-09-20 23:51:08 - src.agents.evaluateur - INFO -      [OK] 0 scores enregistrés (execution_id=374)
+2026-09-20 23:51:09 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:11 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:18 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-20 23:51:41 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama3-8b-8192 (Provider: Groq)
+2026-09-20 23:51:41 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 2 scénarios...
+2026-09-20 23:51:49 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-20 23:51:49 - src.agents.collecteur - INFO - [OK] Scenario 1 (Rédaction de fiche de poste) — 8 chunks RAG récupérés
+2026-09-20 23:51:49 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-20 23:51:49 - src.agents.collecteur - INFO - [OK] Scenario 11 (Résolution d'incidents complexes) — 8 chunks RAG récupérés
+2026-09-20 23:51:49 - src.agents.collecteur - INFO - [COLLECTEUR] 2 scénarios collectés.
+2026-09-20 23:51:49 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-20 23:51:49 - src.agents.executeur - INFO -   2 scénarios × 2 modèles = 4 exécutions
+2026-09-20 23:51:49 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : llama3.1:8b (ollama)
+2026-09-20 23:51:54 - src.observability.langfuse_client - INFO - [Langfuse] Client initialisé (host=https://cloud.langfuse.com)
+2026-09-20 23:51:54 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-20 23:52:22 - src.models_clients.ollama_client - DEBUG - Ollama response received (1170 chars, 2513 tokens, 28.04s)
+2026-09-20 23:52:22 - src.agents.executeur - INFO -      OK - Reponse generee en 30.67s (2513 tokens, coût estimé: $0.000503)
+2026-09-20 23:52:22 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : mistral:7b (ollama)
+2026-09-20 23:52:26 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-20 23:53:08 - src.models_clients.ollama_client - DEBUG - Ollama response received (2475 chars, 3266 tokens, 42.54s)
+2026-09-20 23:53:08 - src.agents.executeur - INFO -      OK - Reponse generee en 44.61s (3266 tokens, coût estimé: $0.000653)
+2026-09-20 23:53:08 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : llama3.1:8b (ollama)
+2026-09-20 23:53:13 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-20 23:53:35 - src.models_clients.ollama_client - DEBUG - Ollama response received (749 chars, 2363 tokens, 22.35s)
+2026-09-20 23:53:35 - src.agents.executeur - INFO -      OK - Reponse generee en 24.40s (2363 tokens, coût estimé: $0.000473)
+2026-09-20 23:53:35 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : mistral:7b (ollama)
+2026-09-20 23:53:39 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-20 23:54:03 - src.models_clients.ollama_client - DEBUG - Ollama response received (980 chars, 2782 tokens, 23.77s)
+2026-09-20 23:54:03 - src.agents.executeur - INFO -      OK - Reponse generee en 25.84s (2782 tokens, coût estimé: $0.000556)
+2026-09-20 23:54:03 - src.agents.executeur - INFO - [EXECUTEUR] 4 exécutions terminées, 0 erreurs.
+2026-09-20 23:54:03 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 4 exécutions (Ragas)...
+2026-09-20 23:54:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:12 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:12 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:14 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:27 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:27 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:29 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:35 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:35 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:43 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:43 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:45 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:51 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:51 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:53 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:58 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:54:58 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:00 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:08 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:13 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:13 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:21 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:23 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:28 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:28 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:35 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      Context precision : None
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      Toxicity          : None
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      Harmfulness       : None
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      Score global      : None
+2026-09-20 23:55:35 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-09-20 23:55:35 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-09-20 23:55:35 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-09-20 23:55:35 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-09-20 23:55:35 - src.agents.evaluateur - DEBUG - Skipping toxicity (not computable)
+2026-09-20 23:55:35 - src.agents.evaluateur - DEBUG - Skipping harmfulness (not computable)
+2026-09-20 23:55:35 - src.agents.evaluateur - INFO -      [OK] 0 scores enregistrés (execution_id=378)
+2026-09-20 23:55:35 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:38 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:43 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:43 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:45 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:50 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:50 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:52 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:58 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:55:58 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:00 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:08 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:13 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:13 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:21 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:23 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:28 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:28 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:36 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:36 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:38 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:43 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:44 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:46 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:51 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:51 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:59 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:56:59 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:01 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:06 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      Context precision : None
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      Toxicity          : None
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      Harmfulness       : None
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      Score global      : None
+2026-09-20 23:57:06 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-09-20 23:57:06 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-09-20 23:57:06 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-09-20 23:57:06 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-09-20 23:57:06 - src.agents.evaluateur - DEBUG - Skipping toxicity (not computable)
+2026-09-20 23:57:06 - src.agents.evaluateur - DEBUG - Skipping harmfulness (not computable)
+2026-09-20 23:57:06 - src.agents.evaluateur - INFO -      [OK] 0 scores enregistrés (execution_id=379)
+2026-09-20 23:57:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:09 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:14 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:14 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:24 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:29 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:29 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:31 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:44 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:44 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:47 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:52 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:52 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:57:55 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:00 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:00 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:02 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:10 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:17 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:23 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:23 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:25 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:32 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      Faithfulness      : None
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      Context precision : None
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      Context recall    : None
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      Toxicity          : None
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      Harmfulness       : None
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      Score global      : None
+2026-09-20 23:58:37 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+2026-09-20 23:58:37 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+2026-09-20 23:58:37 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+2026-09-20 23:58:37 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+2026-09-20 23:58:37 - src.agents.evaluateur - DEBUG - Skipping toxicity (not computable)
+2026-09-20 23:58:37 - src.agents.evaluateur - DEBUG - Skipping harmfulness (not computable)
+2026-09-20 23:58:37 - src.agents.evaluateur - INFO -      [OK] 0 scores enregistrés (execution_id=380)
+2026-09-20 23:58:38 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:40 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:45 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:45 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-20 23:58:47 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-21 00:05:54 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 00:05:54 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 2 scénarios...
+2026-09-21 00:06:00 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 00:06:00 - src.agents.collecteur - INFO - [OK] Scenario 1 (Rédaction de fiche de poste) — 8 chunks RAG récupérés
+2026-09-21 00:06:00 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 00:06:00 - src.agents.collecteur - INFO - [OK] Scenario 11 (Résolution d'incidents complexes) — 8 chunks RAG récupérés
+2026-09-21 00:06:00 - src.agents.collecteur - INFO - [COLLECTEUR] 2 scénarios collectés.
+2026-09-21 00:06:00 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-21 00:06:00 - src.agents.executeur - INFO -   2 scénarios × 2 modèles = 4 exécutions
+2026-09-21 00:06:00 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : llama3.1:8b (ollama)
+2026-09-21 00:06:05 - src.observability.langfuse_client - INFO - [Langfuse] Client initialisé (host=https://cloud.langfuse.com)
+2026-09-21 00:06:05 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-21 00:06:36 - src.models_clients.ollama_client - DEBUG - Ollama response received (1393 chars, 2587 tokens, 31.32s)
+2026-09-21 00:06:36 - src.agents.executeur - INFO -      OK - Reponse generee en 33.86s (2587 tokens, coût estimé: $0.000517)
+2026-09-21 00:06:36 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : mistral:7b (ollama)
+2026-09-21 00:06:41 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-21 00:07:19 - src.models_clients.ollama_client - DEBUG - Ollama response received (1967 chars, 3171 tokens, 38.16s)
+2026-09-21 00:07:19 - src.agents.executeur - INFO -      OK - Reponse generee en 40.21s (3171 tokens, coût estimé: $0.000634)
+2026-09-21 00:07:19 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : llama3.1:8b (ollama)
+2026-09-21 00:07:23 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=llama3.1:8b
+2026-09-21 00:07:47 - src.models_clients.ollama_client - DEBUG - Ollama response received (861 chars, 2379 tokens, 23.99s)
+2026-09-21 00:07:47 - src.agents.executeur - INFO -      OK - Reponse generee en 26.02s (2379 tokens, coût estimé: $0.000476)
+2026-09-21 00:07:47 - src.agents.executeur - INFO - 
+  -> Scenario [11] Résolution d'incidents complexes | Modele : mistral:7b (ollama)
+2026-09-21 00:07:51 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=mistral:7b
+2026-09-21 00:08:11 - src.models_clients.ollama_client - DEBUG - Ollama response received (765 chars, 2735 tokens, 19.92s)
+2026-09-21 00:08:11 - src.agents.executeur - INFO -      OK - Reponse generee en 21.99s (2735 tokens, coût estimé: $0.000547)
+2026-09-21 00:08:11 - src.agents.executeur - INFO - [EXECUTEUR] 4 exécutions terminées, 0 erreurs.
+2026-09-21 00:08:11 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 4 exécutions (Ragas)...
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      Score global      : 0.25
+2026-09-21 00:09:41 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=382)
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.5
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      Score global      : 0.125
+2026-09-21 00:12:19 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=383)
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      Faithfulness      : 0.9
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      Context precision : 0.1
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      Context recall    : 0.2
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      Score global      : 0.3
+2026-09-21 00:14:40 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=384)
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      Faithfulness      : 0.5
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.25
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      Context precision : 0.1
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      Context recall    : 0.2
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      Score global      : 0.263
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=385)
+2026-09-21 00:19:42 - src.agents.evaluateur - INFO - [EVALUATEUR] 4 évaluations terminées.
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] Génération du rapport de synthèse...
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - 
+============================================================
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK — 2 modèle(s) testé(s)
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - (métriques Ragas, échelle 0.0 à 1.0)
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - ============================================================
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - 
+#1 llama3.1:8b
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Exécutions         : 2
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Latence moy.       : 29.94s
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Score global       : 0.275/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Faithfulness       : 0.45/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Answer relevancy   : 0.5/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Context precision  : 0.05/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Context recall     : 0.1/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Scénarios          : Rédaction de fiche de poste, Résolution d'incidents complexes
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - 
+#2 mistral:7b
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Exécutions         : 2
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Latence moy.       : 31.1s
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Score global       : 0.194/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Faithfulness       : 0.25/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Answer relevancy   : 0.375/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Context precision  : 0.05/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Context recall     : 0.1/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO -    Scénarios          : Rédaction de fiche de poste, Résolution d'incidents complexes
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - 
+============================================================
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - RECOMMANDATION : llama3.1:8b est le modèle le plus performant
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - avec un score global moyen de 0.275/1.0
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - et une latence moyenne de 29.94s
+2026-09-21 00:19:42 - src.agents.consolidateur - INFO - ============================================================
+
+2026-09-21 00:19:53 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-21 00:19:53 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-21 00:19:53 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-21 00:19:53 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-21 00:19:54 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-21 00:19:55 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-21 00:19:55 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-21 00:19:55 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-21 00:19:55 - __main__ - DEBUG - API token obtained successfully
+2026-09-21 00:19:55 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-21 00:19:55 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 00:19:55 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-21 00:19:55 - __main__ - INFO - Successfully loaded 300 executions with scores

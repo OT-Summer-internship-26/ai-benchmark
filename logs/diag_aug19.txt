@@ -1,0 +1,9 @@
+﻿.venv\Scripts\python.exe : C:\Users\ranim\AppData\Local\Programs\Python\Python312\python.exe: can't open file 
+'C:\\Users\\ranim\\OneDrive\\Bureau\\ooredoo-ia-benchmark\\scripts\\analyze_aug19.py': [Errno 2] No such file or 
+directory
+Au caractère Ligne:1 : 1
++ .venv\Scripts\python.exe scripts\analyze_aug19.py 2>&1 | Out-File -En ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\ranim\...le or directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

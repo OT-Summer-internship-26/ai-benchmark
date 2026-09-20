@@ -127,6 +127,11 @@ def render_admin_dashboard():
                 ]
                 
             except Exception as e:
+                # Get total models in catalog dynamically
+                with engine.connect() as conn:
+                    total_catalog_models = conn.execute(text("SELECT COUNT(*) FROM modeles")).scalar() or 0
+                
+            except Exception as e:
                 logger.error(f"Error loading scenarios/models: {e}", exc_info=True)
                 st.error("Erreur lors du chargement des scénarios et modèles")
                 st.exception(e)
@@ -138,12 +143,13 @@ def render_admin_dashboard():
             with col1:
                 st.metric("Scenarios", len(visible_scenarios))
             with col2:
-                st.metric("Models Tested", f"{len(models)} / 12")
+                st.metric("Models Tested", f"{len(models)} / {total_catalog_models}")
             
-            st.caption("📊 Note: 4 of 12 models have benchmark data (8 remote models pending benchmarking)")
-        
-        # Continue with the rest of the function...
-        # (The rest remains unchanged but I should add try-catch around major sections)
+            untested_count = max(0, total_catalog_models - len(models))
+            if untested_count > 0:
+                st.caption(f"📊 {len(models)} modèles testés sur {total_catalog_models} au catalogue ({untested_count} en attente de benchmark)")
+            else:
+                st.caption(f"📊 Tous les {total_catalog_models} modèles du catalogue ont été testés sur cette sélection.")
         
     except Exception as e:
         logger.error(f"Critical error in admin dashboard: {e}", exc_info=True)
@@ -164,18 +170,23 @@ def render_admin_dashboard():
     
     st.header("📊 Department Overview")
     
-    # Check for unevaluated (orphan) executions and warn (Option B)
+    # Check for unevaluated (orphan) executions requiring all 4 RAGAS metrics
     try:
         with engine.connect() as conn:
             orphan_stats = conn.execute(
                 text("""
                     SELECT 
                         COUNT(DISTINCT e.id) as total_executions,
-                        COUNT(DISTINCT CASE WHEN sc.id IS NOT NULL THEN e.id END) as scored_executions
+                        COUNT(DISTINCT CASE WHEN (
+                            SELECT COUNT(DISTINCT sc.critere)
+                            FROM scores sc
+                            WHERE sc.execution_id = e.id
+                              AND sc.methode = 'ragas'
+                              AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                              AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                              AND sc.note BETWEEN 0 AND 1
+                        ) = 4 THEN e.id END) as scored_executions
                     FROM executions e
-                    LEFT JOIN scores sc ON sc.execution_id = e.id 
-                        AND sc.methode = 'ragas'
-                        AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
                 """)
             ).fetchone()
             total_exec = orphan_stats[0] or 0
@@ -189,8 +200,8 @@ def render_admin_dashboard():
     if orphan_count > 0:
         pct = round(orphan_count / total_exec * 100) if total_exec > 0 else 0
         st.info(
-            f"ℹ️ **{orphan_count} exécution(s) en attente d'évaluation RAGAS** ({pct}% du total).\n\n"
-            f"Les résultats affichés ne couvrent que les {scored_exec} exécutions évaluées. "
+            f"ℹ️ **{orphan_count} exécution(s) en attente d'évaluation RAGAS complète** ({pct}% du total).\n\n"
+            f"Les résultats affichés couvrent les {scored_exec} exécutions pleinement évaluées (sur {total_exec} au total). "
             f"Lancez `python reevaluate_missing_scores.py --resume` pour évaluer les restantes."
         )
     dept_summary_cols = st.columns(len(selected_depts))
@@ -339,6 +350,7 @@ def render_admin_dashboard():
                 )
                 
                 st.plotly_chart(fig, use_container_width=True)
+                st.caption("ℹ️ *Note : Les métriques manquantes pour un scénario donné (N/A) ne sont pas assimilées à un score de 0%. Le tableau d'onglets suivant fournit les chiffres exacts.*")
             else:
                 st.info(f"No metric data available for {dept_name}")
         else:

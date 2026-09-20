@@ -111,10 +111,13 @@ def run_benchmark(
 
 
 @router.get("/models")
-def list_models(limit: int = Query(100, ge=1, le=1000)):
+def list_models(
+    limit: int = Query(100, ge=1, le=1000),
+    user: dict = Depends(get_current_user),
+):
     """
     Retourne la liste des modèles enregistrés en base (table modeles).
-    Public endpoint - no authentication required.
+    Requires authentication.
     """
     try:
         with engine.connect() as conn:
@@ -126,7 +129,7 @@ def list_models(limit: int = Query(100, ge=1, le=1000)):
                 {"limit": limit}
             )
             rows = [dict(row) for row in result.mappings()]
-            logger.debug(f"Retrieved {len(rows)} models from database")
+            logger.debug(f"Retrieved {len(rows)} models from database by {user['email']}")
             return {"count": len(rows), "modeles": rows}
     except Exception as e:
         logger.error(f"Error retrieving models: {str(e)}")
@@ -134,10 +137,13 @@ def list_models(limit: int = Query(100, ge=1, le=1000)):
 
 
 @router.get("/scenarios")
-def list_scenarios(limit: int = Query(100, ge=1, le=1000)):
+def list_scenarios(
+    limit: int = Query(100, ge=1, le=1000),
+    user: dict = Depends(get_current_user),
+):
     """
     Retourne la liste des scénarios enregistrés en base (table scenarios).
-    Public endpoint - no authentication required.
+    Requires authentication.
     """
     try:
         with engine.connect() as conn:
@@ -149,7 +155,7 @@ def list_scenarios(limit: int = Query(100, ge=1, le=1000)):
                 {"limit": limit}
             )
             rows = [dict(row) for row in result.mappings()]
-            logger.debug(f"Retrieved {len(rows)} scenarios from database")
+            logger.debug(f"Retrieved {len(rows)} scenarios from database by {user['email']}")
             return {"count": len(rows), "scenarios": rows}
     except Exception as e:
         logger.error(f"Error retrieving scenarios: {str(e)}")

@@ -34,6 +34,7 @@ def generate_response(question: str, context_chunks: list[str]) -> str:
 def generate_response_with_usage(
     question: str,
     context_chunks: list[str],
+    model_name: str = "llama-3.3-70b-versatile",
     metadata: dict = None,
 ) -> tuple[str, dict]:
     """
@@ -42,6 +43,7 @@ def generate_response_with_usage(
     Args:
         question: The question to answer
         context_chunks: RAG context chunks to use
+        model_name: The Groq model to use (default: llama-3.3-70b-versatile)
         metadata: Optional metadata for Langfuse tracing
         
     Returns:
@@ -50,7 +52,7 @@ def generate_response_with_usage(
             - completion_tokens: Number of tokens in completion
             - total_tokens: Total tokens
             - latency: Response latency in seconds
-            - estimated_cost: Always 0.0 for Groq (free tier)
+            - estimated_cost: Estimated cost (or 0.0 for free tier)
     """
     context = "\n\n---\n\n".join(context_chunks)
 
@@ -93,13 +95,13 @@ même pour un seul terme)."""
 
     with trace_llm_call(
         name="groq_generation",
-        model="openai/gpt-oss-120b",
+        model=model_name,
         input_prompt=prompt,
         metadata=metadata or {},
     ) as trace:
         start_time = time.time()
         response = client.chat.completions.create(
-            model="openai/gpt-oss-120b",
+            model=model_name,
             messages=[
                 {
                     "role": "system",
@@ -117,7 +119,7 @@ même pour un seul terme)."""
         completion_tokens = getattr(usage, 'completion_tokens', 0)
         total_tokens = getattr(usage, 'total_tokens', prompt_tokens + completion_tokens)
         
-        # Groq free tier = coût 0
+        # Groq free tier = coût 0.0
         estimated_cost = 0.0
         
         usage_stats = {

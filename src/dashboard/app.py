@@ -37,6 +37,7 @@ from src.dashboard.formatting import (
     safe_format_cost,
     safe_format_latency,
 )
+from src.dashboard.client_recommendation_page import render_client_recommendation_page
 
 
 def format_executions_for_display(df, display_columns):
@@ -128,7 +129,9 @@ def load_executions(limit: int | None = 200) -> pd.DataFrame:
                     WHERE e.id IN (
                         SELECT DISTINCT sc.execution_id FROM scores sc
                         WHERE sc.methode = 'ragas'
-                        AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                          AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                          AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                          AND sc.note BETWEEN 0 AND 1
                     )
                     ORDER BY e.date_execution DESC
                     {limit_clause}
@@ -155,8 +158,10 @@ def load_executions(limit: int | None = 200) -> pd.DataFrame:
             scores_query = text(
                 "SELECT execution_id, critere, note, commentaire "
                 "FROM scores WHERE execution_id IN :ids "
-                "AND (critere IN ('faithfulness','answer_relevancy','context_precision','context_recall') "
-                "OR (critere='score_global' AND note <= 1.0))"
+                "AND critere IN ('faithfulness','answer_relevancy','context_precision','context_recall') "
+                "AND methode = 'ragas' "
+                "AND COALESCE(is_legacy, FALSE) = FALSE "
+                "AND note BETWEEN 0 AND 1"
             ).bindparams(bindparam("ids", expanding=True))
 
             scores = pd.read_sql(scores_query, conn, params={"ids": execution_ids})
@@ -256,16 +261,18 @@ def format_datetime(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def build_metric_cards(df: pd.DataFrame, client_mode: bool = False) -> None:
+def build_metric_cards(df: pd.DataFrame, client_mode: bool = False, total_executions_in_db: int | None = None) -> None:
     """Affiche les 4 cartes de métriques clés.
-    En mode client (client_mode=True), le score brut (ex: 0.410) est
-    remplacé par un label qualitatif (🟢/🟡/🔴) plus lisible pour un
-    public non-technique — conformément à la demande de simplification.
+    Indique clairement si les exécutions affichées représentent un sous-ensemble filtré/limité.
     """
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Exécutions", len(df))
-    col2.metric("Modèles", df["modele_nom"].nunique())
-    col3.metric("Scénarios", df["nom_cas_usage"].nunique())
+    nb_exec = len(df)
+    if total_executions_in_db and total_executions_in_db > nb_exec:
+        col1.metric("Exécutions", f"{nb_exec} / {total_executions_in_db}")
+    else:
+        col1.metric("Exécutions", nb_exec)
+    col2.metric("Modèles", df["modele_nom"].nunique() if not df.empty else 0)
+    col3.metric("Scénarios", df["nom_cas_usage"].nunique() if not df.empty else 0)
     if "score_global_auto" in df.columns:
         moyenne = df["score_global_auto"].mean()
         if client_mode:
@@ -1176,11 +1183,18 @@ def main() -> None:
 
         email = st.session_state["auth_email"]
         role = st.session_state["auth_role"]
-        is_admin = role in ["Admin", "Super Admin"]
+        is_admin = role in ["Admin", "Administrateur", "Super Admin"]
         is_super_admin = role == "Super Admin"
-        is_client = role == "Client"
+        is_client = role in ["Client", "Utilisateur", "client"]
         
         logger.info(f"Dashboard accessed by user: {email} with role: {role}")
+
+        # === ROUTAGE CLIENT STRICT ===
+        # Le client n'a accès à AUCUNE donnée brute, ni filtres, ni onglets, ni vocabulaire technique.
+        # Il est immédiatement redirigé vers sa page dédiée et isolée par requête SQL.
+        if is_client:
+            render_client_recommendation_page(email)
+            st.stop()
 
         render_sidebar_identity(email, role)
 
@@ -1300,11 +1314,16 @@ def main() -> None:
                 text("""
                     SELECT 
                         COUNT(DISTINCT e.id) as total_executions,
-                        COUNT(DISTINCT CASE WHEN sc.id IS NOT NULL THEN e.id END) as scored_executions
+                        COUNT(DISTINCT CASE WHEN (
+                            SELECT COUNT(DISTINCT sc.critere)
+                            FROM scores sc
+                            WHERE sc.execution_id = e.id
+                              AND sc.methode = 'ragas'
+                              AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                              AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                              AND sc.note BETWEEN 0 AND 1
+                        ) = 4 THEN e.id END) as scored_executions
                     FROM executions e
-                    LEFT JOIN scores sc ON sc.execution_id = e.id 
-                        AND sc.methode = 'ragas'
-                        AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
                 """)
             ).fetchone()
             total_exec = orphan_stats[0] or 0
@@ -1318,8 +1337,8 @@ def main() -> None:
     if orphan_count > 0:
         pct = round(orphan_count / total_exec * 100) if total_exec > 0 else 0
         st.info(
-            f"ℹ️ **{orphan_count} exécution(s) en attente d'évaluation RAGAS** ({pct}% du total).\n\n"
-            f"Les résultats affichés ne couvrent que les {scored_exec} exécutions évaluées. "
+            f"ℹ️ **{orphan_count} exécution(s) en attente d'évaluation RAGAS complète** ({pct}% du total).\n\n"
+            f"Les résultats affichés couvrent les {scored_exec} exécutions pleinement évaluées (sur {total_exec} au total). "
             f"Lancez `python reevaluate_missing_scores.py --resume` pour évaluer les restantes."
         )
 
@@ -1517,7 +1536,7 @@ def main() -> None:
             st.divider()
             build_client_department_comparison(filtered)
         else:
-            build_metric_cards(filtered, client_mode=False)
+            build_metric_cards(filtered, client_mode=False, total_executions_in_db=total_exec)
             daily_mean = (
                 filtered.dropna(subset=["score_global_display"])
                 .groupby(pd.Grouper(key="date_execution", freq="D"))["score_global_display"]

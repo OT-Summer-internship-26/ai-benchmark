@@ -1,0 +1,116 @@
+﻿=== LOG LINES 320-420 (Aug 19 Skipping block context) ===
+L   316: 2026-08-19 10:40:53 - src.agents.executeur - ERROR - LLM error for scenario 13 / mod´┐¢le qwen3:8b: Ollama timeout after 60s
+L   317: 2026-08-19 10:40:57 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+L   318: 2026-08-19 10:41:30 - src.models_clients.ollama_client - DEBUG - Ollama response received (106 chars)
+L   319: 2026-08-19 10:41:34 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+L   320: 2026-08-19 10:41:54 - src.models_clients.ollama_client - DEBUG - Ollama response received (297 chars)
+L   321: 2026-08-19 10:41:58 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+L   322: 2026-08-19 10:42:16 - src.models_clients.ollama_client - DEBUG - Ollama response received (123 chars)
+L   323: 2026-08-19 10:42:16 - src.agents.executeur - INFO - [EXECUTEUR] 11 ex´┐¢cutions termin´┐¢es, 5 erreurs.
+L   324: 2026-08-19 10:42:16 - src.agents.evaluateur - INFO - [EVALUATEUR] ´┐¢valuation de 11 ex´┐¢cutions (Ragas)...
+L   325: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   326: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   327: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Context precision : None
+L   328: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Context recall    : None
+L   329: 2026-08-19 10:45:00 - src.agents.evaluateur - INFO -      Score global      : None
+L   330: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   331: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   332: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   333: 2026-08-19 10:45:00 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   334: 2026-08-19 10:47:44 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   335: 2026-08-19 10:47:44 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   336: 2026-08-19 10:47:44 - src.agents.evaluateur - INFO -      Context precision : None
+L   337: 2026-08-19 10:47:44 - src.agents.evaluateur - INFO -      Context recall    : None
+L   338: 2026-08-19 10:47:44 - src.agents.evaluateur - INFO -      Score global      : None
+L   339: 2026-08-19 10:47:44 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   340: 2026-08-19 10:47:44 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   341: 2026-08-19 10:47:44 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   342: 2026-08-19 10:47:44 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   343: 2026-08-19 10:50:28 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   344: 2026-08-19 10:50:28 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   345: 2026-08-19 10:50:28 - src.agents.evaluateur - INFO -      Context precision : None
+L   346: 2026-08-19 10:50:28 - src.agents.evaluateur - INFO -      Context recall    : None
+L   347: 2026-08-19 10:50:28 - src.agents.evaluateur - INFO -      Score global      : None
+L   348: 2026-08-19 10:50:28 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   349: 2026-08-19 10:50:28 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   350: 2026-08-19 10:50:28 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   351: 2026-08-19 10:50:28 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   352: 2026-08-19 10:53:11 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   353: 2026-08-19 10:53:11 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   354: 2026-08-19 10:53:11 - src.agents.evaluateur - INFO -      Context precision : None
+L   355: 2026-08-19 10:53:11 - src.agents.evaluateur - INFO -      Context recall    : None
+L   356: 2026-08-19 10:53:11 - src.agents.evaluateur - INFO -      Score global      : None
+L   357: 2026-08-19 10:53:11 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   358: 2026-08-19 10:53:11 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   359: 2026-08-19 10:53:11 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   360: 2026-08-19 10:53:11 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   361: 2026-08-19 10:55:55 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   362: 2026-08-19 10:55:55 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   363: 2026-08-19 10:55:55 - src.agents.evaluateur - INFO -      Context precision : None
+L   364: 2026-08-19 10:55:55 - src.agents.evaluateur - INFO -      Context recall    : None
+L   365: 2026-08-19 10:55:55 - src.agents.evaluateur - INFO -      Score global      : None
+L   366: 2026-08-19 10:55:55 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   367: 2026-08-19 10:55:55 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   368: 2026-08-19 10:55:55 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   369: 2026-08-19 10:55:55 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   370: 2026-08-19 10:58:40 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   371: 2026-08-19 10:58:40 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   372: 2026-08-19 10:58:40 - src.agents.evaluateur - INFO -      Context precision : None
+L   373: 2026-08-19 10:58:40 - src.agents.evaluateur - INFO -      Context recall    : None
+L   374: 2026-08-19 10:58:40 - src.agents.evaluateur - INFO -      Score global      : None
+L   375: 2026-08-19 10:58:40 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   376: 2026-08-19 10:58:40 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   377: 2026-08-19 10:58:40 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   378: 2026-08-19 10:58:40 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   379: 2026-08-19 11:01:23 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   380: 2026-08-19 11:01:23 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   381: 2026-08-19 11:01:23 - src.agents.evaluateur - INFO -      Context precision : None
+L   382: 2026-08-19 11:01:23 - src.agents.evaluateur - INFO -      Context recall    : None
+L   383: 2026-08-19 11:01:23 - src.agents.evaluateur - INFO -      Score global      : None
+L   384: 2026-08-19 11:01:23 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   385: 2026-08-19 11:01:23 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   386: 2026-08-19 11:01:23 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   387: 2026-08-19 11:01:23 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   388: 2026-08-19 11:04:05 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   389: 2026-08-19 11:04:05 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   390: 2026-08-19 11:04:05 - src.agents.evaluateur - INFO -      Context precision : None
+L   391: 2026-08-19 11:04:05 - src.agents.evaluateur - INFO -      Context recall    : None
+L   392: 2026-08-19 11:04:05 - src.agents.evaluateur - INFO -      Score global      : None
+L   393: 2026-08-19 11:04:05 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   394: 2026-08-19 11:04:05 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   395: 2026-08-19 11:04:05 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   396: 2026-08-19 11:04:05 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   397: 2026-08-19 11:06:49 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   398: 2026-08-19 11:06:49 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   399: 2026-08-19 11:06:49 - src.agents.evaluateur - INFO -      Context precision : None
+L   400: 2026-08-19 11:06:49 - src.agents.evaluateur - INFO -      Context recall    : None
+L   401: 2026-08-19 11:06:49 - src.agents.evaluateur - INFO -      Score global      : None
+L   402: 2026-08-19 11:06:49 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   403: 2026-08-19 11:06:49 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   404: 2026-08-19 11:06:49 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   405: 2026-08-19 11:06:49 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   406: 2026-08-19 11:09:32 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   407: 2026-08-19 11:09:32 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   408: 2026-08-19 11:09:32 - src.agents.evaluateur - INFO -      Context precision : None
+L   409: 2026-08-19 11:09:32 - src.agents.evaluateur - INFO -      Context recall    : None
+L   410: 2026-08-19 11:09:32 - src.agents.evaluateur - INFO -      Score global      : None
+L   411: 2026-08-19 11:09:32 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   412: 2026-08-19 11:09:32 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   413: 2026-08-19 11:09:32 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   414: 2026-08-19 11:09:32 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   415: 2026-08-19 11:12:16 - src.agents.evaluateur - INFO -      Faithfulness      : None
+L   416: 2026-08-19 11:12:16 - src.agents.evaluateur - INFO -      Answer relevancy  : None
+L   417: 2026-08-19 11:12:16 - src.agents.evaluateur - INFO -      Context precision : None
+L   418: 2026-08-19 11:12:16 - src.agents.evaluateur - INFO -      Context recall    : None
+L   419: 2026-08-19 11:12:16 - src.agents.evaluateur - INFO -      Score global      : None
+L   420: 2026-08-19 11:12:16 - src.agents.evaluateur - DEBUG - Skipping faithfulness (not computable)
+L   421: 2026-08-19 11:12:16 - src.agents.evaluateur - DEBUG - Skipping answer_relevancy (not computable)
+L   422: 2026-08-19 11:12:16 - src.agents.evaluateur - DEBUG - Skipping context_precision (not computable)
+L   423: 2026-08-19 11:12:16 - src.agents.evaluateur - DEBUG - Skipping context_recall (not computable)
+L   424: 2026-08-19 11:12:16 - src.agents.evaluateur - INFO - [EVALUATEUR] 11 ´┐¢valuations termin´┐¢es.
+L   425: 2026-08-19 11:12:16 - src.agents.consolidateur - INFO - [CONSOLIDATEUR] G´┐¢n´┐¢ration du rapport de synth´┐¢se...
+L   426: 2026-08-19 11:12:16 - src.agents.consolidateur - INFO -
+L   427: ============================================================
+L   428: 2026-08-19 11:12:16 - src.agents.consolidateur - INFO - RAPPORT DE BENCHMARK ´┐¢ 1 mod´┐¢le(s) test´┐¢(s)
+L   429: 2026-08-19 11:12:16 - src.agents.consolidateur - INFO - (m´┐¢triques Ragas, ´┐¢chelle 0.0 ´┐¢ 1.0)
+L   430: 2026-08-19 11:12:16 - src.agents.consolidateur - INFO - ============================================================

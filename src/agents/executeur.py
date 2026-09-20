@@ -2,6 +2,7 @@ import time
 import requests
 from src.models_clients.ollama_client import generate_response_with_usage as generate_response_ollama
 from src.models_clients.gemini_client import generate_response_with_usage as generate_response_gemini
+from src.models_clients.groq_client import generate_response_with_usage as generate_response_groq
 from src.database.connection import engine
 from sqlalchemy import text
 from src.utils.logger import setup_logger
@@ -15,19 +16,35 @@ logger = setup_logger(__name__)
 #
 # Chaque entrée précise :
 #   - "id"       : id en base (table modeles)
-#   - "provider" : "ollama" (LLM local) ou "gemini" (appel API)
-#
-# Ollama nécessite un service local qui tourne (health check avant appel).
-# Gemini est un appel API distant, pas de health check préalable nécessaire —
-# les erreurs API sont gérées directement par le retry/backoff.
+#   - "provider" : "ollama" (LLM local), "gemini" ou "groq" (appel API)
+#   - "api_model": nom du modèle côté API (si différent de la clé)
 # ---------------------------------------------------------------------------
 MAPPING_MODELES = {
+    # Groq API
+    "llama-3.3-70b-versatile": {"id": 1, "provider": "groq", "api_model": "llama-3.3-70b-versatile"},
+    "Llama 3.3 70B": {"id": 1, "provider": "groq", "api_model": "llama-3.3-70b-versatile"},
+    "llama-3.1-8b-instant": {"id": 2, "provider": "groq", "api_model": "llama-3.1-8b-instant"},
+    "Llama 3.1 8B Instant": {"id": 2, "provider": "groq", "api_model": "llama-3.1-8b-instant"},
+    "mixtral-8x7b-32768": {"id": 3, "provider": "groq", "api_model": "mixtral-8x7b-32768"},
+    "Mixtral 8x7B": {"id": 3, "provider": "groq", "api_model": "mixtral-8x7b-32768"},
+    "gemma2-9b-it": {"id": 4, "provider": "groq", "api_model": "gemma2-9b-it"},
+    "Gemma2 9B": {"id": 4, "provider": "groq", "api_model": "gemma2-9b-it"},
+    
+    # Ollama Local
     "llama3.1:8b": {"id": 9, "provider": "ollama"},
+    "Llama 3.1 8B (Ollama)": {"id": 9, "provider": "ollama"},
     "mistral:7b": {"id": 10, "provider": "ollama"},
+    "Mistral 7B (Ollama)": {"id": 10, "provider": "ollama"},
     "gemma2:9b": {"id": 11, "provider": "ollama"},
+    "Gemma2 9B (Ollama)": {"id": 11, "provider": "ollama"},
     "qwen2.5:7b": {"id": 12, "provider": "ollama"},
+    "Qwen2.5 7B (Ollama)": {"id": 12, "provider": "ollama"},
     "qwen3:8b": {"id": 13, "provider": "ollama"},
+    "Qwen3 8B (Ollama)": {"id": 13, "provider": "ollama"},
+    
+    # Gemini API
     "gemini-3.1-flash-lite": {"id": 14, "provider": "gemini"},
+    "Gemini 3.1 Flash-Lite": {"id": 14, "provider": "gemini"},
 }
 
 
@@ -91,11 +108,36 @@ def _generate_response_gemini_with_retry(
     )
 
 
+@retry_with_backoff(
+    max_attempts=3,
+    initial_delay=2.0,
+    exceptions=(Exception,)  # Erreurs API Groq (rate limit, réseau, etc.)
+)
+def _generate_response_groq_with_retry(
+    question: str,
+    context_chunks: list[str],
+    model_name: str = "llama-3.3-70b-versatile",
+    metadata: dict = None
+) -> tuple[str, dict]:
+    """
+    Generate response with retry logic for transient failures (Groq API).
+    
+    Returns:
+        Tuple of (response_text, usage_stats)
+    """
+    return generate_response_groq(
+        question=question,
+        context_chunks=context_chunks,
+        model_name=model_name,
+        metadata=metadata,
+    )
+
+
 def agent_executeur(state: dict) -> dict:
     """
     Pour chaque scénario × chaque modèle :
     - Valide que le modèle existe dans MAPPING_MODELES
-    - Route vers le bon provider (Ollama local ou API Gemini)
+    - Route vers le bon provider (Ollama local, API Gemini, API Groq)
     - Génère une réponse via le pipeline RAG + LLM
     - Mesure la latence
     - Enregistre dans la table executions avec gestion appropriée des erreurs
@@ -125,6 +167,7 @@ def agent_executeur(state: dict) -> dict:
                     modele_info = MAPPING_MODELES[nom_modele]
                     modele_id = modele_info["id"]
                     provider = modele_info["provider"]
+                    api_model = modele_info.get("api_model", nom_modele)
                     logger.info(f"\n  -> Scenario [{scenario['id']}] {scenario['nom_cas_usage']} | Modele : {nom_modele} ({provider})")
 
                     try:
@@ -153,12 +196,20 @@ def agent_executeur(state: dict) -> dict:
                             latence = time.time() - debut
 
                         elif provider == "gemini":
-                            # Pas de health check préalable : on tente l'appel directement,
-                            # les erreurs (clé API invalide, quota, réseau) sont gérées par le retry.
                             debut = time.time()
                             reponse, usage_stats = _generate_response_gemini_with_retry(
                                 question=scenario["prompt"],
                                 context_chunks=scenario["chunks_rag"],
+                                metadata=metadata,
+                            )
+                            latence = time.time() - debut
+
+                        elif provider == "groq":
+                            debut = time.time()
+                            reponse, usage_stats = _generate_response_groq_with_retry(
+                                question=scenario["prompt"],
+                                context_chunks=scenario["chunks_rag"],
+                                model_name=api_model,
                                 metadata=metadata,
                             )
                             latence = time.time() - debut

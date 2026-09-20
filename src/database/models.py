@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime
 
@@ -51,6 +51,8 @@ class Score(Base):
     critere = Column(String)
     note = Column(Float)
     commentaire = Column(Text)
+    methode = Column(String, default="ragas")
+    is_legacy = Column(Boolean, default=False)
 
     execution = relationship("Execution")
 

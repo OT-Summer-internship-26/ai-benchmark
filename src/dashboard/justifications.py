@@ -63,12 +63,19 @@ def generate_consolidateur_justification(
             FROM executions e
             JOIN scenarios s ON s.id = e.scenario_id
             JOIN modeles m ON m.id = e.modele_id
-            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.is_legacy = FALSE
-            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.is_legacy = FALSE
-            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.is_legacy = FALSE
-            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.is_legacy = FALSE
+            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND COALESCE(f.is_legacy, FALSE) = FALSE AND f.note BETWEEN 0 AND 1
+            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND COALESCE(ar.is_legacy, FALSE) = FALSE AND ar.note BETWEEN 0 AND 1
+            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND COALESCE(cp.is_legacy, FALSE) = FALSE AND cp.note BETWEEN 0 AND 1
+            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND COALESCE(cr.is_legacy, FALSE) = FALSE AND cr.note BETWEEN 0 AND 1
             WHERE s.departement = :department
             AND m.nom = :model_name
+              AND e.id IN (
+                SELECT DISTINCT sc.execution_id FROM scores sc
+                WHERE sc.methode = 'ragas'
+                  AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                  AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                  AND sc.note BETWEEN 0 AND 1
+              )
             GROUP BY m.nom
         """)
         
@@ -247,3 +254,93 @@ def _generate_narrative(
         )
     
     return "\n".join(lines)
+
+
+def generate_client_justification(department: str, model_name: str) -> dict:
+    """
+    Génère une explication 100% métier et compréhensible pour les utilisateurs finaux (rôle Client).
+    AUCUN vocabulaire technique (pas de 'faithfulness', 'RAGAS', 'context precision', etc.).
+    Uniquement des arguments tangibles basés sur les chiffres réels de leur département.
+    """
+    data = generate_consolidateur_justification(department, model_name)
+    metrics = data.get("metrics", {})
+    
+    if not metrics or not metrics.get("total_executions"):
+        return {
+            "title": f"Recommandation pour {department}",
+            "points": [
+                "Ce modèle a été sélectionné pour votre département.",
+                "Les premiers tests comparatifs indiquent une bonne adéquation avec vos cas d'usage."
+            ],
+            "appreciation": "🟡 En cours d'évaluation",
+        }
+    
+    points = []
+    faith = metrics.get("avg_faithfulness")
+    relevancy = metrics.get("avg_answer_relevancy")
+    precision = metrics.get("avg_context_precision")
+    recall = metrics.get("avg_context_recall")
+    latency = metrics.get("avg_latency")
+    score_global = metrics.get("global_score", 0.0) or 0.0
+    nb_scenarios = metrics.get("scenarios_tested", 0)
+    nb_exec = metrics.get("total_executions", 0)
+
+    # Appreciation globale
+    if score_global >= 0.75:
+        appreciation = "🟢 Excellente adéquation"
+    elif score_global >= 0.5:
+        appreciation = "🟡 Bonne adéquation"
+    else:
+        appreciation = "🟠 Adéquation modérée"
+
+    # Argument 1 : Fiabilité et exactitude
+    if faith is not None and faith >= 0.7:
+        points.append(
+            f"**Excellente exactitude** : Le modèle respecte fidèlement les documents et procédures de {department} sans inventer d'information."
+        )
+    elif faith is not None:
+        points.append(
+            f"**Exactitude satisfaisante** : Le modèle s'aligne bien sur les connaissances de {department}."
+        )
+
+    # Argument 2 : Pertinence des réponses
+    if relevancy is not None and relevancy >= 0.7:
+        points.append(
+            "**Réponses ciblées** : Il répond précisément à la demande de l'utilisateur sans digression inutile."
+        )
+    elif relevancy is not None:
+        points.append(
+            "**Compréhension du besoin** : Les réponses fournies couvrent le périmètre demandé."
+        )
+
+    # Argument 3 : Précision / exhaustivité
+    if precision is not None and precision >= 0.7:
+        points.append(
+            "**Sélection rigoureuse des informations** : Il extrait les données pertinentes avec un niveau élevé de clarté."
+        )
+    elif recall is not None and recall >= 0.7:
+        points.append(
+            "**Exhaustivité** : Il intègre l'ensemble des éléments requis pour traiter les cas d'usage de votre métier."
+        )
+
+    # Argument 4 : Vitesse
+    if latency is not None and latency < 3.0:
+        points.append(
+            "**Grande réactivité** : Le délai de réponse est fluide et adapté aux interactions quotidiennes."
+        )
+    else:
+        points.append(
+            "**Temps de traitement équilibré** : Le temps de réponse est optimisé pour garantir la qualité de la réponse."
+        )
+
+    # Contexte des tests
+    points.append(
+        f"*Analyse établie sur {nb_exec} tests comparatifs réalisés sur {nb_scenarios} scénarios de votre département.*"
+    )
+
+    return {
+        "title": f"Pourquoi {model_name} est recommandé pour {department} ?",
+        "points": points,
+        "appreciation": appreciation,
+    }
+

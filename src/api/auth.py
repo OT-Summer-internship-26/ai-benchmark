@@ -12,12 +12,16 @@ logger = setup_logger(__name__)
 
 # Simple token storage (in-memory for now, can be replaced with proper JWT)
 # In production, use proper JWT tokens with expiration
+import time
+
+# Active tokens storage: token -> {"user": user_data, "expires_at": float}
 _active_tokens: dict[str, dict] = {}
+TOKEN_LIFETIME_SECONDS = 86400  # 24 hours
 
 
 def create_token(user_data: dict) -> str:
     """
-    Create a simple token for a user (replace with JWT in production).
+    Create a simple token for a user with 24-hour expiration.
     
     Args:
         user_data: Dict with 'id', 'email', 'role'
@@ -27,14 +31,17 @@ def create_token(user_data: dict) -> str:
     """
     import secrets
     token = secrets.token_urlsafe(32)
-    _active_tokens[token] = user_data
+    _active_tokens[token] = {
+        "user": user_data,
+        "expires_at": time.time() + TOKEN_LIFETIME_SECONDS
+    }
     logger.debug(f"Token created for user: {user_data['email']}")
     return token
 
 
 def verify_token(token: str) -> dict:
     """
-    Verify a token and return user data.
+    Verify a token, check expiration, and return user data.
     
     Args:
         token: Token string
@@ -43,11 +50,18 @@ def verify_token(token: str) -> dict:
         User data dict
         
     Raises:
-        AuthenticationException: If token is invalid
+        AuthenticationException: If token is invalid or expired
     """
     if token not in _active_tokens:
         raise AuthenticationException("Invalid or expired token")
-    return _active_tokens[token]
+    
+    token_info = _active_tokens[token]
+    if time.time() > token_info.get("expires_at", 0):
+        # Remove expired token
+        del _active_tokens[token]
+        raise AuthenticationException("Token has expired. Please login again.")
+    
+    return token_info["user"]
 
 
 def get_current_user(authorization: Optional[str] = Header(None)) -> dict:

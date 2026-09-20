@@ -1,0 +1,24 @@
+﻿Execution IDs where metrics were SKIPPED (not computable): [307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317]
+Execution IDs confirmed SCORED in logs: [253, 289, 290, 291, 292, 293, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 354, 355, 356, 357, 358, 359, 360, 361, 362]
+
+Lines mentioning chunks_rag / empty RAG:
+  L3895: 2026-08-31 00:16:54 - src.agents.collecteur - INFO - [OK] Scenario 1 (R´┐¢daction de fiche de poste) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L3897: 2026-08-31 00:16:54 - src.agents.collecteur - INFO - [OK] Scenario 2 (Tri et pr´┐¢s´┐¢lection des CV) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L3899: 2026-08-31 00:16:54 - src.agents.collecteur - INFO - [OK] Scenario 8 (G´┐¢n´┐¢ration de code) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L3937: 2026-08-31 00:33:30 - src.agents.collecteur - INFO - [OK] Scenario 1 (R´┐¢daction de fiche de poste) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L3939: 2026-08-31 00:33:30 - src.agents.collecteur - INFO - [OK] Scenario 2 (Tri et pr´┐¢s´┐¢lection des CV) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L3941: 2026-08-31 00:33:30 - src.agents.collecteur - INFO - [OK] Scenario 8 (G´┐¢n´┐¢ration de code) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4037: 2026-08-31 10:31:17 - src.agents.collecteur - INFO - [OK] Scenario 1 (R´┐¢daction de fiche de poste) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4039: 2026-08-31 10:31:17 - src.agents.collecteur - INFO - [OK] Scenario 2 (Tri et pr´┐¢s´┐¢lection des CV) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4041: 2026-08-31 10:31:17 - src.agents.collecteur - INFO - [OK] Scenario 8 (G´┐¢n´┐¢ration de code) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4207: 2026-09-06 13:38:23 - src.agents.collecteur - INFO - [OK] Scenario 46 (Comparaison de technologies (RAG)) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4209: 2026-09-06 13:38:25 - src.agents.collecteur - INFO - [OK] Scenario 48 (Diagnostic d'incident depuis logs serveur) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4211: 2026-09-06 13:38:27 - src.agents.collecteur - INFO - [OK] Scenario 52 (Explication de pipeline ETL existant) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4213: 2026-09-06 13:38:30 - src.agents.collecteur - INFO - [OK] Scenario 49 (G´┐¢n´┐¢ration de cas de test fonctionnels) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4215: 2026-09-06 13:38:32 - src.agents.collecteur - INFO - [OK] Scenario 8 (G´┐¢n´┐¢ration de code) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4217: 2026-09-06 13:38:36 - src.agents.collecteur - INFO - [OK] Scenario 10 (G´┐¢n´┐¢ration de documentation technique) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4219: 2026-09-06 13:38:38 - src.agents.collecteur - INFO - [OK] Scenario 51 (G´┐¢n´┐¢ration de requ´┐¢te SQL complexe) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4221: 2026-09-06 13:38:40 - src.agents.collecteur - INFO - [OK] Scenario 44 (G´┐¢n´┐¢ration de tests unitaires pour code existant) ´┐¢ 8 chunks RAG r´┐¢cu
+  L4223: 2026-09-06 13:38:42 - src.agents.collecteur - INFO - [OK] Scenario 54 (Identification de vuln´┐¢rabilit´┐¢s dans un extrait de code) ´┐¢ 8 chunks 
+  L4225: 2026-09-06 13:38:49 - src.agents.collecteur - INFO - [OK] Scenario 9 (Modernisation de code legacy) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s
+  L4227: 2026-09-06 13:38:51 - src.agents.collecteur - INFO - [OK] Scenario 45 (Proposition d'architecture microservices) ´┐¢ 8 chunks RAG r´┐¢cup´┐¢r´┐¢s

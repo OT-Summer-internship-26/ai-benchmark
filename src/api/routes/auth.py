@@ -2,10 +2,11 @@
 Authentication routes for user login and token management.
 """
 
+from typing import Optional
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
 from src.auth.utils import login, create_user, ROLES
-from src.api.auth import create_token, get_current_user
+from src.api.auth import create_token, get_current_user, optional_auth
 from src.utils.logger import setup_logger
 from src.utils.validation import validate_email, validate_password
 
@@ -85,11 +86,15 @@ def login_endpoint(request: LoginRequest):
 
 
 @router.post("/register", response_model=CreateUserResponse)
-def register_endpoint(request: CreateUserRequest):
+def register_endpoint(
+    request: CreateUserRequest,
+    current_user: Optional[dict] = Depends(optional_auth),
+):
     """
     Register a new user account.
     
-    Validates email, password strength, and role.
+    SECURITY: Self-registration is restricted strictly to the 'client' role.
+    Provisioning 'admin' or 'super_admin' roles requires being authenticated as 'super_admin'.
     """
     try:
         # Validate input
@@ -108,6 +113,15 @@ def register_endpoint(request: CreateUserRequest):
                 status_code=400,
                 detail=f"Invalid role. Allowed roles: {', '.join(ROLES)}"
             )
+        
+        # RBAC Check: Privileged accounts cannot be created anonymously
+        if request.role in ["admin", "super_admin"]:
+            if not current_user or current_user.get("role") != "super_admin":
+                logger.warning(f"Unauthorized attempt to create privileged user '{request.role}' for {request.email}")
+                raise HTTPException(
+                    status_code=403,
+                    detail="Creating admin or super_admin accounts requires super_admin authentication."
+                )
         
         # Create user
         success, message = create_user(request.email, request.password, request.role)

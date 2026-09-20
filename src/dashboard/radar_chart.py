@@ -58,14 +58,14 @@ def get_radar_chart_data(department: str, max_models: int = 6) -> dict | None:
         models_data.append({
             "name": row['model_name'],
             "metrics": {
-                "faithfulness": safe_float_for_plotly(row['faithfulness'], fallback=0.0),
-                "answer_relevancy": safe_float_for_plotly(row['answer_relevancy'], fallback=0.0),
-                "context_precision": safe_float_for_plotly(row['context_precision'], fallback=0.0),
-                "context_recall": safe_float_for_plotly(row['context_recall'], fallback=0.0),
+                "faithfulness": safe_float_for_plotly(row['faithfulness'], fallback=None),
+                "answer_relevancy": safe_float_for_plotly(row['answer_relevancy'], fallback=None),
+                "context_precision": safe_float_for_plotly(row['context_precision'], fallback=None),
+                "context_recall": safe_float_for_plotly(row['context_recall'], fallback=None),
             },
-            "global_score": float(row['global_score']),
+            "global_score": float(row['global_score']) if pd.notna(row['global_score']) else None,
             "execution_count": int(row['execution_count']),
-            "avg_latency": float(row['avg_latency']) if row['avg_latency'] else None,
+            "avg_latency": float(row['avg_latency']) if pd.notna(row['avg_latency']) else None,
         })
     
     return {

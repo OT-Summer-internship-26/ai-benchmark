@@ -136,8 +136,8 @@ def agent_evaluateur(state: dict) -> dict:
                             continue
                         conn.execute(
                             text("""
-                                INSERT INTO scores (execution_id, critere, note, commentaire)
-                                VALUES (:exec_id, :critere, :note, :commentaire)
+                                INSERT INTO scores (execution_id, critere, note, commentaire, methode, is_legacy)
+                                VALUES (:exec_id, :critere, :note, :commentaire, 'ragas', FALSE)
                             """),
                             {
                                 "exec_id": execution_id,
@@ -151,8 +151,8 @@ def agent_evaluateur(state: dict) -> dict:
                     if resultat.get("score_global") is not None:
                         conn.execute(
                             text("""
-                                INSERT INTO scores (execution_id, critere, note, commentaire)
-                                VALUES (:exec_id, :critere, :note, :commentaire)
+                                INSERT INTO scores (execution_id, critere, note, commentaire, methode, is_legacy)
+                                VALUES (:exec_id, :critere, :note, :commentaire, 'ragas', FALSE)
                             """),
                             {
                                 "exec_id": execution_id,

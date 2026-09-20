@@ -52,29 +52,72 @@ def add_document_chunk(departement: str, contenu: str):
         logger.error(f"Failed to add document chunk: {str(e)}")
         raise
 
+DEPARTMENT_ALIASES = {
+    "rh": "RH & Communication",
+    "rh & communication": "RH & Communication",
+    "it": "IT & Architecture",
+    "it & architecture": "IT & Architecture",
+    "marketing": "Marketing & Digital",
+    "marketing & digital": "Marketing & Digital",
+    "noc": "Réseau / Support Technique (NOC)",
+    "réseau": "Réseau / Support Technique (NOC)",
+    "reseau": "Réseau / Support Technique (NOC)",
+    "support noc": "Réseau / Support Technique (NOC)",
+    "productivité": "Productivité Personnelle",
+    "productivite": "Productivité Personnelle",
+    "productivité personnelle": "Productivité Personnelle",
+    "productivite personnelle": "Productivité Personnelle",
+}
+
+
 def search_similar(query: str, departement: str, top_k: int = 3):
-    """Search for similar chunks using semantic similarity."""
+    """Search for similar chunks using semantic similarity with department fallback matching."""
     try:
         query_embedding = get_embedding(query)
         embedding_str = '[' + ','.join(str(x) for x in query_embedding) + ']'
         
+        # Normalize department using aliases
+        normalized_dept = DEPARTMENT_ALIASES.get(departement.strip().lower(), departement)
+        
         with engine.connect() as conn:
+            # 1. First attempt: exact match or normalized match
             result = conn.execute(
                 text("""
                     SELECT contenu, embedding <-> CAST(:embedding AS vector) AS distance
                     FROM documents_vectorises
-                    WHERE departement = :departement
+                    WHERE departement = :departement OR departement = :normalized_dept
                     ORDER BY distance ASC
                     LIMIT :top_k
                 """),
                 {
                     "embedding": embedding_str, 
-                    "departement": departement, 
+                    "departement": departement,
+                    "normalized_dept": normalized_dept,
                     "top_k": top_k
                 }
             )
             chunks = [row[0] for row in result]
-            logger.debug(f"Retrieved {len(chunks)} similar chunks for departement={departement}")
+            
+            # 2. Fallback: case-insensitive partial ILIKE match if no chunks found
+            if not chunks:
+                search_term = f"%{departement.split('&')[0].strip()}%"
+                result = conn.execute(
+                    text("""
+                        SELECT contenu, embedding <-> CAST(:embedding AS vector) AS distance
+                        FROM documents_vectorises
+                        WHERE departement ILIKE :search_term
+                        ORDER BY distance ASC
+                        LIMIT :top_k
+                    """),
+                    {
+                        "embedding": embedding_str,
+                        "search_term": search_term,
+                        "top_k": top_k
+                    }
+                )
+                chunks = [row[0] for row in result]
+
+            logger.debug(f"Retrieved {len(chunks)} similar chunks for departement='{departement}'")
             return chunks
     except Exception as e:
         logger.error(f"Search failed for departement={departement}: {str(e)}")

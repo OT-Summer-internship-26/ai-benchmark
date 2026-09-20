@@ -195,15 +195,17 @@ def get_department_model_comparison(
             FROM executions e
             JOIN modeles m ON m.id = e.modele_id
             JOIN scenarios s ON s.id = e.scenario_id
-            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND f.is_legacy = FALSE
-            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND ar.is_legacy = FALSE
-            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND cp.is_legacy = FALSE
-            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND cr.is_legacy = FALSE
+            LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND COALESCE(f.is_legacy, FALSE) = FALSE AND f.note BETWEEN 0 AND 1
+            LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND COALESCE(ar.is_legacy, FALSE) = FALSE AND ar.note BETWEEN 0 AND 1
+            LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND COALESCE(cp.is_legacy, FALSE) = FALSE AND cp.note BETWEEN 0 AND 1
+            LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND COALESCE(cr.is_legacy, FALSE) = FALSE AND cr.note BETWEEN 0 AND 1
             WHERE s.departement = :department
               AND e.id IN (
                   SELECT DISTINCT sc.execution_id FROM scores sc
                   WHERE sc.methode = 'ragas'
-                  AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                    AND COALESCE(sc.is_legacy, FALSE) = FALSE
+                    AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                    AND sc.note BETWEEN 0 AND 1
               )
             GROUP BY m.nom
         """)
@@ -251,7 +253,9 @@ def get_department_leaderboard(
         e.id IN (
             SELECT DISTINCT sc.execution_id FROM scores sc
             WHERE sc.methode = 'ragas'
-            AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+              AND COALESCE(sc.is_legacy, FALSE) = FALSE
+              AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+              AND sc.note BETWEEN 0 AND 1
         )
     """
     params = {}
@@ -276,10 +280,10 @@ def get_department_leaderboard(
                 FROM executions e
                 JOIN modeles m ON m.id = e.modele_id
                 JOIN scenarios s ON s.id = e.scenario_id
-                LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND f.is_legacy = FALSE
-                LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND ar.is_legacy = FALSE
-                LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND cp.is_legacy = FALSE
-                LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND cr.is_legacy = FALSE
+                LEFT JOIN scores f ON f.execution_id = e.id AND f.critere = 'faithfulness' AND f.methode = 'ragas' AND COALESCE(f.is_legacy, FALSE) = FALSE AND f.note BETWEEN 0 AND 1
+                LEFT JOIN scores ar ON ar.execution_id = e.id AND ar.critere = 'answer_relevancy' AND ar.methode = 'ragas' AND COALESCE(ar.is_legacy, FALSE) = FALSE AND ar.note BETWEEN 0 AND 1
+                LEFT JOIN scores cp ON cp.execution_id = e.id AND cp.critere = 'context_precision' AND cp.methode = 'ragas' AND COALESCE(cp.is_legacy, FALSE) = FALSE AND cp.note BETWEEN 0 AND 1
+                LEFT JOIN scores cr ON cr.execution_id = e.id AND cr.critere = 'context_recall' AND cr.methode = 'ragas' AND COALESCE(cr.is_legacy, FALSE) = FALSE AND cr.note BETWEEN 0 AND 1
                 {where_clause}
                 GROUP BY s.departement, m.nom
             )
