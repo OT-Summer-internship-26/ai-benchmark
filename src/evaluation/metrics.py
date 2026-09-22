@@ -113,9 +113,9 @@ client = Groq(api_key=GROQ_API_KEY, http_client=httpx.Client(verify=False)) if G
 # ---------------------------------------------------------------------------
 # Judge model configuration
 #
-# Primary Judge: Groq with llama-3.3-70b-versatile (or configured via JUDGE_MODEL in .env)
+# Primary Judge: Groq with openai/gpt-oss-120b (or configured via JUDGE_MODEL in .env)
 # ---------------------------------------------------------------------------
-MODELE_JUGE = os.getenv("JUDGE_MODEL", os.getenv("GROQ_JUDGE_MODEL", "llama-3.3-70b-versatile"))
+MODELE_JUGE = os.getenv("JUDGE_MODEL", os.getenv("GROQ_JUDGE_MODEL", "openai/gpt-oss-120b"))
 MODELE_JUGE_GROQ_FALLBACK = MODELE_JUGE
 MODELE_JUGE_GEMINI = os.getenv("GEMINI_JUDGE_MODEL", "gemini-1.5-flash")
 USE_GEMINI_JUDGE = os.getenv("USE_GEMINI_JUDGE", "false").strip().lower() in ("true", "1", "yes")
@@ -240,7 +240,10 @@ def _appeler_juge_gemini_une_fois(prompt_systeme: str, prompt_utilisateur: str, 
             
             if is_rate_limit:
                 temps_recommande = _extraire_temps_attente(error_msg)
-                wait_time = (temps_recommande + 15) if temps_recommande is not None else 30
+                if temps_recommande is not None and temps_recommande > 60:
+                    logger.warning(f"[GEMINI] Rate limit trop long ({temps_recommande}s > 60s). Abandon.")
+                    return None, f"Quota Gemini dépassé ({int(temps_recommande)}s requises)."
+                wait_time = min((temps_recommande + 15) if temps_recommande is not None else 30, 60)
                 logger.warning(f"[GEMINI] Rate limit détecté. Pause de {wait_time}s...")
                 time.sleep(wait_time)
                 continue
@@ -341,8 +344,18 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
             
             if is_rate_limit:
                 temps_recommande = _extraire_temps_attente(error_msg)
-                wait_time = (temps_recommande + 15) if temps_recommande is not None else 30
-                logger.warning(f"[JUGE] Rate limit Groq détecté. Pause de {wait_time}s...")
+                if temps_recommande is not None and temps_recommande > 60:
+                    logger.warning(
+                        f"[JUGE] Rate limit Groq journalier trop long ({temps_recommande}s > 60s). "
+                        "Abandon du sleep prolongé."
+                    )
+                    if gemini_client:
+                        logger.info("[JUGE] Bascule automatique sur Gemini comme juge de secours...")
+                        return _appeler_juge_gemini_une_fois(prompt_systeme, prompt_utilisateur, max_tokens=max_tokens)
+                    return None, f"Quota Groq journalier atteint (délai demandé: {int(temps_recommande)}s)."
+
+                wait_time = min((temps_recommande + 15) if temps_recommande is not None else 30, 60)
+                logger.warning(f"[JUGE] Rate limit Groq détecté. Pause courte de {wait_time}s...")
                 time.sleep(wait_time)
                 attempt += 1
                 continue

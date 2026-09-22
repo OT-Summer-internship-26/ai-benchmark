@@ -8002,3 +8002,655 @@ TypeError: 'str' object is not callable
 2026-09-22 01:22:05 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
 2026-09-22 01:22:06 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
 2026-09-22 01:22:06 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 01:24:14 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 114.792s...
+2026-09-22 16:00:02 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-22 16:00:03 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 16:00:03 - src.api.main - INFO - Environment: development
+2026-09-22 16:00:34 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-22 16:00:34 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-22 16:00:35 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-22 16:00:35 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-22 16:00:37 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-22 16:00:38 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-22 16:00:38 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-22 16:00:38 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-22 16:00:38 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-22 16:00:39 - __main__ - DEBUG - API token obtained successfully
+2026-09-22 16:00:39 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-22 16:00:39 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 16:00:39 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-22 16:00:40 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-22 16:00:40 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 16:00:40 - __main__ - DEBUG - Loading scenario catalog
+2026-09-22 16:00:40 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-22 16:01:00 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 16:01:00 - __main__ - DEBUG - Loading executions with limit: None
+2026-09-22 16:01:00 - __main__ - INFO - Successfully loaded 341 executions with scores
+2026-09-22 16:01:00 - __main__ - INFO - Loaded 341 executions for dashboard display
+2026-09-22 16:01:29 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 16:01:29 - __main__ - INFO - Loaded 341 executions for dashboard display
+2026-09-22 16:01:32 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 16:01:32 - __main__ - INFO - Loaded 341 executions for dashboard display
+2026-09-22 16:01:35 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:01:45 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 359
+2026-09-22 16:01:46 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:01:59 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 355
+2026-09-22 16:02:00 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:02:51 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 365
+2026-09-22 16:02:51 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:03:04 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 20.58s...
+2026-09-22 16:03:32 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 367
+2026-09-22 16:03:32 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:04:11 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 366
+2026-09-22 16:04:11 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:04:49 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 358
+2026-09-22 16:04:49 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:05:35 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 362
+2026-09-22 16:05:35 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:06:39 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 356
+2026-09-22 16:06:39 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:07:52 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 363
+2026-09-22 16:07:52 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:09:01 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 369
+2026-09-22 16:09:01 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:09:48 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 354
+2026-09-22 16:09:48 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:10:58 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 368
+2026-09-22 16:10:58 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:11:26 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 364
+2026-09-22 16:11:26 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:11:52 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 43215.0s...
+2026-09-22 16:28:49 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.1-8b-instant (Provider: Groq)
+2026-09-22 16:29:09 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-22 16:29:09 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-22 16:29:09 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-22 16:29:09 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-22 16:29:10 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-22 16:29:11 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-22 16:29:11 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-22 16:29:11 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-22 16:29:11 - __main__ - DEBUG - API token obtained successfully
+2026-09-22 16:29:11 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-22 16:29:12 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 16:29:12 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 16:30:04 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:30:04 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:06 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:12 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:13 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:21 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:23 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:29 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:32 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:30:38 - __main__ - WARNING - Rate limit sur exec 360. Pause 5 min (300s).
+2026-09-22 16:35:38 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:35:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:35:42 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:35:47 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:35:48 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:35:50 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:35:55 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:35:56 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:35:58 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:36:04 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:36:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:36:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:36:12 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:36:13 - __main__ - WARNING - Rate limit persistant sur exec 360. Pause 15 min (900s).
+2026-09-22 16:51:13 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:51:14 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:21 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:24 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:29 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:33 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:40 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:42 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:51:47 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.1-8b-instant` does not exist or you do n
+2026-09-22 16:53:05 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-22 16:53:05 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-22 16:53:05 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-22 16:53:05 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-22 16:53:06 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-22 16:53:06 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-22 16:53:06 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-22 16:53:06 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-22 16:53:07 - __main__ - DEBUG - API token obtained successfully
+2026-09-22 16:53:07 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-22 16:53:07 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 16:53:07 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 16:53:37 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.3-70b-versatile (Provider: Groq)
+2026-09-22 16:53:54 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:53:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:53:56 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:01 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:03 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:10 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:11 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:13 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:18 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:19 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:27 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:54:28 - __main__ - WARNING - Rate limit sur exec 360. Pause 5 min (300s).
+2026-09-22 16:59:28 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 16:59:28 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:30 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:36 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:44 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:45 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:47 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:53 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 16:59:56 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:00:01 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:00:02 - __main__ - WARNING - Rate limit persistant sur exec 360. Pause 15 min (900s).
+2026-09-22 17:04:24 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama3-8b-8192 (Provider: Groq)
+2026-09-22 17:04:42 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 17:04:43 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:04:45 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:04:50 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:04:52 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:04:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:04:59 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:05:00 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:05:02 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:05:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:05:09 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:05:11 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:05:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:05:17 - __main__ - WARNING - Rate limit sur exec 360. Pause 5 min (300s).
+2026-09-22 17:10:17 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 17:10:18 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:25 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:26 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:28 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:33 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:35 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:42 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:43 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:45 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:50 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: BadRequestError - Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is n
+2026-09-22 17:10:51 - __main__ - WARNING - Rate limit persistant sur exec 360. Pause 15 min (900s).
+2026-09-22 17:12:49 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.3-70b-versatile (Provider: Groq)
+2026-09-22 17:13:06 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 17:13:06 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:09 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:14 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:15 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:17 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:23 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:26 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:31 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:32 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:34 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:39 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-22 17:13:40 - __main__ - WARNING - Rate limit sur exec 360. Pause 5 min (300s).
+2026-09-22 17:21:34 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 17:21:41 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-22 17:21:57 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-22 17:22:15 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 17:22:55 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 17:22:55 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 17:22:55 - src.api.main - INFO - Environment: development
+2026-09-22 17:23:04 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 17:23:18 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 360
+2026-09-22 17:23:41 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 17:24:51 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-22 17:24:51 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-22 17:24:51 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-22 17:24:51 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-22 17:24:51 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-22 17:24:52 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-22 17:24:52 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-22 17:24:52 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-22 17:24:52 - __main__ - DEBUG - API token obtained successfully
+2026-09-22 17:24:52 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-22 17:24:53 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:24:53 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:37:14 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-22 17:37:44 - src.rag.vector_store - DEBUG - Retrieved 2 similar chunks for departement='RH'
+2026-09-22 17:37:45 - src.rag.vector_store - DEBUG - Retrieved 2 similar chunks for departement='Marketing & Digital'
+2026-09-22 17:37:45 - src.rag.vector_store - DEBUG - Retrieved 2 similar chunks for departement='IT & Cybersécurité'
+2026-09-22 17:37:45 - src.rag.vector_store - DEBUG - Retrieved 2 similar chunks for departement='Productivité & Transversal'
+2026-09-22 17:37:45 - src.rag.vector_store - DEBUG - Retrieved 0 similar chunks for departement='Service Client'
+2026-09-22 17:38:03 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 17:38:03 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 17:38:03 - src.api.main - INFO - Environment: development
+2026-09-22 17:40:37 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-22 17:41:15 - src.dashboard.app - INFO - Login attempt for email: client@ooredoo.com, expected_role: client
+2026-09-22 17:41:15 - src.dashboard.app - DEBUG - Database query completed - user found: True
+2026-09-22 17:41:15 - src.dashboard.app - DEBUG - User role verification: found=client, expected=client
+2026-09-22 17:41:15 - src.dashboard.app - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-09-22 17:41:31 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 17:41:31 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 17:41:31 - src.api.main - INFO - Environment: development
+2026-09-22 17:41:31 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-22 17:42:28 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 17:42:28 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 17:42:28 - src.api.main - INFO - Environment: development
+2026-09-22 17:43:05 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-22 17:43:05 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-22 17:43:05 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-22 17:43:05 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-22 17:43:06 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-22 17:43:07 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-22 17:43:07 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-22 17:43:07 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-22 17:43:07 - __main__ - DEBUG - API token obtained successfully
+2026-09-22 17:43:07 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-22 17:43:08 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:08 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:18 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:18 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:21 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:21 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:22 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:22 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:28 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:29 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:30 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:30 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:32 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:32 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:34 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:34 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:38 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:38 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:40 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:40 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:46 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:46 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:49 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:49 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:52 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:52 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:55 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 17:43:55 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 17:43:56 - src.api.routes.benchmark - INFO - Benchmark run initiated by superadmin@ooredoo.com
+2026-09-22 17:43:56 - src.api.routes.benchmark - INFO - Benchmark: 18 scenarios, 1 models by superadmin@ooredoo.com
+2026-09-22 17:43:56 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 18 scénarios...
+2026-09-22 17:44:11 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:11 - src.agents.collecteur - INFO - [OK] Scenario 5 (Chatbot support RH (RAG)) — 8 chunks RAG récupérés
+2026-09-22 17:44:11 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:11 - src.agents.collecteur - INFO - [OK] Scenario 19 (Conception de plan de formation individuel) — 8 chunks RAG récupérés
+2026-09-22 17:44:12 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:12 - src.agents.collecteur - INFO - [OK] Scenario 26 (Extraction de compétences depuis une offre concurrente) — 8 chunks RAG récupérés
+2026-09-22 17:44:12 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:12 - src.agents.collecteur - INFO - [OK] Scenario 28 (Génération de parcours d'intégration nouvel arrivant) — 8 chunks RAG récupérés
+2026-09-22 17:44:12 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:12 - src.agents.collecteur - INFO - [OK] Scenario 20 (Génération de quiz d'évaluation post-formation) — 8 chunks RAG récupérés
+2026-09-22 17:44:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:13 - src.agents.collecteur - INFO - [OK] Scenario 3 (Préparation grille d'évaluation entretien) — 8 chunks RAG récupérés
+2026-09-22 17:44:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:13 - src.agents.collecteur - INFO - [OK] Scenario 17 (Rédaction d'annonce LinkedIn attractive) — 8 chunks RAG récupérés
+2026-09-22 17:44:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:13 - src.agents.collecteur - INFO - [OK] Scenario 4 (Rédaction de communiqué interne) — 8 chunks RAG récupérés
+2026-09-22 17:44:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:13 - src.agents.collecteur - INFO - [OK] Scenario 24 (Rédaction de FAQ sur le télétravail) — 8 chunks RAG récupérés
+2026-09-22 17:44:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:14 - src.agents.collecteur - INFO - [OK] Scenario 1 (Rédaction de fiche de poste) — 8 chunks RAG récupérés
+2026-09-22 17:44:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:14 - src.agents.collecteur - INFO - [OK] Scenario 23 (Rédaction de newsletter interne mensuelle) — 8 chunks RAG récupérés
+2026-09-22 17:44:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:14 - src.agents.collecteur - INFO - [OK] Scenario 25 (Rédaction de témoignage collaborateur (ghostwriting)) — 8 chunks RAG récupérés
+2026-09-22 17:44:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:14 - src.agents.collecteur - INFO - [OK] Scenario 100 (Rédaction d'offre d'emploi) — 8 chunks RAG récupérés
+2026-09-22 17:44:15 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:15 - src.agents.collecteur - INFO - [OK] Scenario 21 (Réponse à question sur bulletin de paie (RAG)) — 8 chunks RAG récupérés
+2026-09-22 17:44:15 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:15 - src.agents.collecteur - INFO - [OK] Scenario 18 (Réponse de refus de candidature personnalisée) — 8 chunks RAG récupérés
+2026-09-22 17:44:15 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:15 - src.agents.collecteur - INFO - [OK] Scenario 22 (Synthèse de compte-rendu de réunion CSE) — 8 chunks RAG récupérés
+2026-09-22 17:44:15 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:15 - src.agents.collecteur - INFO - [OK] Scenario 27 (Traduction de communiqué interne multilingue) — 8 chunks RAG récupérés
+2026-09-22 17:44:16 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 17:44:16 - src.agents.collecteur - INFO - [OK] Scenario 2 (Tri et présélection des CV) — 8 chunks RAG récupérés
+2026-09-22 17:44:16 - src.agents.collecteur - INFO - [COLLECTEUR] 18 scénarios collectés.
+2026-09-22 17:44:16 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-22 17:44:16 - src.agents.executeur - INFO -   18 scénarios × 1 modèles = 18 exécutions
+2026-09-22 17:44:16 - src.agents.executeur - INFO - 
+  -> Scenario [5] Chatbot support RH (RAG) | Modele : qwen3:8b (ollama)
+2026-09-22 17:44:24 - src.observability.langfuse_client - INFO - [Langfuse] Client initialisé (host=https://cloud.langfuse.com)
+2026-09-22 17:44:24 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:45:08 - src.models_clients.ollama_client - DEBUG - Ollama response received (130 chars, 2179 tokens, 44.73s)
+2026-09-22 17:45:08 - src.agents.executeur - INFO -      OK - Reponse generee en 50.60s (2179 tokens, coût estimé: $0.000436)
+2026-09-22 17:45:08 - src.agents.executeur - INFO - 
+  -> Scenario [19] Conception de plan de formation individuel | Modele : qwen3:8b (ollama)
+2026-09-22 17:45:13 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:45:30 - src.models_clients.ollama_client - DEBUG - Ollama response received (221 chars, 2418 tokens, 17.71s)
+2026-09-22 17:45:30 - src.agents.executeur - INFO -      OK - Reponse generee en 19.82s (2418 tokens, coût estimé: $0.000484)
+2026-09-22 17:45:30 - src.agents.executeur - INFO - 
+  -> Scenario [26] Extraction de compétences depuis une offre concurrente | Modele : qwen3:8b (ollama)
+2026-09-22 17:45:35 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:47:16 - src.models_clients.ollama_client - DEBUG - Ollama response received (99 chars, 3835 tokens, 101.71s)
+2026-09-22 17:47:16 - src.agents.executeur - INFO -      OK - Reponse generee en 103.79s (3835 tokens, coût estimé: $0.000767)
+2026-09-22 17:47:16 - src.agents.executeur - INFO - 
+  -> Scenario [28] Génération de parcours d'intégration nouvel arrivant | Modele : qwen3:8b (ollama)
+2026-09-22 17:47:20 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:47:51 - src.models_clients.ollama_client - DEBUG - Ollama response received (421 chars, 2552 tokens, 30.87s)
+2026-09-22 17:47:51 - src.agents.executeur - INFO -      OK - Reponse generee en 32.94s (2552 tokens, coût estimé: $0.000510)
+2026-09-22 17:47:51 - src.agents.executeur - INFO - 
+  -> Scenario [20] Génération de quiz d'évaluation post-formation | Modele : qwen3:8b (ollama)
+2026-09-22 17:47:55 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:49:29 - src.models_clients.ollama_client - DEBUG - Ollama response received (3030 chars, 3471 tokens, 93.77s)
+2026-09-22 17:49:29 - src.agents.executeur - INFO -      OK - Reponse generee en 95.84s (3471 tokens, coût estimé: $0.000694)
+2026-09-22 17:49:29 - src.agents.executeur - INFO - 
+  -> Scenario [3] Préparation grille d'évaluation entretien | Modele : qwen3:8b (ollama)
+2026-09-22 17:49:33 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:50:23 - src.models_clients.ollama_client - DEBUG - Ollama response received (1035 chars, 2999 tokens, 49.70s)
+2026-09-22 17:50:23 - src.agents.executeur - INFO -      OK - Reponse generee en 51.84s (2999 tokens, coût estimé: $0.000600)
+2026-09-22 17:50:23 - src.agents.executeur - INFO - 
+  -> Scenario [17] Rédaction d'annonce LinkedIn attractive | Modele : qwen3:8b (ollama)
+2026-09-22 17:50:27 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:51:26 - src.models_clients.ollama_client - DEBUG - Ollama response received (1586 chars, 3012 tokens, 59.03s)
+2026-09-22 17:51:26 - src.agents.executeur - INFO -      OK - Reponse generee en 61.11s (3012 tokens, coût estimé: $0.000602)
+2026-09-22 17:51:26 - src.agents.executeur - INFO - 
+  -> Scenario [4] Rédaction de communiqué interne | Modele : qwen3:8b (ollama)
+2026-09-22 17:51:30 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:52:04 - src.models_clients.ollama_client - DEBUG - Ollama response received (793 chars, 2366 tokens, 33.81s)
+2026-09-22 17:52:04 - src.agents.executeur - INFO -      OK - Reponse generee en 35.88s (2366 tokens, coût estimé: $0.000473)
+2026-09-22 17:52:04 - src.agents.executeur - INFO - 
+  -> Scenario [24] Rédaction de FAQ sur le télétravail | Modele : qwen3:8b (ollama)
+2026-09-22 17:52:08 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:52:35 - src.models_clients.ollama_client - DEBUG - Ollama response received (73 chars, 2704 tokens, 26.77s)
+2026-09-22 17:52:35 - src.agents.executeur - INFO -      OK - Reponse generee en 28.84s (2704 tokens, coût estimé: $0.000541)
+2026-09-22 17:52:35 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : qwen3:8b (ollama)
+2026-09-22 17:52:39 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:53:35 - src.models_clients.ollama_client - DEBUG - Ollama response received (1383 chars, 3006 tokens, 55.58s)
+2026-09-22 17:53:35 - src.agents.executeur - INFO -      OK - Reponse generee en 57.66s (3006 tokens, coût estimé: $0.000601)
+2026-09-22 17:53:35 - src.agents.executeur - INFO - 
+  -> Scenario [23] Rédaction de newsletter interne mensuelle | Modele : qwen3:8b (ollama)
+2026-09-22 17:53:39 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:54:11 - src.models_clients.ollama_client - DEBUG - Ollama response received (133 chars, 2594 tokens, 31.68s)
+2026-09-22 17:54:11 - src.agents.executeur - INFO -      OK - Reponse generee en 33.77s (2594 tokens, coût estimé: $0.000519)
+2026-09-22 17:54:11 - src.agents.executeur - INFO - 
+  -> Scenario [25] Rédaction de témoignage collaborateur (ghostwriting) | Modele : qwen3:8b (ollama)
+2026-09-22 17:54:15 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:54:40 - src.models_clients.ollama_client - DEBUG - Ollama response received (95 chars, 2494 tokens, 25.19s)
+2026-09-22 17:54:40 - src.agents.executeur - INFO -      OK - Reponse generee en 27.25s (2494 tokens, coût estimé: $0.000499)
+2026-09-22 17:54:40 - src.agents.executeur - INFO - 
+  -> Scenario [100] Rédaction d'offre d'emploi | Modele : qwen3:8b (ollama)
+2026-09-22 17:54:44 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:56:19 - src.models_clients.ollama_client - DEBUG - Ollama response received (2247 chars, 3395 tokens, 94.63s)
+2026-09-22 17:56:19 - src.agents.executeur - INFO -      OK - Reponse generee en 96.72s (3395 tokens, coût estimé: $0.000679)
+2026-09-22 17:56:19 - src.agents.executeur - INFO - 
+  -> Scenario [21] Réponse à question sur bulletin de paie (RAG) | Modele : qwen3:8b (ollama)
+2026-09-22 17:56:23 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:56:47 - src.models_clients.ollama_client - DEBUG - Ollama response received (273 chars, 2159 tokens, 23.87s)
+2026-09-22 17:56:47 - src.agents.executeur - INFO -      OK - Reponse generee en 25.97s (2159 tokens, coût estimé: $0.000432)
+2026-09-22 17:56:47 - src.agents.executeur - INFO - 
+  -> Scenario [18] Réponse de refus de candidature personnalisée | Modele : qwen3:8b (ollama)
+2026-09-22 17:56:51 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:57:47 - src.models_clients.ollama_client - DEBUG - Ollama response received (991 chars, 2930 tokens, 56.30s)
+2026-09-22 17:57:47 - src.agents.executeur - INFO -      OK - Reponse generee en 58.39s (2930 tokens, coût estimé: $0.000586)
+2026-09-22 17:57:47 - src.agents.executeur - INFO - 
+  -> Scenario [22] Synthèse de compte-rendu de réunion CSE | Modele : qwen3:8b (ollama)
+2026-09-22 17:57:52 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:58:55 - src.models_clients.ollama_client - DEBUG - Ollama response received (1968 chars, 2946 tokens, 63.03s)
+2026-09-22 17:58:55 - src.agents.executeur - INFO -      OK - Reponse generee en 65.13s (2946 tokens, coût estimé: $0.000589)
+2026-09-22 17:58:55 - src.agents.executeur - INFO - 
+  -> Scenario [27] Traduction de communiqué interne multilingue | Modele : qwen3:8b (ollama)
+2026-09-22 17:58:56 - __main__ - WARNING - Appel API échoué (HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=900)) — bascule sur exécution directe du pipeline.
+2026-09-22 17:58:59 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 17:59:55 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-22 17:59:55 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 18 scénarios...
+2026-09-22 18:00:06 - src.models_clients.ollama_client - DEBUG - Ollama response received (2210 chars, 3026 tokens, 67.45s)
+2026-09-22 18:00:06 - src.agents.executeur - INFO -      OK - Reponse generee en 69.55s (3026 tokens, coût estimé: $0.000605)
+2026-09-22 18:00:06 - src.agents.executeur - INFO - 
+  -> Scenario [2] Tri et présélection des CV | Modele : qwen3:8b (ollama)
+2026-09-22 18:00:10 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:10 - src.agents.collecteur - INFO - [OK] Scenario 5 (Chatbot support RH (RAG)) — 8 chunks RAG récupérés
+2026-09-22 18:00:11 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:00:11 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:11 - src.agents.collecteur - INFO - [OK] Scenario 19 (Conception de plan de formation individuel) — 8 chunks RAG récupérés
+2026-09-22 18:00:11 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:11 - src.agents.collecteur - INFO - [OK] Scenario 26 (Extraction de compétences depuis une offre concurrente) — 8 chunks RAG récupérés
+2026-09-22 18:00:12 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:12 - src.agents.collecteur - INFO - [OK] Scenario 28 (Génération de parcours d'intégration nouvel arrivant) — 8 chunks RAG récupérés
+2026-09-22 18:00:12 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:12 - src.agents.collecteur - INFO - [OK] Scenario 20 (Génération de quiz d'évaluation post-formation) — 8 chunks RAG récupérés
+2026-09-22 18:00:12 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:12 - src.agents.collecteur - INFO - [OK] Scenario 3 (Préparation grille d'évaluation entretien) — 8 chunks RAG récupérés
+2026-09-22 18:00:12 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:12 - src.agents.collecteur - INFO - [OK] Scenario 17 (Rédaction d'annonce LinkedIn attractive) — 8 chunks RAG récupérés
+2026-09-22 18:00:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:13 - src.agents.collecteur - INFO - [OK] Scenario 4 (Rédaction de communiqué interne) — 8 chunks RAG récupérés
+2026-09-22 18:00:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:13 - src.agents.collecteur - INFO - [OK] Scenario 24 (Rédaction de FAQ sur le télétravail) — 8 chunks RAG récupérés
+2026-09-22 18:00:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:13 - src.agents.collecteur - INFO - [OK] Scenario 1 (Rédaction de fiche de poste) — 8 chunks RAG récupérés
+2026-09-22 18:00:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:13 - src.agents.collecteur - INFO - [OK] Scenario 23 (Rédaction de newsletter interne mensuelle) — 8 chunks RAG récupérés
+2026-09-22 18:00:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:14 - src.agents.collecteur - INFO - [OK] Scenario 25 (Rédaction de témoignage collaborateur (ghostwriting)) — 8 chunks RAG récupérés
+2026-09-22 18:00:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:14 - src.agents.collecteur - INFO - [OK] Scenario 100 (Rédaction d'offre d'emploi) — 8 chunks RAG récupérés
+2026-09-22 18:00:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:14 - src.agents.collecteur - INFO - [OK] Scenario 21 (Réponse à question sur bulletin de paie (RAG)) — 8 chunks RAG récupérés
+2026-09-22 18:00:14 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:14 - src.agents.collecteur - INFO - [OK] Scenario 18 (Réponse de refus de candidature personnalisée) — 8 chunks RAG récupérés
+2026-09-22 18:00:15 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:15 - src.agents.collecteur - INFO - [OK] Scenario 22 (Synthèse de compte-rendu de réunion CSE) — 8 chunks RAG récupérés
+2026-09-22 18:00:15 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:15 - src.agents.collecteur - INFO - [OK] Scenario 27 (Traduction de communiqué interne multilingue) — 8 chunks RAG récupérés
+2026-09-22 18:00:15 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:00:15 - src.agents.collecteur - INFO - [OK] Scenario 2 (Tri et présélection des CV) — 8 chunks RAG récupérés
+2026-09-22 18:00:15 - src.agents.collecteur - INFO - [COLLECTEUR] 18 scénarios collectés.
+2026-09-22 18:00:15 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-22 18:00:15 - src.agents.executeur - INFO -   18 scénarios × 1 modèles = 18 exécutions
+2026-09-22 18:00:15 - src.agents.executeur - INFO - 
+  -> Scenario [5] Chatbot support RH (RAG) | Modele : qwen3:8b (ollama)
+2026-09-22 18:00:22 - src.observability.langfuse_client - INFO - [Langfuse] Client initialisé (host=https://cloud.langfuse.com)
+2026-09-22 18:00:22 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:00:33 - src.models_clients.ollama_client - DEBUG - Ollama response received (126 chars, 2718 tokens, 22.92s)
+2026-09-22 18:00:33 - src.agents.executeur - INFO -      OK - Reponse generee en 25.14s (2718 tokens, coût estimé: $0.000544)
+2026-09-22 18:00:33 - src.agents.executeur - INFO - [EXECUTEUR] 18 exécutions terminées, 0 erreurs.
+2026-09-22 18:00:33 - src.agents.evaluateur - INFO - [EVALUATEUR] Évaluation de 18 exécutions (Ragas)...
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      Faithfulness      : 1.0
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      Score global      : 0.5
+2026-09-22 18:00:44 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=386)
+2026-09-22 18:00:45 - src.models_clients.ollama_client - DEBUG - Ollama response received (68 chars, 2138 tokens, 23.02s)
+2026-09-22 18:00:45 - src.agents.executeur - INFO -      OK - Reponse generee en 27.44s (2138 tokens, coût estimé: $0.000428)
+2026-09-22 18:00:45 - src.agents.executeur - INFO - 
+  -> Scenario [19] Conception de plan de formation individuel | Modele : qwen3:8b (ollama)
+2026-09-22 18:00:49 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:01:11 - src.models_clients.ollama_client - DEBUG - Ollama response received (121 chars, 2518 tokens, 22.02s)
+2026-09-22 18:01:11 - src.agents.executeur - INFO -      OK - Reponse generee en 24.11s (2518 tokens, coût estimé: $0.000504)
+2026-09-22 18:01:11 - src.agents.executeur - INFO - 
+  -> Scenario [26] Extraction de compétences depuis une offre concurrente | Modele : qwen3:8b (ollama)
+2026-09-22 18:01:15 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:01:37 - src.models_clients.ollama_client - DEBUG - Ollama response received (147 chars, 2758 tokens, 22.25s)
+2026-09-22 18:01:37 - src.agents.executeur - INFO -      OK - Reponse generee en 24.36s (2758 tokens, coût estimé: $0.000552)
+2026-09-22 18:01:37 - src.agents.executeur - INFO - 
+  -> Scenario [28] Génération de parcours d'intégration nouvel arrivant | Modele : qwen3:8b (ollama)
+2026-09-22 18:01:42 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      Faithfulness      : 1.0
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      Score global      : 0.25
+2026-09-22 18:01:49 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=387)
+2026-09-22 18:02:00 - src.models_clients.ollama_client - DEBUG - Ollama response received (242 chars, 2399 tokens, 18.55s)
+2026-09-22 18:02:00 - src.agents.executeur - INFO -      OK - Reponse generee en 20.63s (2399 tokens, coût estimé: $0.000480)
+2026-09-22 18:02:00 - src.agents.executeur - INFO - 
+  -> Scenario [20] Génération de quiz d'évaluation post-formation | Modele : qwen3:8b (ollama)
+2026-09-22 18:02:04 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      Faithfulness      : 1.0
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      Context precision : 0.05
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      Context recall    : 0.3
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      Score global      : 0.338
+2026-09-22 18:03:01 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=388)
+2026-09-22 18:03:36 - src.models_clients.ollama_client - DEBUG - Ollama response received (2634 chars, 3485 tokens, 91.88s)
+2026-09-22 18:03:36 - src.agents.executeur - INFO -      OK - Reponse generee en 93.97s (3485 tokens, coût estimé: $0.000697)
+2026-09-22 18:03:36 - src.agents.executeur - INFO - 
+  -> Scenario [3] Préparation grille d'évaluation entretien | Modele : qwen3:8b (ollama)
+2026-09-22 18:03:40 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      Faithfulness      : 1.0
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      Answer relevancy  : 0.0
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      Score global      : 0.25
+2026-09-22 18:04:07 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=389)
+2026-09-22 18:04:18 - src.models_clients.ollama_client - DEBUG - Ollama response received (881 chars, 2853 tokens, 37.79s)
+2026-09-22 18:04:18 - src.agents.executeur - INFO -      OK - Reponse generee en 39.87s (2853 tokens, coût estimé: $0.000571)
+2026-09-22 18:04:18 - src.agents.executeur - INFO - 
+  -> Scenario [17] Rédaction d'annonce LinkedIn attractive | Modele : qwen3:8b (ollama)
+2026-09-22 18:04:22 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:05:23 - src.models_clients.ollama_client - DEBUG - Ollama response received (1369 chars, 3058 tokens, 60.72s)
+2026-09-22 18:05:23 - src.agents.executeur - INFO -      OK - Reponse generee en 62.80s (3058 tokens, coût estimé: $0.000612)
+2026-09-22 18:05:23 - src.agents.executeur - INFO - 
+  -> Scenario [4] Rédaction de communiqué interne | Modele : qwen3:8b (ollama)
+2026-09-22 18:05:27 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      Context precision : 0.15
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      Score global      : 0.287
+2026-09-22 18:05:36 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=390)
+2026-09-22 18:06:07 - src.models_clients.ollama_client - DEBUG - Ollama response received (1198 chars, 2474 tokens, 39.68s)
+2026-09-22 18:06:07 - src.agents.executeur - INFO -      OK - Reponse generee en 41.80s (2474 tokens, coût estimé: $0.000495)
+2026-09-22 18:06:07 - src.agents.executeur - INFO - 
+  -> Scenario [24] Rédaction de FAQ sur le télétravail | Modele : qwen3:8b (ollama)
+2026-09-22 18:06:11 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      Faithfulness      : 0.0
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      Answer relevancy  : 1.0
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      Context precision : 0.0
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      Context recall    : 0.0
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      Toxicity          : 0.0
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      Harmfulness       : 0.0
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      Score global      : 0.25
+2026-09-22 18:06:52 - src.agents.evaluateur - INFO -      [OK] 7 scores enregistrés (execution_id=391)
+2026-09-22 18:06:55 - src.models_clients.ollama_client - DEBUG - Ollama response received (121 chars, 2713 tokens, 43.77s)
+2026-09-22 18:06:55 - src.agents.executeur - INFO -      OK - Reponse generee en 45.88s (2713 tokens, coût estimé: $0.000543)
+2026-09-22 18:06:55 - src.agents.executeur - INFO - 
+  -> Scenario [1] Rédaction de fiche de poste | Modele : qwen3:8b (ollama)
+2026-09-22 18:06:59 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:07:43 - src.models_clients.ollama_client - DEBUG - Ollama response received (346 chars, 2864 tokens, 43.93s)
+2026-09-22 18:07:43 - src.agents.executeur - INFO -      OK - Reponse generee en 46.02s (2864 tokens, coût estimé: $0.000573)
+2026-09-22 18:07:43 - src.agents.executeur - INFO - 
+  -> Scenario [23] Rédaction de newsletter interne mensuelle | Modele : qwen3:8b (ollama)
+2026-09-22 18:07:47 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:08:10 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 29715.0s...
+2026-09-22 18:08:15 - src.models_clients.ollama_client - DEBUG - Ollama response received (133 chars, 2560 tokens, 27.59s)
+2026-09-22 18:08:15 - src.agents.executeur - INFO -      OK - Reponse generee en 29.68s (2560 tokens, coût estimé: $0.000512)
+2026-09-22 18:08:15 - src.agents.executeur - INFO - 
+  -> Scenario [25] Rédaction de témoignage collaborateur (ghostwriting) | Modele : qwen3:8b (ollama)
+2026-09-22 18:08:19 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen3:8b
+2026-09-22 18:11:27 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 18:11:27 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 18:11:27 - src.api.main - INFO - Environment: development
+2026-09-22 18:11:42 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 18:11:42 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 18:11:42 - src.api.main - INFO - Environment: development
+2026-09-22 18:11:42 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-22 18:49:37 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-22 18:49:37 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-22 18:49:37 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-22 18:49:37 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-22 18:49:38 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-22 18:49:38 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-22 18:49:38 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-22 18:49:38 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-22 18:49:39 - __main__ - DEBUG - API token obtained successfully
+2026-09-22 18:49:39 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-22 18:49:39 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:49:39 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-22 18:49:40 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-22 18:49:40 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:49:40 - __main__ - DEBUG - Loading scenario catalog
+2026-09-22 18:49:40 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-22 18:49:56 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:49:56 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:49:58 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:49:58 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:49:58 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:49:59 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:50:00 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:50:00 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:50:03 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:50:03 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:50:04 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:50:04 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:50:06 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:50:06 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:50:08 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:50:08 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:50:09 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 18:50:09 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 18:50:49 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 18:50:49 - src.agents.collecteur - INFO - [COLLECTEUR] Récupération de 18 scénarios...
+2026-09-22 18:51:00 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:00 - src.agents.collecteur - INFO - [OK] Scenario 5 (Chatbot support RH (RAG)) — 8 chunks RAG récupérés
+2026-09-22 18:51:00 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:00 - src.agents.collecteur - INFO - [OK] Scenario 19 (Conception de plan de formation individuel) — 8 chunks RAG récupérés
+2026-09-22 18:51:00 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:00 - src.agents.collecteur - INFO - [OK] Scenario 26 (Extraction de compétences depuis une offre concurrente) — 8 chunks RAG récupérés
+2026-09-22 18:51:01 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:01 - src.agents.collecteur - INFO - [OK] Scenario 28 (Génération de parcours d'intégration nouvel arrivant) — 8 chunks RAG récupérés
+2026-09-22 18:51:01 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:01 - src.agents.collecteur - INFO - [OK] Scenario 20 (Génération de quiz d'évaluation post-formation) — 8 chunks RAG récupérés
+2026-09-22 18:51:01 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:01 - src.agents.collecteur - INFO - [OK] Scenario 3 (Préparation grille d'évaluation entretien) — 8 chunks RAG récupérés
+2026-09-22 18:51:01 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:01 - src.agents.collecteur - INFO - [OK] Scenario 17 (Rédaction d'annonce LinkedIn attractive) — 8 chunks RAG récupérés
+2026-09-22 18:51:01 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:01 - src.agents.collecteur - INFO - [OK] Scenario 4 (Rédaction de communiqué interne) — 8 chunks RAG récupérés
+2026-09-22 18:51:01 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:01 - src.agents.collecteur - INFO - [OK] Scenario 24 (Rédaction de FAQ sur le télétravail) — 8 chunks RAG récupérés
+2026-09-22 18:51:01 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:01 - src.agents.collecteur - INFO - [OK] Scenario 1 (Rédaction de fiche de poste) — 8 chunks RAG récupérés
+2026-09-22 18:51:02 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:02 - src.agents.collecteur - INFO - [OK] Scenario 23 (Rédaction de newsletter interne mensuelle) — 8 chunks RAG récupérés
+2026-09-22 18:51:02 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:02 - src.agents.collecteur - INFO - [OK] Scenario 25 (Rédaction de témoignage collaborateur (ghostwriting)) — 8 chunks RAG récupérés
+2026-09-22 18:51:02 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:02 - src.agents.collecteur - INFO - [OK] Scenario 100 (Rédaction d'offre d'emploi) — 8 chunks RAG récupérés
+2026-09-22 18:51:02 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:02 - src.agents.collecteur - INFO - [OK] Scenario 21 (Réponse à question sur bulletin de paie (RAG)) — 8 chunks RAG récupérés
+2026-09-22 18:51:02 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:02 - src.agents.collecteur - INFO - [OK] Scenario 18 (Réponse de refus de candidature personnalisée) — 8 chunks RAG récupérés
+2026-09-22 18:51:02 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:02 - src.agents.collecteur - INFO - [OK] Scenario 22 (Synthèse de compte-rendu de réunion CSE) — 8 chunks RAG récupérés
+2026-09-22 18:51:02 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:02 - src.agents.collecteur - INFO - [OK] Scenario 27 (Traduction de communiqué interne multilingue) — 8 chunks RAG récupérés
+2026-09-22 18:51:03 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH'
+2026-09-22 18:51:03 - src.agents.collecteur - INFO - [OK] Scenario 2 (Tri et présélection des CV) — 8 chunks RAG récupérés
+2026-09-22 18:51:03 - src.agents.collecteur - INFO - [COLLECTEUR] 18 scénarios collectés.
+2026-09-22 18:51:03 - src.agents.executeur - INFO - [EXECUTEUR] Lancement du benchmark...
+2026-09-22 18:51:03 - src.agents.executeur - INFO -   18 scénarios × 1 modèles = 18 exécutions
+2026-09-22 18:51:03 - src.agents.executeur - INFO - 
+  -> Scenario [5] Chatbot support RH (RAG) | Modele : qwen2.5:7b (ollama)
+2026-09-22 18:51:07 - src.observability.langfuse_client - WARNING - [Langfuse] Échec initialisation : No module named 'langfuse'
+2026-09-22 18:51:07 - src.models_clients.ollama_client - DEBUG - Calling Ollama model=qwen2.5:7b
+2026-09-22 18:51:55 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: openai/gpt-oss-120b (Provider: Groq)
+2026-09-22 18:51:55 - src.api.main - INFO - Benchmark API starting up...
+2026-09-22 18:51:55 - src.api.main - INFO - Environment: development

@@ -568,38 +568,100 @@ def admin_delete_user(user_id: int, requester_email: str) -> tuple[bool, str]:
 # Pilotage du benchmark (réservé à Admin + Super Admin)
 # ---------------------------------------------------------------------------
 
+DEPARTEMENTS_OFFICIELS = [
+    "RH",
+    "Marketing & Digital",
+    "IT & Cybersécurité",
+    "Productivité & Transversal",
+    "Service Client",
+]
+
+DEPARTEMENTS_MAPPING = {
+    "RH": "RH",
+    "RH & Communication": "RH",
+    "Ressources Humaines": "RH",
+    "Marketing": "Marketing & Digital",
+    "Marketing & Digital": "Marketing & Digital",
+    "IT": "IT & Cybersécurité",
+    "IT & Architecture": "IT & Cybersécurité",
+    "IT & Cybersécurité": "IT & Cybersécurité",
+    "Réseau / Support Technique (NOC)": "IT & Cybersécurité",
+    "Productivité": "Productivité & Transversal",
+    "Productivité Personnelle": "Productivité & Transversal",
+    "Productivité & Transversal": "Productivité & Transversal",
+    "Service Client": "Service Client",
+}
+
+MODELES_DISPONIBLES = [
+    "llama3.1:8b",
+    "mistral:7b",
+    "qwen3:8b",
+    "qwen2.5:7b",
+    "gemma2:9b",
+    "gemini-3.1-flash-lite",
+]
+
+
+def _execute_benchmark_direct(scenario_ids: list[int], model_names: list[str]) -> tuple[bool, dict | str]:
+    """Exécution directe du pipeline LangGraph sans dépendance externe à l'API."""
+    try:
+        from src.agents.graph import benchmark_graph
+        config_initial = {
+            "scenario_ids": scenario_ids,
+            "model_names": model_names,
+            "scenarios": [],
+            "executions": [],
+            "scores": [],
+            "rapport": None,
+            "erreurs": [],
+        }
+        resultat = benchmark_graph.invoke(config_initial)
+        executions = resultat.get("executions", [])
+        scenarios = resultat.get("scenarios", [])
+        erreurs = resultat.get("erreurs", [])
+        return True, {
+            "status": "completed" if not erreurs else "completed_with_errors",
+            "nb_scenarios": len(scenarios),
+            "nb_models": len(model_names),
+            "nb_executions": len(executions),
+            "rapport": resultat.get("rapport"),
+            "erreurs": erreurs,
+            "initiated_by": "direct_execution",
+        }
+    except Exception as exc:
+        logger.error(f"Direct benchmark execution failed: {exc}")
+        return False, f"Erreur lors de l'exécution du benchmark : {exc}"
+
+
 def trigger_benchmark_run(
     scenario_ids: list[int] | None,
     model_names: list[str] | None,
     timeout: int = 900,
 ) -> tuple[bool, dict | str]:
+    if not scenario_ids or not model_names:
+        return False, "Veuillez sélectionner au moins un scénario et un modèle."
+
     payload = {
-        "scenario_ids": scenario_ids if scenario_ids else None,
-        "model_names": model_names if model_names else None,
+        "scenario_ids": scenario_ids,
+        "model_names": model_names,
     }
     token = st.session_state.get("api_token")
     headers = {"Authorization": f"Bearer {token}"} if token else {}
 
-    try:
-        response = requests.post(
-            f"{API_BASE_URL}/benchmark/run", json=payload, headers=headers, timeout=timeout
-        )
-        response.raise_for_status()
-        return True, response.json()
-    except requests.exceptions.ConnectionError:
-        return False, (
-            f"Impossible de joindre l'API sur {API_BASE_URL}. Vérifie qu'elle tourne : "
-            "`uvicorn src.api.main:app --reload --port 8000`"
-        )
-    except requests.exceptions.Timeout:
-        return False, (
-            "Le délai d'attente a été dépassé. Le benchmark est peut-être encore en cours "
-            "côté serveur — vérifie les logs de l'API, puis rafraîchis le dashboard."
-        )
-    except requests.exceptions.HTTPError:
-        return False, f"Erreur API ({response.status_code}) : {response.text}"
-    except Exception as exc:
-        return False, f"Erreur inattendue lors de l'appel à l'API : {exc}"
+    # Tentative via l'API FastAPI si disponible
+    if token:
+        try:
+            response = requests.post(
+                f"{API_BASE_URL}/benchmark/run", json=payload, headers=headers, timeout=timeout
+            )
+            if response.status_code == 200:
+                return True, response.json()
+            logger.warning(f"API /benchmark/run code {response.status_code}: {response.text}")
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Appel API échoué ({e}) — bascule sur exécution directe du pipeline.")
+
+    # Exécution directe si API indisponible ou sans token valide
+    return _execute_benchmark_direct(scenario_ids, model_names)
 
 
 # --- Catalogue des scénarios -----------------------------------------------
@@ -617,22 +679,19 @@ def admin_list_scenarios():
 
 
 def admin_scenarios_completeness() -> pd.DataFrame:
-    """Compare le nombre de scénarios en base par département à la cible
-    (16 par département). Utilisé dans l'onglet Administration pour
-    garantir la complétude du catalogue."""
+    """Affiche la complétude du catalogue de scénarios strictement pour les
+    5 départements officiels, sans colonne Statut."""
     scenarios = admin_list_scenarios()
-    if not scenarios:
-        return pd.DataFrame(columns=["Département", "Nb scénarios", "Statut"])
-
-    counts: dict[str, int] = {}
+    
+    counts: dict[str, int] = {dep: 0 for dep in DEPARTEMENTS_OFFICIELS}
     for s in scenarios:
-        counts[s.departement] = counts.get(s.departement, 0) + 1
+        official_dept = DEPARTEMENTS_MAPPING.get(s.departement, s.departement)
+        if official_dept in counts:
+            counts[official_dept] += 1
+        else:
+            counts[official_dept] = counts.get(official_dept, 0) + 1
 
-    rows = []
-    for dep, count in sorted(counts.items()):
-        statut = "✅ complet" if count >= SCENARIOS_CIBLE_PAR_DEPARTEMENT else f"❌ manque {SCENARIOS_CIBLE_PAR_DEPARTEMENT - count}"
-        rows.append({"Département": dep, "Nb scénarios": count, "Statut": statut})
-
+    rows = [{"Département": dep, "Nb scénarios": counts.get(dep, 0)} for dep in DEPARTEMENTS_OFFICIELS]
     return pd.DataFrame(rows)
 
 
@@ -2110,61 +2169,134 @@ def main() -> None:
             # -----------------------------------------------------------------
             st.markdown("### Lancer un nouveau benchmark")
             st.caption(
-                "Appelle POST /benchmark/run sur l'API FastAPI (Sprint 3). "
-                "Laisse un champ vide pour utiliser la valeur par défaut de l'API "
-                "(tous les scénarios / tous les modèles Ollama installés)."
+                "Déclenche l'exécution du benchmark sur les scénarios des départements et modèles sélectionnés."
             )
 
             all_scenarios = admin_list_scenarios()
-            departements_disponibles = sorted({s.departement for s in all_scenarios})
             selected_departements = st.multiselect(
                 "Départements à exécuter",
-                options=departements_disponibles,
+                options=DEPARTEMENTS_OFFICIELS,
+                default=DEPARTEMENTS_OFFICIELS,
                 key="run_departements",
                 help="Tous les scénarios du (des) département(s) sélectionné(s) seront inclus dans le benchmark.",
-)
+            )
 
             selected_scenario_ids = [
-                s.id for s in all_scenarios if s.departement in selected_departements
-            ] or None
+                s.id for s in all_scenarios 
+                if DEPARTEMENTS_MAPPING.get(s.departement, s.departement) in selected_departements
+            ]
 
             if selected_departements:
-                nb = len(selected_scenario_ids) if selected_scenario_ids else 0
+                nb = len(selected_scenario_ids)
                 st.caption(f"→ {nb} scénario(s) au total pour {len(selected_departements)} département(s) sélectionné(s).")
-            model_names_raw = st.text_input(
-                "Modèles à tester (noms séparés par des virgules, ex : llama3.1:8b, mistral:7b)",
+            else:
+                st.caption("⚠️ Veuillez sélectionner au moins un département.")
+
+            selected_models = st.multiselect(
+                "Modèles à tester",
+                options=MODELES_DISPONIBLES,
+                default=["llama3.1:8b", "mistral:7b"],
                 key="run_model_names",
-                help="Ce champ attend les identifiants de modèles Ollama tels qu'utilisés par le pipeline "
-                "(pas forcément identiques aux noms affichés dans le catalogue ci-dessous).",
+                help="Sélectionnez un ou plusieurs modèles testés et disponibles à évaluer.",
             )
-            model_names_list = [m.strip() for m in model_names_raw.split(",") if m.strip()] or None
 
             if st.button("🚀 Lancer le benchmark", key="run_benchmark_btn"):
-                with st.spinner("Exécution du benchmark en cours — cela peut prendre plusieurs minutes…"):
-                    ok, result = trigger_benchmark_run(
-                        scenario_ids=selected_scenario_ids or None,
-                        model_names=model_names_list,
-                    )
-                if ok:
-                    st.success(f"Benchmark terminé — statut : {result.get('status', 'inconnu')}")
-                    m1, m2, m3 = st.columns(3)
-                    m1.metric("Scénarios exécutés", result.get("nb_scenarios", 0))
-                    m2.metric("Modèles testés", result.get("nb_modeles", 0))
-                    m3.metric("Exécutions produites", result.get("nb_executions", 0))
-                    if result.get("erreurs"):
-                        st.warning("Erreurs rencontrées pendant l'exécution :")
-                        for err in result["erreurs"]:
-                            st.write(f"- {err}")
-                    if result.get("rapport"):
-                        with st.expander("Rapport détaillé (JSON)"):
-                            st.json(result["rapport"])
-                    
-                    # Auto-clear cache and reload dashboard to show new executions immediately
-                    st.info("✅ Cache vidé automatiquement — les nouvelles données sont maintenant visibles dans tous les onglets.")
-                    st.cache_data.clear()
-                    st.rerun()
+                if not selected_departements:
+                    st.error("Veuillez sélectionner au moins un département à exécuter.")
+                elif not selected_scenario_ids:
+                    st.error("Aucun scénario trouvé pour les départements sélectionnés.")
+                elif not selected_models:
+                    st.error("Veuillez sélectionner au moins un modèle à tester.")
                 else:
-                    st.error(result)
+                    nb_runs = len(selected_scenario_ids) * len(selected_models)
+                    with st.status(
+                        f"🚀 Exécution du benchmark en cours ({len(selected_scenario_ids)} scénarios × {len(selected_models)} modèles = {nb_runs} exécutions)...",
+                        expanded=True,
+                    ) as status_box:
+                        st.write("🔄 Initialisation du pipeline multi-agents...")
+                        st.write(f"📌 Départements sélectionnés : **{', '.join(selected_departements)}**")
+                        st.write(f"🤖 Modèles sélectionnés : **{', '.join(selected_models)}**")
+                        
+                        progress_bar = st.progress(5, text="Initialisation du pipeline...")
+                        live_status = st.empty()
+                        log_container = st.empty()
+                        
+                        import threading
+                        from pathlib import Path
+                        
+                        run_result = {}
+                        def _bg_runner():
+                            _ok, _res = trigger_benchmark_run(
+                                scenario_ids=selected_scenario_ids,
+                                model_names=selected_models,
+                            )
+                            run_result["ok"] = _ok
+                            run_result["result"] = _res
+
+                        t = threading.Thread(target=_bg_runner)
+                        t.start()
+                        
+                        log_path = Path("logs/benchmark.log")
+                        start_pos = log_path.stat().st_size if log_path.exists() else 0
+                        total_expected = len(selected_scenario_ids) * len(selected_models)
+                        completed_items = 0
+                        recent_logs = []
+                        
+                        while t.is_alive():
+                            if log_path.exists():
+                                try:
+                                    with open(log_path, "r", encoding="utf-8", errors="replace") as f:
+                                        f.seek(start_pos)
+                                        new_data = f.read()
+                                        if new_data:
+                                            for line in new_data.splitlines():
+                                                line_str = line.strip()
+                                                if line_str:
+                                                    recent_logs.append(line_str)
+                                                    if "Scenario [" in line_str:
+                                                        info = line_str.split(" - ")[-1] if " - " in line_str else line_str
+                                                        live_status.info(f"⚡ **En cours :** `{info}`")
+                                                    if "OK - Reponse generee" in line_str:
+                                                        completed_items += 1
+                                            recent_logs = recent_logs[-8:]
+                                            log_container.code("\n".join(recent_logs), language="text")
+                                except Exception:
+                                    pass
+                            pct = min(95, max(5, int((completed_items / max(total_expected, 1)) * 90)))
+                            progress_bar.progress(pct, text=f"Progression : {completed_items}/{total_expected} scénarios traités ({pct}%)")
+                            time.sleep(2)
+                        
+                        t.join()
+                        progress_bar.progress(100, text="Traitement terminé !")
+                        ok = run_result.get("ok", False)
+                        result = run_result.get("result", "Erreur inattendue")
+                        
+                        if ok:
+                            status_box.update(label="✅ Benchmark terminé avec succès !", state="complete", expanded=False)
+                        else:
+                            status_box.update(label="❌ Erreur lors de l'exécution du benchmark", state="error", expanded=True)
+
+                    if ok:
+                        st.success(f"🎉 **Benchmark terminé avec succès — statut : {result.get('status', 'completed')}**")
+                        m1, m2, m3, m4 = st.columns(4)
+                        m1.metric("Scénarios exécutés", result.get("nb_scenarios", len(selected_scenario_ids)))
+                        m2.metric("Modèles testés", result.get("nb_models") or result.get("nb_modeles", len(selected_models)))
+                        m3.metric("Exécutions produites", result.get("nb_executions", 0))
+                        m4.metric("Statut", result.get("status", "completed"))
+                        
+                        if result.get("erreurs"):
+                            st.warning("⚠️ Erreurs rencontrées pendant l'exécution :")
+                            for err in result["erreurs"]:
+                                st.write(f"- {err}")
+                        if result.get("rapport"):
+                            with st.expander("📊 Rapport détaillé (JSON)"):
+                                st.json(result["rapport"])
+                        
+                        # Auto-clear cache to show new executions immediately
+                        st.info("✅ Cache vidé automatiquement — les nouvelles données sont visibles dans tous les onglets.")
+                        st.cache_data.clear()
+                    else:
+                        st.error(result)
 
             st.divider()
 
@@ -2178,7 +2310,7 @@ def main() -> None:
             )
             completeness_df = admin_scenarios_completeness()
             if not completeness_df.empty:
-                st.table(completeness_df)
+                st.dataframe(completeness_df, use_container_width=True, hide_index=True)
             else:
                 st.info("Aucun scénario en base pour l'instant.")
 

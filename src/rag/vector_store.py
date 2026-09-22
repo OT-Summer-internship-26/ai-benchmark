@@ -53,20 +53,26 @@ def add_document_chunk(departement: str, contenu: str):
         raise
 
 DEPARTMENT_ALIASES = {
-    "rh": "RH & Communication",
-    "rh & communication": "RH & Communication",
-    "it": "IT & Architecture",
-    "it & architecture": "IT & Architecture",
+    "rh": "RH",
+    "rh & communication": "RH",
+    "ressources humaines": "RH",
+    "it": "IT & Cybersécurité",
+    "it & architecture": "IT & Cybersécurité",
+    "it & cybersécurité": "IT & Cybersécurité",
+    "it & cybersecurite": "IT & Cybersécurité",
+    "noc": "IT & Cybersécurité",
+    "réseau": "IT & Cybersécurité",
+    "reseau": "IT & Cybersécurité",
+    "support noc": "IT & Cybersécurité",
     "marketing": "Marketing & Digital",
     "marketing & digital": "Marketing & Digital",
-    "noc": "Réseau / Support Technique (NOC)",
-    "réseau": "Réseau / Support Technique (NOC)",
-    "reseau": "Réseau / Support Technique (NOC)",
-    "support noc": "Réseau / Support Technique (NOC)",
-    "productivité": "Productivité Personnelle",
-    "productivite": "Productivité Personnelle",
-    "productivité personnelle": "Productivité Personnelle",
-    "productivite personnelle": "Productivité Personnelle",
+    "productivité": "Productivité & Transversal",
+    "productivite": "Productivité & Transversal",
+    "productivité personnelle": "Productivité & Transversal",
+    "productivite personnelle": "Productivité & Transversal",
+    "productivité & transversal": "Productivité & Transversal",
+    "productivite & transversal": "Productivité & Transversal",
+    "service client": "Service Client",
 }
 
 

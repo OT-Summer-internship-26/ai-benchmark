@@ -129,8 +129,22 @@
     351,
     352,
     353,
+    354,
+    355,
+    356,
     357,
+    358,
+    359,
+    360,
     361,
+    362,
+    363,
+    364,
+    365,
+    366,
+    367,
+    368,
+    369,
     370,
     371,
     372,
@@ -144,7 +158,9 @@
     380,
     381
   ],
-  "total_completed": 143,
-  "last_updated": "2026-09-22T01:10:43.687905",
-  "errors": {}
+  "total_completed": 157,
+  "last_updated": "2026-09-22T17:23:18.054074",
+  "errors": {
+    "360": "Rate limit persistant : Toutes les metriques ont retourne None (echec API / rate limit Groq)"
+  }
 }
