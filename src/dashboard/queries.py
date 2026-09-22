@@ -141,7 +141,7 @@ def get_client_recommendation(
                       )
                       AND sc.note BETWEEN 0 AND 1
                     GROUP BY e.id, e.modele_id
-                    HAVING COUNT(DISTINCT sc.critere) = 4
+                    HAVING COUNT(DISTINCT sc.critere) >= 1
                 ),
                 ranked_models AS (
                     SELECT
@@ -244,7 +244,7 @@ def load_executions_by_department(
                     SELECT DISTINCT sc.execution_id FROM scores sc
                     WHERE sc.methode = 'ragas'
                       AND COALESCE(sc.is_legacy, FALSE) = FALSE
-                      AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                      AND sc.critere IN ('faithfulness', 'answer_relevancy', 'context_precision', 'context_recall')
                       AND sc.note BETWEEN 0 AND 1
                   )
                 ORDER BY e.date_execution DESC
@@ -271,7 +271,7 @@ def load_executions_by_department(
             SELECT execution_id, critere, note, commentaire 
             FROM scores 
             WHERE execution_id IN :ids
-            AND critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+            AND critere IN ('faithfulness', 'answer_relevancy', 'context_precision', 'context_recall')
             AND note BETWEEN 0 AND 1
             {where_clause}
             """
@@ -279,12 +279,11 @@ def load_executions_by_department(
 
         scores = pd.read_sql(scores_query, conn, params={"ids": execution_ids})
 
+    ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
     if scores.empty:
         executions["score_global_display"] = None
-        executions["faithfulness"] = None
-        executions["answer_relevancy"] = None
-        executions["context_precision"] = None
-        executions["context_recall"] = None
+        for c in ragas_cols:
+            executions[c] = None
         return executions
 
     # Pivot scores
@@ -297,11 +296,17 @@ def load_executions_by_department(
 
     df = executions.merge(pivot_scores, on="execution_id", how="left")
     
-    # Compute global score as average of Ragas metrics
-    ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+    # Ensure all 4 columns exist and are numeric
+    for c in ragas_cols:
+        if c not in df.columns:
+            df[c] = None
+        else:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+            
+    # Compute global score as average of available (non-N/A) Ragas metrics
     df["score_global_display"] = (
-        df[[c for c in ragas_cols if c in df.columns]]
-        .mean(axis=1)
+        df[ragas_cols]
+        .mean(axis=1, skipna=True)
         .round(3)
     )
     
@@ -353,7 +358,7 @@ def load_executions_for_departments(
                     SELECT DISTINCT sc.execution_id FROM scores sc
                     WHERE sc.methode = 'ragas'
                       AND COALESCE(sc.is_legacy, FALSE) = FALSE
-                      AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                      AND sc.critere IN ('faithfulness', 'answer_relevancy', 'context_precision', 'context_recall')
                       AND sc.note BETWEEN 0 AND 1
                   )
                 ORDER BY e.date_execution DESC
@@ -382,7 +387,7 @@ def load_executions_for_departments(
             SELECT execution_id, critere, note, commentaire 
             FROM scores 
             WHERE execution_id IN :ids
-            AND critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+            AND critere IN ('faithfulness', 'answer_relevancy', 'context_precision', 'context_recall')
             AND note BETWEEN 0 AND 1
             {where_clause}
             """
@@ -390,12 +395,11 @@ def load_executions_for_departments(
 
         scores = pd.read_sql(scores_query, conn, params={"ids": execution_ids})
 
+    ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
     if scores.empty:
         executions["score_global_display"] = None
-        executions["faithfulness"] = None
-        executions["answer_relevancy"] = None
-        executions["context_precision"] = None
-        executions["context_recall"] = None
+        for c in ragas_cols:
+            executions[c] = None
         return executions
 
     pivot_scores = scores.pivot_table(
@@ -407,10 +411,17 @@ def load_executions_for_departments(
 
     df = executions.merge(pivot_scores, on="execution_id", how="left")
     
-    ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+    # Ensure all 4 columns exist and are numeric
+    for c in ragas_cols:
+        if c not in df.columns:
+            df[c] = None
+        else:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+
+    # Compute global score as average of available (non-N/A) Ragas metrics
     df["score_global_display"] = (
-        df[[c for c in ragas_cols if c in df.columns]]
-        .mean(axis=1)
+        df[ragas_cols]
+        .mean(axis=1, skipna=True)
         .round(3)
     )
     
@@ -470,7 +481,7 @@ def get_best_model_for_department(
                 SELECT DISTINCT sc.execution_id FROM scores sc
                 WHERE sc.methode = 'ragas'
                   AND COALESCE(sc.is_legacy, FALSE) = FALSE
-                  AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
+                  AND sc.critere = 'answer_relevancy'
                   AND sc.note BETWEEN 0 AND 1
               )
             GROUP BY m.id, m.nom

@@ -264,7 +264,7 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
             return note, rationale
         logger.warning("[GEMINI] Échec complet, bascule automatique vers Groq...")
     
-    effective_max_tokens = min(max_tokens, 800)
+    effective_max_tokens = max_tokens  # respect caller budget (e.g. 1800 for faithfulness)
     backoffs = [2, 5, 10]
     max_normal_attempts = len(backoffs)
     attempt = 1
@@ -302,9 +302,27 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
                         except json.JSONDecodeError:
                             continue
                     else:
-                        raise ValueError(f"Pas de JSON valide trouvé dans: {contenu_nettoye[:100]}")
+                        # Fallback: JSON found but none parseable — try extracting "note" numerically
+                        note_match = re.search(r'"note"\s*:\s*([0-9]*\.?[0-9]+)', contenu_nettoye)
+                        if note_match:
+                            logger.warning(f"[JUGE] JSON tronqué — extraction numerique de secours utilisée.")
+                            resultat = {
+                                "note": float(note_match.group(1)),
+                                "rationale": "Extrait en secours (JSON tronqué ou malformé)."
+                            }
+                        else:
+                            raise ValueError(f"Pas de JSON valide trouvé dans: {contenu_nettoye[:100]}")
                 else:
-                    raise ValueError(f"Pas de JSON trouvé dans: {contenu_nettoye[:100]}")
+                    # Fallback: no JSON object found at all — try extracting "note" numerically
+                    note_match = re.search(r'"note"\s*:\s*([0-9]*\.?[0-9]+)', contenu_nettoye)
+                    if note_match:
+                        logger.warning(f"[JUGE] Aucun JSON trouvé — extraction numerique de secours utilisée.")
+                        resultat = {
+                            "note": float(note_match.group(1)),
+                            "rationale": "Extrait en secours (JSON absent ou tronqué)."
+                        }
+                    else:
+                        raise ValueError(f"Pas de JSON trouvé dans: {contenu_nettoye[:100]}")
             
             raw_note = resultat.get("note") if resultat.get("note") is not None else resultat.get("score")
             rationale = str(resultat.get("rationale") or resultat.get("justification") or "").strip()
@@ -378,8 +396,8 @@ def evaluer_faithfulness(reponse: str, contexte_chunks: list[str]) -> dict:
 
     if not reponse or not reponse.strip():
         return {
-            "note": 0.0,
-            "justification": "Réponse vide générée par le modèle.",
+            "note": None,
+            "justification": "Réponse vide générée par le modèle — fidélité non calculable.",
         }
 
     contexte = "\n\n---\n\n".join(
@@ -409,7 +427,7 @@ RÉFÉRENCE (peu importe la formulation, seul le sens compte).
 
 Réponds uniquement avec le JSON demandé."""
 
-    return _appeler_juge(prompt_systeme, prompt_utilisateur)
+    return _appeler_juge(prompt_systeme, prompt_utilisateur, max_tokens=1800)
 
 
 def evaluer_answer_relevancy(reponse: str, question: str) -> dict:

@@ -198,27 +198,24 @@ def load_executions(limit: int | None = 200) -> pd.DataFrame:
         df = executions.merge(pivot_scores, on="execution_id", how="left")
         df = df.merge(pivot_comments, on="execution_id", how="left")
         
-        # Fill None values with appropriate defaults for score columns
+        # Ensure score columns exist and are numeric (coercing None/invalid to NaN so skipna works cleanly)
         score_columns = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
         for col in score_columns:
             if col in df.columns:
-                # Keep None as is - we'll handle it in display
-                pass  # df[col] = df[col].fillna(0.0)  # Don't fill here, handle in display
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+            else:
+                df[col] = None
         
-        # Safely calculate global score only if the required columns exist
-        available_score_columns = [col for col in score_columns if col in df.columns]
-        
-        if available_score_columns:
-            # Calculate global score only from available (non-None) values
-            df["score_global_auto"] = (
-                df[available_score_columns]
-                .mean(axis=1, skipna=True)  # skipna=True to ignore None/NaN values
-                .round(3)
-            )
-        else:
-            logger.info("No RAGAS score columns found, setting score_global_auto to None")
-            df["score_global_auto"] = None
-            
+        # Calculate global score only from available (non-None/non-NaN) values
+        # For non-RAG scenarios where faithfulness, precision, recall are N/A,
+        # global score is based purely on answer_relevancy (or available criteria).
+        df["score_global_auto"] = (
+            df[score_columns]
+            .mean(axis=1, skipna=True)  # skipna=True ignores N/A metrics
+            .round(3)
+        )
+        # If all criteria are NaN, mean produces NaN; keep as None for consistency
+        df["score_global_auto"] = df["score_global_auto"].where(df["score_global_auto"].notna(), None)
         df["score_global_display"] = df["score_global_auto"]
         
         logger.info(f"Successfully loaded {len(df)} executions with scores")
@@ -1322,7 +1319,7 @@ def main() -> None:
                               AND COALESCE(sc.is_legacy, FALSE) = FALSE
                               AND sc.critere IN ('faithfulness','answer_relevancy','context_precision','context_recall')
                               AND sc.note BETWEEN 0 AND 1
-                        ) = 4 THEN e.id END) as scored_executions
+                        ) >= 1 THEN e.id END) as scored_executions
                     FROM executions e
                 """)
             ).fetchone()

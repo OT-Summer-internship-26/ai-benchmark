@@ -7735,3 +7735,270 @@ TypeError: 'str' object is not callable
 2026-09-21 00:19:55 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
 2026-09-21 00:19:55 - __main__ - DEBUG - Loading executions with limit: 300
 2026-09-21 00:19:55 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-21 00:19:55 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-21 16:46:40 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 16:46:40 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 16:46:40 - src.api.main - INFO - Environment: development
+2026-09-21 16:48:14 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 16:48:38 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 16:50:19 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 381
+2026-09-21 16:50:19 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 16:53:06 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 380
+2026-09-21 16:53:06 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 16:54:53 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 378
+2026-09-21 16:54:54 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 16:57:35 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 379
+2026-09-21 16:57:35 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 16:58:11 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-21 16:58:11 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-21 16:58:11 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-21 16:58:11 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-21 16:58:12 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-21 16:58:13 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-21 16:58:13 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-21 16:58:13 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-21 16:58:13 - __main__ - DEBUG - API token obtained successfully
+2026-09-21 16:58:13 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-21 16:58:13 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 16:58:14 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-21 16:58:14 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-21 16:58:14 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-21 16:58:14 - __main__ - DEBUG - Loading scenario catalog
+2026-09-21 16:58:14 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-09-21 16:59:55 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 376
+2026-09-21 16:59:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 17:00:16 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "Analyse des affirmations de la réponse générée par rapport 
+2026-09-21 17:00:54 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "Analyse des affirmations de la réponse générée par rapport 
+2026-09-21 17:01:42 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "Analyse des affirmations de la réponse générée par rapport 
+2026-09-21 17:02:29 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "Analyse des affirmations de la réponse générée par rapport 
+2026-09-21 17:03:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "Analyse des affirmations de la réponse générée par rapport 
+2026-09-21 17:03:27 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "Analyse des affirmations de la réponse générée par rapport 
+2026-09-21 17:05:39 - __main__ - INFO - [OK] Sauvegarde de 3 métriques pour l'exécution 377
+2026-09-21 17:05:41 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 17:06:24 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "La réponse générée est une hallucination massive qui mélang
+2026-09-21 17:07:12 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: ValueError - Pas de JSON trouvé dans: {
+"rationale": "La réponse générée est une hallucination massive qui mélang
+2026-09-21 17:09:20 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-21 17:10:05 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:10:06 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 17:10:06 - src.api.main - INFO - Environment: development
+2026-09-21 17:10:06 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-21 17:10:41 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:10:52 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:10:53 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 17:10:53 - src.api.main - INFO - Environment: development
+2026-09-21 17:11:47 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:12:13 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 17:13:55 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 374
+2026-09-21 17:13:55 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 17:16:44 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 375
+2026-09-21 17:16:44 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 17:16:56 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 30s...
+2026-09-21 17:19:07 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 370
+2026-09-21 17:19:07 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='RH & Communication'
+2026-09-21 17:19:30 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 30s...
+2026-09-21 17:20:01 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 30s...
+2026-09-21 17:20:31 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 30s...
+2026-09-21 17:21:03 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 206.808s...
+2026-09-21 17:22:06 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 17:22:18 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-21 17:22:18 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-21 17:22:19 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-21 17:22:19 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-21 17:22:19 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-21 17:22:20 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-21 17:22:20 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-21 17:22:20 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-21 17:22:20 - __main__ - DEBUG - API token obtained successfully
+2026-09-21 17:22:20 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-21 17:22:21 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 17:22:21 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-21 17:24:32 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 115.22399999999999s...
+2026-09-21 17:26:45 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 1026.312s...
+2026-09-21 17:30:45 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-21 17:30:45 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-21 17:30:45 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-21 17:30:45 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-21 17:30:46 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-21 17:30:47 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-21 17:30:47 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-21 17:30:47 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-21 17:30:47 - __main__ - DEBUG - API token obtained successfully
+2026-09-21 17:30:47 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-21 17:30:47 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 17:30:47 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-21 17:30:54 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 17:30:54 - __main__ - DEBUG - Loading executions with limit: None
+2026-09-21 17:30:54 - __main__ - INFO - Successfully loaded 336 executions with scores
+2026-09-21 17:30:54 - __main__ - INFO - Loaded 336 executions for dashboard display
+2026-09-21 17:38:47 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-21 17:39:26 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:39:26 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 17:39:26 - src.api.main - INFO - Environment: development
+2026-09-21 17:39:27 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-21 17:39:45 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:39:45 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 17:39:45 - src.api.main - INFO - Environment: development
+2026-09-21 17:40:04 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:43:52 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 148.919999999s...
+2026-09-21 17:46:22 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 882.456s...
+2026-09-21 17:52:19 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-21 17:53:15 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:53:15 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 17:53:15 - src.api.main - INFO - Environment: development
+2026-09-21 17:53:49 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-21 17:54:47 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:54:47 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 17:54:47 - src.api.main - INFO - Environment: development
+2026-09-21 17:54:47 - src.api.main - INFO - Benchmark API shutting down...
+2026-09-21 17:54:53 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:55:41 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 17:55:41 - src.api.main - INFO - Benchmark API starting up...
+2026-09-21 17:55:41 - src.api.main - INFO - Environment: development
+2026-09-21 17:58:55 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-21 17:58:55 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-21 17:58:55 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-21 17:58:55 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-21 17:58:56 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-21 17:58:57 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-21 17:58:57 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-21 17:58:57 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-21 17:58:57 - __main__ - DEBUG - API token obtained successfully
+2026-09-21 17:58:57 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-21 17:58:57 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 17:58:58 - __main__ - DEBUG - Loading executions with limit: 300
+2026-09-21 17:58:58 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-09-21 17:58:58 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-21 18:01:06 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 1017.239999999s...
+2026-09-21 18:18:07 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 1022.856s...
+2026-09-21 18:35:11 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 354.119999999s...
+2026-09-21 18:44:24 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 113.064s...
+2026-09-21 18:46:18 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 95.783999999s...
+2026-09-21 18:47:56 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 399.48s...
+2026-09-21 18:54:37 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 335.976s...
+2026-09-21 19:02:45 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 371
+2026-09-21 19:02:45 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 19:02:45 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 1004.712s...
+2026-09-21 19:25:50 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 926.952s...
+2026-09-21 19:41:34 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 345.912s...
+2026-09-21 19:47:21 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 466.439999999s...
+2026-09-21 19:55:09 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 934.296s...
+2026-09-21 20:07:25 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-21 20:07:25 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-21 20:07:25 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-21 20:07:25 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-21 20:07:25 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-21 20:07:26 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-21 20:07:26 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-21 20:07:26 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-21 20:07:26 - __main__ - DEBUG - API token obtained successfully
+2026-09-21 20:07:26 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-21 20:07:27 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 20:07:27 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-21 20:10:45 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 964.5360000000001s...
+2026-09-21 20:27:42 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 1068.215999999s...
+2026-09-21 20:48:38 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 850.92s...
+2026-09-21 21:02:51 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 255.624s...
+2026-09-21 21:07:08 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 208.968s...
+2026-09-21 21:11:30 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 220.2s...
+2026-09-21 21:15:11 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 332.52s...
+2026-09-21 21:16:58 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 21:17:55 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-21 21:17:57 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 634.056s...
+2026-09-21 21:20:45 - __main__ - INFO - [OK] Sauvegarde de 4 métriques pour l'exécution 373
+2026-09-21 21:20:46 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 21:20:46 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 1066.056s...
+2026-09-21 21:25:42 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: llama-3.3-70b-versatile (Provider: Groq)
+2026-09-21 21:26:04 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 21:26:05 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:07 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:12 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:12 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:14 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:20 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:22 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:27 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:27 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:29 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:35 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:35 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:37 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:42 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:42 - src.evaluation.metrics - WARNING - [JUGE] tentative 1/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:44 - src.evaluation.metrics - WARNING - [JUGE] tentative 2/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:50 - src.evaluation.metrics - WARNING - [JUGE] tentative 3/3 échouée: NotFoundError - Error code: 404 - {'error': {'message': 'The model `llama-3.3-70b-versatile` does not exist or you d
+2026-09-21 21:26:50 - __main__ - WARNING - Rate limit sur exec 372. Pause 5 min (300s).
+2026-09-21 21:28:23 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 21:28:31 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 274.632s...
+2026-09-21 21:28:44 - src.rag.vector_store - DEBUG - Retrieved 8 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 21:28:45 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 587.4s...
+2026-09-21 21:33:10 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 771.432s...
+2026-09-21 21:38:36 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 786.12s...
+2026-09-21 21:47:03 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 234.024s...
+2026-09-21 21:50:59 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 306.168s...
+2026-09-21 21:56:07 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 618.072s...
+2026-09-21 22:06:37 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 643.56s...
+2026-09-21 22:17:32 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 240.504s...
+2026-09-21 22:21:34 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 412.008s...
+2026-09-21 22:28:28 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 832.776s...
+2026-09-21 22:42:57 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: groq/compound-mini (Provider: Groq)
+2026-09-21 22:43:25 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-21 22:44:50 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 22:45:18 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 22:45:18 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 307.464s...
+2026-09-21 22:50:29 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 337.704s...
+2026-09-21 22:56:09 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 476.808s...
+2026-09-21 23:04:09 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 595.608s...
+2026-09-21 23:14:50 - __main__ - ERROR - Erreur évaluation exec 372: 'charmap' codec can't encode character '\u2192' in position 6: character maps to <undefined>
+2026-09-21 23:15:40 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: qwen/qwen3.8-27b (Provider: Groq)
+2026-09-21 23:16:07 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Réseau / Support Technique (NOC)'
+2026-09-21 23:16:08 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 574.44s...
+2026-09-21 23:25:46 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 373.56s...
+2026-09-21 23:32:02 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 441.816s...
+2026-09-21 23:40:38 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 600.36s...
+2026-09-21 23:50:41 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 372
+2026-09-21 23:50:41 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-21 23:50:41 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 700.151999999s...
+2026-09-21 23:52:46 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-21 23:52:46 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-21 23:52:46 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-21 23:52:46 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-21 23:52:47 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-21 23:52:48 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-21 23:52:48 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-21 23:52:48 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-21 23:52:48 - __main__ - DEBUG - API token obtained successfully
+2026-09-21 23:52:48 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-21 23:52:48 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-21 23:52:48 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-09-22 00:21:00 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 424.968s...
+2026-09-22 00:33:00 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 357
+2026-09-22 00:33:00 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 00:33:00 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 655.224s...
+2026-09-22 00:43:58 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 190.823999999s...
+2026-09-22 00:48:10 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 689.352s...
+2026-09-22 00:59:42 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 659.112s...
+2026-09-22 01:10:43 - __main__ - INFO - [OK] Sauvegarde de 4 metriques pour l'execution 361
+2026-09-22 01:10:43 - src.rag.vector_store - DEBUG - Retrieved 4 similar chunks for departement='Marketing & Digital'
+2026-09-22 01:10:43 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 640.5360000000001s...
+2026-09-22 01:21:26 - src.evaluation.metrics - WARNING - [JUGE] Rate limit Groq détecté. Pause de 167.064s...
+2026-09-22 01:22:03 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com, role: super_admin
+2026-09-22 01:22:03 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com, expected_role: super_admin
+2026-09-22 01:22:03 - __main__ - DEBUG - Database query completed - user found: True
+2026-09-22 01:22:03 - __main__ - DEBUG - User role verification: found=super_admin, expected=super_admin
+2026-09-22 01:22:04 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-09-22 01:22:05 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-09-22 01:22:05 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-09-22 01:22:05 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-09-22 01:22:05 - __main__ - DEBUG - API token obtained successfully
+2026-09-22 01:22:05 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-09-22 01:22:06 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: Super Admin
+2026-09-22 01:22:06 - __main__ - INFO - Loaded 300 executions for dashboard display

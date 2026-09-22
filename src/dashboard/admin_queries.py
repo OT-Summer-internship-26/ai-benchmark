@@ -213,11 +213,16 @@ def get_department_model_comparison(
         df = pd.read_sql(query, conn, params={"department": department})
         
         # Compute global_score: average only the non-NULL metrics (skipna=True is the
-        # pandas default, but stated explicitly here for clarity).  This matches the
+        # pandas default, but stated explicitly here for clarity). This matches the
         # semantics of load_executions_* in queries.py — a legitimately absent metric
-        # (e.g. context_recall when sortie_attendue is empty) is excluded from the
-        # average rather than treated as 0.
+        # (e.g. non-RAG pure generation scenario, or context_recall when sortie_attendue is empty)
+        # is excluded from the average rather than treated as 0.
         ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+        for c in ragas_cols:
+            if c in df.columns:
+                df[c] = pd.to_numeric(df[c], errors="coerce")
+            else:
+                df[c] = None
         df["global_score"] = df[ragas_cols].mean(axis=1, skipna=True).round(3)
         
         # Sort descending by the same NULL-aware score that is displayed, so the
@@ -311,6 +316,11 @@ def get_department_leaderboard(
     # A NULL metric (legitimately absent for a given scenario) is excluded from
     # the average rather than zeroed out.
     ragas_cols = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+    for c in ragas_cols:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+        else:
+            df[c] = None
     df["global_score"] = df[ragas_cols].mean(axis=1, skipna=True).round(3)
     
     # Sort within each department by descending global_score, then assign rank.

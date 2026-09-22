@@ -6,10 +6,19 @@ the Ragas evaluation pipeline to fill the scores table.
 """
 
 import sys
+import io
 import json
 import time
 from datetime import datetime
 from pathlib import Path
+
+# Force UTF-8 standard output and error streams for Windows compatibility
+if sys.stdout.encoding != "utf-8":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 # Add project root to path
 project_root = Path(__file__).resolve().parent
@@ -17,8 +26,13 @@ sys.path.insert(0, str(project_root))
 
 from sqlalchemy import create_engine, text
 from src.config.settings import DATABASE_URL
-from src.evaluation.deepeval_runner import evaluer_execution_ragas
-from src.evaluation.metrics import MODELE_JUGE
+from src.evaluation.metrics import (
+    MODELE_JUGE,
+    evaluer_faithfulness,
+    evaluer_answer_relevancy,
+    evaluer_context_precision,
+    evaluer_context_recall,
+)
 from src.rag.vector_store import search_similar
 from src.utils.logger import setup_logger
 import pandas as pd
@@ -93,13 +107,13 @@ def get_rag_chunks_for_scenario(scenario_id: int, prompt: str, departement: str)
         chunks = search_similar(
             query=prompt,
             departement=departement,
-            top_k=8
+            top_k=4
         )
         if not chunks:
-            logger.warning(f"Aucun chunk RAG trouvé pour le scénario {scenario_id}")
+            logger.warning(f"Aucun chunk RAG trouve pour le scenario {scenario_id}")
         return chunks
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération des chunks RAG pour le scénario {scenario_id}: {e}")
+        logger.error(f"Erreur lors de la recuperation des chunks RAG pour le scenario {scenario_id}: {e}")
         return []
 
 
@@ -117,7 +131,7 @@ def save_ragas_scores(execution_id: int, scores_dict: dict) -> bool:
         
         valid_scores = [v for v in metrics_to_save.values() if v is not None]
         if not valid_scores:
-            logger.warning(f"Aucun score valide à enregistrer pour l'exécution {execution_id}")
+            logger.warning(f"Aucun score valide a enregistrer pour l'execution {execution_id}")
             return False
 
         with engine.connect() as conn:
@@ -145,11 +159,11 @@ def save_ragas_scores(execution_id: int, scores_dict: dict) -> bool:
             })
             
             conn.commit()
-            logger.info(f"[OK] Sauvegarde de {len(valid_scores)} métriques pour l'exécution {execution_id}")
+            logger.info(f"[OK] Sauvegarde de {len(valid_scores)} metriques pour l'execution {execution_id}")
             return True
         
     except Exception as e:
-        logger.error(f"[ERR] Échec de sauvegarde pour l'exécution {execution_id}: {e}")
+        logger.error(f"[ERR] Echec de sauvegarde pour l'execution {execution_id}: {e}")
         return False
 
 
@@ -163,29 +177,29 @@ def main():
     completed_ids, errors_dict = load_progress(PROGRESS_FILE)
     
     if is_resume:
-        print(f"Mode --resume activé. Chargement de {len(completed_ids)} IDs déjà traités.")
+        print(f"Mode --resume active. Chargement de {len(completed_ids)} IDs deja traites.")
     elif completed_ids:
-        print(f"Fichier de progression détecté ({len(completed_ids)} IDs complétés).")
-        print("💡 Astuce : vous pouvez utiliser --resume pour ignorer ces exécutions.")
+        print(f"Fichier de progression detecte ({len(completed_ids)} IDs completes).")
+        print("[INFO] Astuce : vous pouvez utiliser --resume pour ignorer ces executions.")
     
-    # Étape 1 : Récupérer les exécutions orphelines
-    print("\n1. Recherche des exécutions sans scores RAGAS...")
+    # Etape 1 : Recuperer les executions orphelines
+    print("\n1. Recherche des executions sans scores RAGAS...")
     df_missing = get_executions_without_scores()
     
     initial_missing_count = len(df_missing)
-    print(f"   Trouvé {initial_missing_count} exécutions orphelines en BDD.")
+    print(f"   Trouve {initial_missing_count} executions orphelines en BDD.")
     
     if is_resume and completed_ids:
         df_missing = df_missing[~df_missing['execution_id'].isin(completed_ids)]
-        print(f"   Après filtrage du mode --resume : {len(df_missing)} exécutions restantes à évaluer.")
+        print(f"   Apres filtrage du mode --resume : {len(df_missing)} executions restantes a evaluer.")
     
     total_to_process = len(df_missing)
     if total_to_process == 0:
-        print("\n✅ Toutes les exécutions ciblées sont déjà évaluées !")
+        print("\n[SUCCESS] Toutes les executions ciblees sont deja evaluees !")
         return
     
-    print(f"\n2. Début de l'évaluation RAGAS de {total_to_process} exécutions...")
-    print(f"   Modèle juge : {MODELE_JUGE}")
+    print(f"\n2. Debut de l'evaluation RAGAS de {total_to_process} executions...")
+    print(f"   Modele juge : {MODELE_JUGE}")
     print("   Gestion du rate limit : pauses progressives de 5 min (300s) et 15 min (900s).")
     
     success_count = 0
@@ -215,29 +229,32 @@ def main():
                 if not chunks_rag:
                     logger.warning(f"      Aucun chunk RAG pour l'exec {execution_id}")
                 
-                print(f"      Évaluation RAGAS (tentative {exec_attempt}/{max_exec_retries})...")
-                resultat = evaluer_execution_ragas(
-                    reponse=reponse,
-                    question=question,
-                    contexte_chunks=chunks_rag,
-                    sortie_attendue=sortie_attendue or ""
-                )
+                print(f"      Evaluation RAGAS (tentative {exec_attempt}/{max_exec_retries})...")
+                
+                f_res = evaluer_faithfulness(reponse, chunks_rag)
+                time.sleep(1.0)
+                ar_res = evaluer_answer_relevancy(reponse, question)
+                time.sleep(1.0)
+                cp_res = evaluer_context_precision(chunks_rag, question)
+                time.sleep(1.0)
+                cr_res = evaluer_context_recall(chunks_rag, sortie_attendue or "")
+                time.sleep(1.0)
                 
                 scores_dict = {
-                    'faithfulness': resultat['faithfulness'].get('note'),
-                    'answer_relevancy': resultat['answer_relevancy'].get('note'),
-                    'context_precision': resultat['context_precision'].get('note'),
-                    'context_recall': resultat['context_recall'].get('note'),
+                    'faithfulness': f_res.get('note'),
+                    'answer_relevancy': ar_res.get('note'),
+                    'context_precision': cp_res.get('note'),
+                    'context_recall': cr_res.get('note'),
                 }
                 
                 valid_count = sum(1 for v in scores_dict.values() if v is not None)
                 if valid_count == 0:
-                    raise Exception("Toutes les métriques ont retourné None (échec API / rate limit Groq)")
+                    raise Exception("Toutes les metriques ont retourne None (echec API / rate limit Groq)")
                 
-                print(f"      → Faithfulness: {scores_dict.get('faithfulness', 'N/A')}")
-                print(f"      → Answer Relevancy: {scores_dict.get('answer_relevancy', 'N/A')}")
-                print(f"      → Context Precision: {scores_dict.get('context_precision', 'N/A')}")
-                print(f"      → Context Recall: {scores_dict.get('context_recall', 'N/A')}")
+                print(f"      -> Faithfulness: {scores_dict.get('faithfulness', 'N/A')}")
+                print(f"      -> Answer Relevancy: {scores_dict.get('answer_relevancy', 'N/A')}")
+                print(f"      -> Context Precision: {scores_dict.get('context_precision', 'N/A')}")
+                print(f"      -> Context Recall: {scores_dict.get('context_recall', 'N/A')}")
                 
                 if save_ragas_scores(execution_id, scores_dict):
                     success_count += 1
@@ -246,10 +263,10 @@ def main():
                     if execution_id not in completed_ids:
                         completed_ids.append(execution_id)
                     save_progress(completed_ids, errors_dict)
-                    print(f"      ✅ Exec {execution_id} sauvegardée avec succès.")
+                    print(f"      [OK] Exec {execution_id} sauvegardee avec succes.")
                 else:
                     error_count += 1
-                    errors_dict[str(execution_id)] = "Échec sauvegarde scores BDD"
+                    errors_dict[str(execution_id)] = "Echec sauvegarde scores BDD"
                     break
                     
             except Exception as e:
@@ -265,16 +282,16 @@ def main():
                 if is_rate_limit:
                     consecutive_rate_limits += 1
                     if consecutive_rate_limits == 1:
-                        print(f"\n⏳ [PAUSE 5 MIN] Rate limit Groq détecté sur Exec {execution_id}. Pause de 5 minutes avant réessai...")
+                        print(f"\n[PAUSE 5 MIN] Rate limit Groq detecte sur Exec {execution_id}. Pause de 5 minutes avant reessai...")
                         logger.warning(f"Rate limit sur exec {execution_id}. Pause 5 min (300s).")
                         time.sleep(300)
                     elif consecutive_rate_limits == 2:
-                        print(f"\n⏳ [PAUSE 15 MIN] Rate limit Groq persistant sur Exec {execution_id}. Pause longue de 15 minutes...")
+                        print(f"\n[PAUSE 15 MIN] Rate limit Groq persistant sur Exec {execution_id}. Pause longue de 15 minutes...")
                         logger.warning(f"Rate limit persistant sur exec {execution_id}. Pause 15 min (900s).")
                         time.sleep(900)
                     else:
-                        print(f"\n❌ Quota Groq épuisé après pauses de 5m et 15m.")
-                        print(f"   Arrêt sécurisé. Sauvegarde de l'état dans {PROGRESS_FILE}...")
+                        print(f"\n[ERROR] Quota Groq epuise apres pauses de 5m et 15m.")
+                        print(f"   Arret securise. Sauvegarde de l'etat dans {PROGRESS_FILE}...")
                         errors_dict[str(execution_id)] = f"Rate limit persistant : {error_msg[:100]}"
                         save_progress(completed_ids, errors_dict)
                         rate_limit_blocked = True
@@ -283,43 +300,43 @@ def main():
                     consecutive_rate_limits = 0
                     error_count += 1
                     errors_dict[str(execution_id)] = error_msg
-                    logger.error(f"Erreur évaluation exec {execution_id}: {e}")
-                    print(f"      ❌ Erreur : {error_msg[:100]}")
+                    logger.error(f"Erreur evaluation exec {execution_id}: {e}")
+                    print(f"      [ERROR] Erreur : {error_msg[:100]}")
                     break
         
         if rate_limit_blocked:
             break
             
-    # Résumé
+    # Resume
     print("\n" + "=" * 80)
-    print("BILAN DE LA RÉÉVALUATION")
+    print("BILAN DE LA REEVALUATION")
     print("=" * 80)
-    print(f"✅ Évaluations réussies dans cette session : {success_count}/{total_to_process}")
-    print(f"❌ Erreurs rencontrées : {error_count}/{total_to_process}")
-    print(f"📊 Total cumulé complété : {len(completed_ids)}")
+    print(f"[OK] Evaluations reussies dans cette session : {success_count}/{total_to_process}")
+    print(f"[ERROR] Erreurs rencontrees : {error_count}/{total_to_process}")
+    print(f"[INFO] Total cumule complete : {len(completed_ids)}")
     
     remaining = total_to_process - success_count - error_count
     if remaining > 0 or rate_limit_blocked:
-        print(f"⏳ Restantes à traiter : {remaining}")
-        print("\n💡 Pour reprendre plus tard une fois le quota Groq disponible :")
+        print(f"[PAUSE] Restantes a traiter : {remaining}")
+        print("\n[INFO] Pour reprendre plus tard une fois le quota Groq disponible :")
         print("   python reevaluate_missing_scores.py --resume")
         
     if success_count > 0:
-        print("\n💡 Prochaines étapes :")
+        print("\n[INFO] Prochaines etapes :")
         print("   1. Actualisez le dashboard Streamlit")
-        print("   2. Vérifiez la disparition progressive du bandeau d'avertissement")
+        print("   2. Verifiez la disparition progressive du bandeau d'avertissement")
 
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\n⚠️  Interruption par l'utilisateur (Ctrl+C).")
-        print("   Progression sauvegardée.")
-        print("💡 Pour reprendre : python reevaluate_missing_scores.py --resume")
+        print("\n\n[WARN] Interruption par l'utilisateur (Ctrl+C).")
+        print("   Progression sauvegardee.")
+        print("[INFO] Pour reprendre : python reevaluate_missing_scores.py --resume")
         sys.exit(0)
     except Exception as e:
-        print(f"\n\n❌ Erreur fatale : {e}")
+        print(f"\n\n[FATAL ERROR] : {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
