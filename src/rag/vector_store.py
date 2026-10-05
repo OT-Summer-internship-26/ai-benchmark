@@ -71,8 +71,13 @@ DEPARTMENT_ALIASES = {
     "productivité personnelle": "Productivité & Transversal",
     "productivite personnelle": "Productivité & Transversal",
     "productivité & transversal": "Productivité & Transversal",
-    "productivite & transversal": "Productivité & Transversal",
     "service client": "Service Client",
+    "service_client": "Service Client",
+    "serviceclient": "Service Client",
+    "support client": "Service Client",
+    "relation client": "Service Client",
+    "service client & relation abonnes": "Service Client",
+    "client": "Service Client",
 }
 
 

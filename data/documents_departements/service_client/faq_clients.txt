@@ -1,0 +1,85 @@
+﻿Guide de service client — Ooredoo Tunisie
+
+=== POLITIQUE DE RÉCLAMATION ET TRAITEMENT DES PLAINTES ===
+
+1. Délai de traitement des réclamations
+   - Les réclamations simples (facturation, activation, résiliation) doivent être traitées dans un délai de 48 heures ouvrables.
+   - Les réclamations complexes (litige technique, remboursement) peuvent nécessiter jusqu'à 7 jours ouvrables.
+   - Chaque réclamation est enregistrée dans le CRM avec un numéro de ticket unique transmis au client par SMS.
+
+2. Niveaux d'escalade
+   - Niveau 1 : Agent front-office (résolution immédiate si possible).
+   - Niveau 2 : Superviseur service client (escalade sous 2h si non résolu).
+   - Niveau 3 : Direction qualité + équipe technique (pour les pannes majeures ou litiges > 200 TND).
+
+3. Remboursements et compensations
+   - Interruption de service > 24h : crédit automatique proratisé sur la prochaine facture.
+   - Surtaxe non sollicitée : remboursement intégral sous 72h.
+   - Geste commercial autorisé par agent : jusqu'à 10 TND sans validation hiérarchique.
+
+=== PROCÉDURES DE RÉPONSE AUX CLIENTS ===
+
+4. Accueil téléphonique
+   - Formule standard d'ouverture : « Bonjour, Service Client Ooredoo, [Prénom], comment puis-je vous aider ? »
+   - Toujours reformuler la demande du client pour confirmer la compréhension.
+   - Ne jamais mettre un client en attente sans l'en informer et sans lui indiquer la durée estimée.
+
+5. Canaux de contact
+   - Téléphone : 12 (numéro court gratuit depuis mobile Ooredoo).
+   - Agences physiques : 47 agences réparties sur tout le territoire tunisien.
+   - Application Ooredoo My Account : chat en ligne disponible 8h-22h, 7j/7.
+   - Email : service.client@ooredoo.tn (réponse sous 24h).
+   - Réseaux sociaux : Facebook, Instagram, X (ex-Twitter) — équipe dédiée de modération.
+
+6. Offres et abonnements courants
+   - Prépayé Djawaz : recharge à partir de 1 TND, validité 24h–30 jours selon montant.
+   - Postpayé Hayyak : forfaits 15 TND, 25 TND, 45 TND/mois avec Internet et appels illimités.
+   - Data SIM : forfait internet mobile uniquement, idéal pour les tablettes et routeurs 4G.
+   - Fibre optique FTTH : disponible dans les grandes villes, débits 30 Mbps à 200 Mbps.
+   - Roaming : activable via *121*1# ou depuis l'application.
+
+=== FAQ COURANTE ===
+
+Q : Comment activer le roaming ?
+R : Composez *121*1# depuis votre mobile, ou activez-le dans l'app Ooredoo My Account > Services > Roaming international. Une confirmation SMS est envoyée sous quelques minutes.
+
+Q : Ma recharge n'a pas été créditée. Que faire ?
+R : Conservez le reçu de la recharge. Appelez le 12, communiquez le numéro de ticket imprimé sur le reçu (16 chiffres). L'agent procède à un reclassement manuel sous 15 minutes.
+
+Q : Comment résilier mon abonnement postpayé ?
+R : La résiliation doit être effectuée en agence avec une pièce d'identité. Le délai de résiliation effectif est de 30 jours à compter de la demande. Le client recevra une facture de clôture.
+
+Q : Je conteste un montant sur ma facture. Comment faire ?
+R : Appelez le 12 ou rendez-vous en agence. Vous pouvez contester la facture dans les 30 jours suivant son émission. Au-delà, la facture est réputée acceptée.
+
+Q : Mon numéro a été bloqué. Comment le réactiver ?
+R : Pour les prépayés, recharger 1 TND minimum réactive le numéro si la période de grâce (90 jours) n'est pas dépassée. Pour les postpayés, le règlement de l'arriéré est nécessaire.
+
+Q : Comment transférer mon numéro chez Ooredoo (portabilité) ?
+R : Rendez-vous dans une agence Ooredoo avec votre CIN et le RIB de votre ancien opérateur. La portabilité est gratuite et prend 3 à 5 jours ouvrables.
+
+Q : Comment configurer Internet mobile (APN) sur mon téléphone ?
+R : APN : ooredoo.tn — Nom d'utilisateur : vide — Mot de passe : vide. Applicable pour iOS et Android.
+
+Q : Comment bénéficier des points de fidélité (Nojoom) ?
+R : Chaque recharge ou paiement de facture génère des points. Consultez votre solde via *121*9# ou dans l'application.
+
+=== INDICATEURS DE QUALITÉ DE SERVICE ===
+
+- Taux de résolution au premier contact (FCR) cible : >= 80 %
+- Temps de traitement moyen (AHT) cible : <= 4 minutes par appel
+- Satisfaction client (CSAT) cible : >= 4,2 / 5
+- Net Promoter Score (NPS) trimestriel cible : >= 35
+
+=== GESTION DES PANNES RÉSEAU ===
+
+En cas de panne réseau détectée par le Centre d'Opérations Réseau (NOC) :
+1. Un message de statut est publié automatiquement sur ooredoo.tn/reseau.
+2. Les agents sont avertis par bulletin interne dans l'outil CRM.
+3. Réponse type : « Nous avons détecté un incident technique sur votre zone. Nos équipes travaillent à sa résolution. Un SMS de confirmation vous sera envoyé dès le rétablissement du service. »
+
+=== SÉCURITÉ ET CONFIDENTIALITÉ ===
+
+- Authentification client obligatoire avant toute modification de compte : CIN + 4 derniers chiffres du numéro + date de naissance OU OTP SMS.
+- Les agents ne doivent jamais communiquer le mot de passe d'un client.
+- En cas de suspicion de fraude, escalader immédiatement au superviseur et bloquer le compte à titre conservatoire.

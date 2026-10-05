@@ -3,3 +3,9 @@ __pycache__/
 *.pyc
 .env
 data/documents_departements/
+backups/
+*.sql
+logs/
+scratch_*
+test_*.py
+*progress*.json

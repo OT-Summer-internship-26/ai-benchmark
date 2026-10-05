@@ -1,0 +1,22 @@
+﻿HISTORIQUE DES INCIDENTS ET PROCÉDURES DE RÉSOLUTION NOC — OOREDOO
+
+1. Procédure générale de qualification des incidents réseau
+- P1 (Critique) : Interruption totale de service sur plus de 1 000 abonnés ou coupure d'un lien d'interconnexion national/international. SLA de résolution : < 2 heures. Escalade automatique au Directeur Technique sous 15 minutes.
+- P2 (Majeur) : Dégradation sévère du débit (> 50% de perte) ou indisponibilité d'un relais BTS dans une zone à forte densité. SLA de résolution : < 4 heures.
+- P3 (Mineur) : Anomalie locale sans impact global sur le trafic. SLA de résolution : < 12 heures.
+
+2. Historique et retours d'expérience (Post-Mortem)
+- Incident INC-2024-0412 (P1) : Coupure de fibre optique axe Tunis-Sousse suite à des travaux de voirie tiers.
+  * Cause racine : Sectionnement physique d'un fourreau principal.
+  * Résolution : Basculement automatique du trafic sur la boucle de secours FH (Faisceau Hertzien) en 4 minutes, puis soudure de la fibre terminée en 2h30.
+  * Mesure corrective : Balisage GPS renforcé des tracés de fibre et notification préalable obligatoire aux municipalités.
+
+- Incident INC-2024-0589 (P2) : Saturation des serveurs DNS primaires suite à un pic de requêtes anormal.
+  * Cause racine : Attaque DDoS volumétrique de type DNS Amplification.
+  * Résolution : Activation du filtre de mitigation Anti-DDoS et limitation de débit (rate limiting) par adresse source.
+  * Mesure corrective : Déploiement d'une architecture Anycast multi-nœuds pour absorber les pointes de trafic.
+
+- Incident INC-2024-0731 (P1) : Indisponibilité intermittente de la passerelle SMSC B2B.
+  * Cause racine : Fuite mémoire sur le processus de routage après mise à jour firmware.
+  * Résolution : Rollback immédiat vers la version stable n-1 et redémarrage des nœuds en cluster.
+  * Mesure corrective : Durcissement des tests de charge en environnement de pré-production avant toute mise en ligne.

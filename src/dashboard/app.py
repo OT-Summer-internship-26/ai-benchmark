@@ -17,6 +17,7 @@ import streamlit as st
 import pandas as pd
 import io
 import requests
+import time
 from sqlalchemy import text, bindparam
 from sqlalchemy.exc import IntegrityError
 from src.dashboard.logo import LOGO_B64

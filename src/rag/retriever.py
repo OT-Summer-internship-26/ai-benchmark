@@ -17,7 +17,7 @@ def index_document(filepath: str, departement: str):
     """Charge un document (PDF ou TXT), l'indexe."""
     if filepath.lower().endswith(".pdf"):
         text_content = extract_text_from_pdf(filepath)
-    elif filepath.lower().endswith(".txt"):
+    elif filepath.lower().endswith((".txt", ".md")):
         text_content = extract_text_from_txt(filepath)
     else:
         print(f"Format non supporté : {filepath}")

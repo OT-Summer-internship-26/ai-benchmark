@@ -32,9 +32,7 @@ def setup_logger(name: str) -> logging.Logger:
     )
     
     # Console handler (INFO and above)
-    console_handler = logging.StreamHandler(
-        open(sys.stdout.fileno(), mode="w", encoding="utf-8", errors="replace", buffering=1, closefd=False)
-)
+    console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
@@ -49,7 +47,8 @@ def setup_logger(name: str) -> logging.Logger:
         file_handler = RotatingFileHandler(
             str(logs_dir / 'benchmark.log'),
             maxBytes=10 * 1024 * 1024,  # 10MB
-            backupCount=5
+            backupCount=5,
+            encoding="utf-8",
         )
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)

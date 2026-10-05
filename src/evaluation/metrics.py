@@ -121,6 +121,11 @@ MODELE_JUGE_GEMINI = os.getenv("GEMINI_JUDGE_MODEL", "gemini-1.5-flash")
 USE_GEMINI_JUDGE = os.getenv("USE_GEMINI_JUDGE", "false").strip().lower() in ("true", "1", "yes")
 REPETITIONS_JUGE = int(os.getenv("JUDGE_REPETITIONS", "1"))
 
+# Configuration Juge Ollama Local
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_JUDGE_MODEL = os.getenv("OLLAMA_JUDGE_MODEL", "qwen2.5:7b")
+USE_OLLAMA_JUDGE = os.getenv("USE_OLLAMA_JUDGE", "false").strip().lower() in ("true", "1", "yes")
+
 # Initialize Gemini client if explicitly enabled
 gemini_client = None
 if USE_GEMINI_JUDGE:
@@ -139,11 +144,17 @@ if USE_GEMINI_JUDGE:
         logger.warning(f"Failed to initialize Gemini client: {e}. Falling back to Groq.")
         USE_GEMINI_JUDGE = False
 
-logger.info(f"[JUDGE] Juge actif: {MODELE_JUGE if not (USE_GEMINI_JUDGE and gemini_client) else MODELE_JUGE_GEMINI} (Provider: {'Gemini' if USE_GEMINI_JUDGE and gemini_client else 'Groq'})")
+active_judge_name = (
+    f"Ollama ({OLLAMA_JUDGE_MODEL})" if USE_OLLAMA_JUDGE else
+    (f"Gemini ({MODELE_JUGE_GEMINI})" if (USE_GEMINI_JUDGE and gemini_client) else f"Groq ({MODELE_JUGE})")
+)
+logger.info(f"[JUDGE] Juge actif: {active_judge_name}")
 
 
 def get_active_judge_name() -> str:
     """Return the name of the judge model that will actually be called."""
+    if USE_OLLAMA_JUDGE:
+        return f"ollama/{OLLAMA_JUDGE_MODEL}"
     if USE_GEMINI_JUDGE and gemini_client:
         return MODELE_JUGE_GEMINI
     return MODELE_JUGE
@@ -165,18 +176,89 @@ def _extraire_temps_attente(error_msg: str) -> float | None:
     return None
 
 
-def _appeler_juge_gemini_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 1200) -> float | None:
-    """Appel unique au juge Gemini avec parsing JSON identique à Groq.
-    
-    Combine les prompts système et utilisateur, puis parse la réponse JSON
-    avec la même logique que Groq (nettoyage <think>, extraction regex, etc.).
-    
-    Retry: 3 tentatives avec backoffs [2s, 5s, 10s] pour erreurs non-rate-limit.
-    Pour rate limits, respecte le temps demandé par l'API + 15s de marge.
-    
-    Returns:
-        float: Note entre 0.0 et 1.0, ou None si échec complet
-    """
+def _extraire_note_et_rationale(contenu: str, provider: str = "LLM") -> tuple[float | None, str]:
+    """Parse de manière robuste le JSON retourné par un LLM-juge (Groq, Gemini ou Ollama)."""
+    if not contenu or not contenu.strip():
+        return None, f"Réponse vide du juge ({provider})."
+
+    contenu = re.sub(r"<think>.*?(?=</think>|{)", "", contenu, flags=re.DOTALL).strip()
+    contenu = re.sub(r"</think>", "", contenu).strip()
+    contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
+
+    try:
+        resultat = json.loads(contenu_nettoye)
+    except json.JSONDecodeError:
+        json_matches = list(re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', contenu_nettoye, re.DOTALL))
+        if json_matches:
+            for json_match in reversed(json_matches):
+                try:
+                    resultat = json.loads(json_match.group(0))
+                    break
+                except json.JSONDecodeError:
+                    continue
+            else:
+                note_match = re.search(r'"note"\s*:\s*([0-9]*\.?[0-9]+)', contenu_nettoye)
+                if note_match:
+                    resultat = {
+                        "note": float(note_match.group(1)),
+                        "rationale": "Extrait en secours (JSON tronqué ou malformé)."
+                    }
+                else:
+                    logger.warning(f"[{provider}] Pas de JSON valide trouvé dans: {contenu_nettoye[:100]}")
+                    return None, f"JSON invalide: {contenu_nettoye[:100]}"
+        else:
+            note_match = re.search(r'"note"\s*:\s*([0-9]*\.?[0-9]+)', contenu_nettoye)
+            if note_match:
+                resultat = {
+                    "note": float(note_match.group(1)),
+                    "rationale": "Extrait en secours (JSON absent ou tronqué)."
+                }
+            else:
+                logger.warning(f"[{provider}] Aucun JSON trouvé dans: {contenu_nettoye[:100]}")
+                return None, f"Aucun JSON: {contenu_nettoye[:100]}"
+
+    raw_note = resultat.get("note") if resultat.get("note") is not None else resultat.get("score")
+    rationale = str(resultat.get("rationale") or resultat.get("justification") or "").strip()
+
+    if raw_note is None:
+        logger.warning(f"[{provider}] Judge returned None for note/score field")
+        return None, f"Champ 'note' absent dans le JSON ({provider})."
+
+    try:
+        note = max(0.0, min(1.0, float(raw_note)))
+        return note, rationale or f"Évaluation {provider} complétée."
+    except (ValueError, TypeError):
+        return None, f"Valeur de note non numérique: {raw_note}"
+
+
+def _appeler_juge_ollama_une_fois(prompt_systeme: str, prompt_utilisateur: str) -> tuple[float | None, str]:
+    """Appel au juge local Ollama (ex: qwen2.5:7b)."""
+    try:
+        url = f"{OLLAMA_URL.rstrip('/')}/api/chat"
+        payload = {
+            "model": OLLAMA_JUDGE_MODEL,
+            "messages": [
+                {"role": "system", "content": prompt_systeme},
+                {"role": "user", "content": prompt_utilisateur},
+            ],
+            "format": "json",
+            "stream": False,
+            "options": {
+                "temperature": 0
+            }
+        }
+        resp = requests.post(url, json=payload, timeout=120)
+        if resp.status_code != 200:
+            logger.warning(f"[OLLAMA] Erreur HTTP {resp.status_code}: {resp.text[:100]}")
+            return None, f"Ollama HTTP {resp.status_code}"
+            
+        contenu = resp.json().get("message", {}).get("content", "").strip()
+        return _extraire_note_et_rationale(contenu, f"Ollama {OLLAMA_JUDGE_MODEL}")
+    except Exception as e:
+        logger.warning(f"[OLLAMA] Exception appel juge: {str(e)[:100]}")
+        return None, f"Erreur Ollama: {str(e)[:100]}"
+
+
 def _appeler_juge_gemini_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 1200) -> tuple[float | None, str]:
     """Appel unique au juge Gemini avec extraction de rationale et note.
     
@@ -200,39 +282,11 @@ def _appeler_juge_gemini_une_fois(prompt_systeme: str, prompt_utilisateur: str, 
             )
             
             contenu = response.text.strip()
-            
-            # Nettoyage think tags et codeblocks
-            contenu = re.sub(r"<think>.*?(?=</think>|{)", "", contenu, flags=re.DOTALL).strip()
-            contenu = re.sub(r"</think>", "", contenu).strip()
-            contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
-            
-            # Parse JSON
-            try:
-                resultat = json.loads(contenu_nettoye)
-            except json.JSONDecodeError:
-                json_matches = list(re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', contenu_nettoye, re.DOTALL))
-                if json_matches:
-                    for json_match in reversed(json_matches):
-                        try:
-                            resultat = json.loads(json_match.group(0))
-                            break
-                        except json.JSONDecodeError:
-                            continue
-                    else:
-                        raise ValueError(f"Pas de JSON valide trouvé dans: {contenu_nettoye[:100]}")
-                else:
-                    raise ValueError(f"Pas de JSON trouvé dans: {contenu_nettoye[:100]}")
-            
-            raw_note = resultat.get("note") if resultat.get("note") is not None else resultat.get("score")
-            rationale = str(resultat.get("rationale") or resultat.get("justification") or "").strip()
-            
-            if raw_note is None:
-                logger.warning("[GEMINI] Judge returned None for note/score field")
-                raise ValueError("Judge returned invalid response: note=None in JSON")
-            
-            note = max(0.0, min(1.0, float(raw_note)))
-            time.sleep(0.5)
-            return note, rationale or "Évaluation Gemini complétée."
+            note, rationale = _extraire_note_et_rationale(contenu, "Gemini")
+            if note is not None:
+                time.sleep(0.5)
+                return note, rationale
+            raise ValueError(rationale)
             
         except Exception as e:
             error_msg = str(e)
@@ -256,18 +310,27 @@ def _appeler_juge_gemini_une_fois(prompt_systeme: str, prompt_utilisateur: str, 
 
 
 def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tokens: int = 800) -> tuple[float | None, str]:
-    """Un seul appel au juge (Groq ou Gemini selon configuration).
+    """Un seul appel au juge (Ollama local, Groq, ou Gemini selon configuration et fallback).
     
     Returns:
         tuple: (note: float | None, rationale: str)
     """
+    # 1. Mode juge Ollama local explicite (configuré via USE_OLLAMA_JUDGE=true)
+    if USE_OLLAMA_JUDGE:
+        note, rationale = _appeler_juge_ollama_une_fois(prompt_systeme, prompt_utilisateur)
+        if note is not None:
+            return note, rationale
+        logger.warning(f"[OLLAMA] Échec de l'évaluation locale {OLLAMA_JUDGE_MODEL}, tentative alternative...")
+
+    # 2. Mode juge Gemini explicite
     if USE_GEMINI_JUDGE and gemini_client:
         note, rationale = _appeler_juge_gemini_une_fois(prompt_systeme, prompt_utilisateur, max_tokens=max_tokens)
         if note is not None:
             return note, rationale
-        logger.warning("[GEMINI] Échec complet, bascule automatique vers Groq...")
-    
-    effective_max_tokens = max_tokens  # respect caller budget (e.g. 1800 for faithfulness)
+        logger.warning("[GEMINI] Échec complet, bascule vers Groq/Ollama...")
+
+    # 3. Mode Groq (avec bascule automatique vers Ollama en cas de rate-limit)
+    effective_max_tokens = max_tokens
     backoffs = [2, 5, 10]
     max_normal_attempts = len(backoffs)
     attempt = 1
@@ -275,7 +338,8 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
     while attempt <= max_normal_attempts:
         try:
             if not client:
-                return None, "Client Groq non initialisé (GROQ_API_KEY absente)."
+                logger.info(f"[JUGE] Client Groq non initialisé, bascule vers Ollama ({OLLAMA_JUDGE_MODEL})...")
+                return _appeler_juge_ollama_une_fois(prompt_systeme, prompt_utilisateur)
                 
             response = client.chat.completions.create(
                 model=MODELE_JUGE,
@@ -288,55 +352,11 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
                 seed=42,
             )
             contenu = response.choices[0].message.content.strip()
-
-            contenu = re.sub(r"<think>.*?(?=</think>|{)", "", contenu, flags=re.DOTALL).strip()
-            contenu = re.sub(r"</think>", "", contenu).strip()
-            contenu_nettoye = re.sub(r"^```(?:json)?|```$", "", contenu, flags=re.MULTILINE).strip()
-
-            try:
-                resultat = json.loads(contenu_nettoye)
-            except json.JSONDecodeError:
-                json_matches = list(re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', contenu_nettoye, re.DOTALL))
-                if json_matches:
-                    for json_match in reversed(json_matches):
-                        try:
-                            resultat = json.loads(json_match.group(0))
-                            break
-                        except json.JSONDecodeError:
-                            continue
-                    else:
-                        # Fallback: JSON found but none parseable — try extracting "note" numerically
-                        note_match = re.search(r'"note"\s*:\s*([0-9]*\.?[0-9]+)', contenu_nettoye)
-                        if note_match:
-                            logger.warning(f"[JUGE] JSON tronqué — extraction numerique de secours utilisée.")
-                            resultat = {
-                                "note": float(note_match.group(1)),
-                                "rationale": "Extrait en secours (JSON tronqué ou malformé)."
-                            }
-                        else:
-                            raise ValueError(f"Pas de JSON valide trouvé dans: {contenu_nettoye[:100]}")
-                else:
-                    # Fallback: no JSON object found at all — try extracting "note" numerically
-                    note_match = re.search(r'"note"\s*:\s*([0-9]*\.?[0-9]+)', contenu_nettoye)
-                    if note_match:
-                        logger.warning(f"[JUGE] Aucun JSON trouvé — extraction numerique de secours utilisée.")
-                        resultat = {
-                            "note": float(note_match.group(1)),
-                            "rationale": "Extrait en secours (JSON absent ou tronqué)."
-                        }
-                    else:
-                        raise ValueError(f"Pas de JSON trouvé dans: {contenu_nettoye[:100]}")
-            
-            raw_note = resultat.get("note") if resultat.get("note") is not None else resultat.get("score")
-            rationale = str(resultat.get("rationale") or resultat.get("justification") or "").strip()
-            
-            if raw_note is None:
-                logger.warning(f"Judge returned None for note/score. Raw: {contenu[:150]}")
-                raise ValueError("Judge returned invalid response: note=None in JSON")
-            
-            note = max(0.0, min(1.0, float(raw_note)))
-            time.sleep(0.5)
-            return note, rationale or "Évaluation Groq complétée."
+            note, rationale = _extraire_note_et_rationale(contenu, "Groq")
+            if note is not None:
+                time.sleep(0.5)
+                return note, rationale
+            raise ValueError(f"Réponse JSON invalide Groq: {rationale}")
             
         except Exception as e:
             error_msg = str(e)
@@ -344,28 +364,38 @@ def _appeler_juge_une_fois(prompt_systeme: str, prompt_utilisateur: str, max_tok
             
             if is_rate_limit:
                 temps_recommande = _extraire_temps_attente(error_msg)
-                if temps_recommande is not None and temps_recommande > 60:
-                    logger.warning(
-                        f"[JUGE] Rate limit Groq journalier trop long ({temps_recommande}s > 60s). "
-                        "Abandon du sleep prolongé."
-                    )
-                    if gemini_client:
-                        logger.info("[JUGE] Bascule automatique sur Gemini comme juge de secours...")
-                        return _appeler_juge_gemini_une_fois(prompt_systeme, prompt_utilisateur, max_tokens=max_tokens)
-                    return None, f"Quota Groq journalier atteint (délai demandé: {int(temps_recommande)}s)."
+                logger.warning(
+                    f"[JUGE] Rate limit Groq détecté ({error_msg[:100]}). "
+                    f"Bascule automatique immédiate vers le juge de secours Ollama ({OLLAMA_JUDGE_MODEL})..."
+                )
+                note_ollama, rat_ollama = _appeler_juge_ollama_une_fois(prompt_systeme, prompt_utilisateur)
+                if note_ollama is not None:
+                    return note_ollama, f"[Secours Ollama {OLLAMA_JUDGE_MODEL}] {rat_ollama}"
+                
+                if temps_recommande is not None and temps_recommande <= 60:
+                    wait_time = min(temps_recommande + 15, 60)
+                    time.sleep(wait_time)
+                    attempt += 1
+                    continue
+                
+                if gemini_client:
+                    logger.info("[JUGE] Bascule sur Gemini comme juge de secours...")
+                    return _appeler_juge_gemini_une_fois(prompt_systeme, prompt_utilisateur, max_tokens=max_tokens)
+                
+                return None, f"Quota Groq journalier atteint et échec fallback: {error_msg[:100]}"
 
-                wait_time = min((temps_recommande + 15) if temps_recommande is not None else 30, 60)
-                logger.warning(f"[JUGE] Rate limit Groq détecté. Pause courte de {wait_time}s...")
-                time.sleep(wait_time)
-                attempt += 1
-                continue
-            
             wait = backoffs[attempt - 1] if attempt <= len(backoffs) else backoffs[-1]
             logger.warning(f"[JUGE] tentative {attempt}/{max_normal_attempts} échouée: {type(e).__name__} - {str(e)[:100]}")
 
             if attempt < max_normal_attempts:
                 time.sleep(wait)
             attempt += 1
+
+    # Si Groq a échoué toutes ses tentatives, ultime recours sur Ollama local
+    logger.info(f"[JUGE] Échec Groq après tentatives, tentative de secours sur Ollama ({OLLAMA_JUDGE_MODEL})...")
+    note_ollama, rat_ollama = _appeler_juge_ollama_une_fois(prompt_systeme, prompt_utilisateur)
+    if note_ollama is not None:
+        return note_ollama, f"[Secours Ollama {OLLAMA_JUDGE_MODEL}] {rat_ollama}"
 
     return None, "Échec de l'évaluation par le juge après toutes les tentatives."
 
