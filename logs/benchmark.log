@@ -11100,3 +11100,4 @@ LINE 2: ... SELECT id, departement, prompt, sortie_attendue, complexite
 2026-10-06 01:16:10 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
 2026-10-06 01:16:11 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: Utilisateur
 2026-10-06 01:19:18 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-06 20:13:10 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
