@@ -1,14 +1,14 @@
 """
-Re-evaluate executions that are missing RAGAS scores.
+Re-evaluate executions with INCOMPLETE RAGAS scores (missing any of the 4 core metrics).
 This script will:
-1. Find executions with no RAGAS scores (methode='ragas', is_legacy=FALSE)
-2. Fetch scenario context and RAG chunks from vector store
-3. Call evaluer_execution_ragas() with Ollama fallback enabled
-4. Insert scores into database
+1. Find executions missing any of: faithfulness, answer_relevancy, context_precision, context_recall
+2. DELETE existing incomplete RAGAS scores for those executions
+3. Re-run full RAGAS evaluation with Ollama fallback
+4. Insert complete scores into database
 """
 import sys
 import os
-import json
+import argparse
 from datetime import datetime
 from sqlalchemy import text
 from src.database.connection import engine
@@ -42,26 +42,56 @@ def get_scenario(scenario_id: int) -> dict:
         }
 
 
-def get_executions_missing_ragas_scores(limit: int = None) -> list[dict]:
-    """Find executions without RAGAS scores"""
+def get_executions_with_incomplete_scores(date_filter: str = None) -> list[dict]:
+    """
+    Find executions with incomplete RAGAS scores.
+    An execution is incomplete if it's missing any of the 4 core metrics:
+    - faithfulness
+    - answer_relevancy
+    - context_precision
+    - context_recall
+    """
     query = """
+        WITH ragas_scores AS (
+            SELECT 
+                execution_id,
+                COUNT(DISTINCT CASE WHEN critere = 'faithfulness' THEN critere END) as has_faithfulness,
+                COUNT(DISTINCT CASE WHEN critere = 'answer_relevancy' THEN critere END) as has_answer_relevancy,
+                COUNT(DISTINCT CASE WHEN critere = 'context_precision' THEN critere END) as has_context_precision,
+                COUNT(DISTINCT CASE WHEN critere = 'context_recall' THEN critere END) as has_context_recall
+            FROM scores
+            WHERE methode = 'ragas' AND is_legacy = FALSE
+            GROUP BY execution_id
+        )
         SELECT 
             e.id,
             e.scenario_id,
             e.modele_id,
             e.reponse_generee,
             e.date_execution,
-            m.nom as modele_nom
+            m.nom as modele_nom,
+            COALESCE(rs.has_faithfulness, 0) as has_faithfulness,
+            COALESCE(rs.has_answer_relevancy, 0) as has_answer_relevancy,
+            COALESCE(rs.has_context_precision, 0) as has_context_precision,
+            COALESCE(rs.has_context_recall, 0) as has_context_recall
         FROM executions e
         LEFT JOIN modeles m ON m.id = e.modele_id
-        LEFT JOIN scores s ON s.execution_id = e.id AND s.methode = 'ragas' AND s.is_legacy = FALSE
-        WHERE s.id IS NULL
-        AND e.date_execution >= NOW() - INTERVAL '30 days'
-        ORDER BY e.date_execution DESC
+        LEFT JOIN ragas_scores rs ON rs.execution_id = e.id
     """
     
-    if limit:
-        query += f" LIMIT {limit}"
+    if date_filter:
+        query += f" WHERE e.date_execution >= '{date_filter}'"
+    
+    query += """
+        GROUP BY e.id, e.scenario_id, e.modele_id, e.reponse_generee, e.date_execution, m.nom,
+                 rs.has_faithfulness, rs.has_answer_relevancy, rs.has_context_precision, rs.has_context_recall
+        HAVING 
+            COALESCE(rs.has_faithfulness, 0) = 0 OR
+            COALESCE(rs.has_answer_relevancy, 0) = 0 OR
+            COALESCE(rs.has_context_precision, 0) = 0 OR
+            COALESCE(rs.has_context_recall, 0) = 0
+        ORDER BY e.date_execution DESC
+    """
     
     with engine.connect() as conn:
         results = conn.execute(text(query)).fetchall()
@@ -73,7 +103,30 @@ def get_executions_missing_ragas_scores(limit: int = None) -> list[dict]:
         "reponse": r.reponse_generee,
         "date_execution": r.date_execution,
         "modele_nom": r.modele_nom,
+        "missing_metrics": [
+            "faithfulness" if r.has_faithfulness == 0 else None,
+            "answer_relevancy" if r.has_answer_relevancy == 0 else None,
+            "context_precision" if r.has_context_precision == 0 else None,
+            "context_recall" if r.has_context_recall == 0 else None,
+        ]
     } for r in results]
+
+
+def delete_existing_ragas_scores(execution_id: int):
+    """Delete ALL existing RAGAS scores for an execution before re-evaluating"""
+    with engine.begin() as conn:
+        result = conn.execute(
+            text("""
+                DELETE FROM scores
+                WHERE execution_id = :exec_id
+                AND methode = 'ragas'
+                AND is_legacy = FALSE
+            """),
+            {"exec_id": execution_id}
+        )
+        deleted = result.rowcount
+        logger.info(f"  🗑️  Deleted {deleted} existing RAGAS scores for execution {execution_id}")
+        return deleted
 
 
 def insert_scores(execution_id: int, resultat: dict):
@@ -91,7 +144,7 @@ def insert_scores(execution_id: int, resultat: dict):
         nb_inseres = 0
         for critere, detail in criteres_a_inserer.items():
             if not detail or detail.get("note") is None:
-                logger.debug(f"  Skipping {critere} (note is None)")
+                logger.warning(f"  ⚠️  {critere} returned None - skipping")
                 continue
                 
             conn.execute(
@@ -129,14 +182,19 @@ def insert_scores(execution_id: int, resultat: dict):
 
 
 def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="Re-evaluate executions with missing RAGAS scores")
+    parser = argparse.ArgumentParser(description="Re-evaluate executions with incomplete RAGAS scores")
     parser.add_argument('--auto', action='store_true', help='Skip confirmation prompt')
-    parser.add_argument('--limit', type=int, help='Limit number of executions to process')
+    parser.add_argument('--all', action='store_true', help='Re-evaluate all incomplete executions (no date filter)')
+    parser.add_argument('--today', action='store_true', help='Re-evaluate only today\'s incomplete executions')
+    parser.add_argument('--resume', action='store_true', help='Alias for --auto (resume without prompt)')
     args = parser.parse_args()
     
+    # --resume is an alias for --auto
+    if args.resume:
+        args.auto = True
+    
     print("=" * 80)
-    print("RE-EVALUATION OF EXECUTIONS WITH MISSING RAGAS SCORES")
+    print("RE-EVALUATION OF EXECUTIONS WITH INCOMPLETE RAGAS SCORES")
     print("=" * 80)
     print()
     
@@ -145,27 +203,45 @@ def main():
     print(f"🤖 Active judge: {active_judge}")
     print()
     
-    # Find executions missing scores
-    print("🔍 Searching for executions without RAGAS scores...")
-    executions = get_executions_missing_ragas_scores(limit=args.limit)
+    # Determine date filter
+    date_filter = None
+    if args.today:
+        date_filter = datetime.now().strftime("%Y-%m-%d")
+        print(f"📅 Filtering: Today's executions only ({date_filter})")
+    elif not args.all:
+        date_filter = "2026-10-05"  # Default to today's date
+        print(f"📅 Filtering: Executions from {date_filter} onwards")
+    else:
+        print(f"📅 No date filter: Processing ALL incomplete executions")
+    print()
+    
+    # Find executions with incomplete scores
+    print("🔍 Searching for executions with incomplete RAGAS scores...")
+    executions = get_executions_with_incomplete_scores(date_filter=date_filter)
     
     if not executions:
-        print("✅ All recent executions already have RAGAS scores!")
+        print("✅ All executions already have complete RAGAS scores!")
         return
     
-    print(f"Found {len(executions)} executions to re-evaluate")
+    print(f"Found {len(executions)} executions with incomplete scores:")
+    print()
+    for exec_data in executions[:5]:  # Show first 5
+        missing = [m for m in exec_data["missing_metrics"] if m]
+        print(f"  - Execution {exec_data['execution_id']}: missing {', '.join(missing)}")
+    if len(executions) > 5:
+        print(f"  ... and {len(executions) - 5} more")
     print()
     
     # Confirm before proceeding
     if not args.auto:
-        response = input(f"Proceed with re-evaluation of {len(executions)} executions? (y/n): ")
+        response = input(f"⚠️  This will DELETE existing partial scores and re-evaluate. Proceed? (y/n): ")
         if response.lower() != 'y':
             print("Aborted.")
             return
     
     print()
     print("=" * 80)
-    print("STARTING RE-EVALUATION")
+    print("STARTING RE-EVALUATION WITH SCORE DELETION")
     print("=" * 80)
     print()
     
@@ -175,11 +251,16 @@ def main():
     for idx, execution in enumerate(executions, 1):
         exec_id = execution["execution_id"]
         scenario_id = execution["scenario_id"]
+        missing = [m for m in execution["missing_metrics"] if m]
         
         print(f"\n[{idx}/{len(executions)}] Execution {exec_id} (scenario {scenario_id}, model: {execution['modele_nom']})")
         print(f"  Date: {execution['date_execution']}")
+        print(f"  Missing: {', '.join(missing)}")
         
         try:
+            # DELETE existing partial scores
+            deleted = delete_existing_ragas_scores(exec_id)
+            
             # Fetch scenario
             scenario = get_scenario(scenario_id)
             if not scenario:
@@ -188,7 +269,6 @@ def main():
                 continue
             
             print(f"  Department: {scenario['departement']}")
-            print(f"  Prompt: {scenario['prompt'][:100]}...")
             
             # Fetch RAG chunks
             print(f"  Fetching RAG context...", end=" ")
@@ -212,21 +292,28 @@ def main():
             print(f"    Answer relevancy:   {resultat.get('answer_relevancy', {}).get('note', 'N/A')}")
             print(f"    Context precision:  {resultat.get('context_precision', {}).get('note', 'N/A')}")
             print(f"    Context recall:     {resultat.get('context_recall', {}).get('note', 'N/A')}")
-            print(f"    Toxicity:           {resultat.get('toxicity', {}).get('note', 'N/A')}")
-            print(f"    Harmfulness:        {resultat.get('harmfulness', {}).get('note', 'N/A')}")
             print(f"    Score global:       {resultat.get('score_global', 'N/A')}")
             
             # Insert scores
             nb_inserted = insert_scores(exec_id, resultat)
             
-            if nb_inserted > 0:
+            # Verify we have all 4 core metrics
+            core_metrics = ['faithfulness', 'answer_relevancy', 'context_precision', 'context_recall']
+            missing_after = [m for m in core_metrics if resultat.get(m, {}).get('note') is None]
+            
+            if missing_after:
+                logger.warning(f"  ⚠️  Still missing after re-evaluation: {', '.join(missing_after)}")
+                error_count += 1
+            elif nb_inserted >= 5:  # At least 4 core + score_global
                 success_count += 1
             else:
-                logger.warning(f"  ⚠️  No scores were inserted for execution {exec_id}")
+                logger.warning(f"  ⚠️  Only {nb_inserted} scores inserted (expected at least 5)")
                 error_count += 1
                 
         except Exception as e:
             logger.error(f"  ❌ Error evaluating execution {exec_id}: {str(e)}")
+            import traceback
+            traceback.print_exc()
             error_count += 1
             continue
     
@@ -235,8 +322,19 @@ def main():
     print("RE-EVALUATION COMPLETE")
     print("=" * 80)
     print(f"✅ Successfully re-evaluated: {success_count} executions")
-    print(f"❌ Errors: {error_count} executions")
+    print(f"❌ Errors/Incomplete: {error_count} executions")
     print()
+    
+    # Final verification
+    print("🔍 Verifying results...")
+    remaining = get_executions_with_incomplete_scores(date_filter=date_filter)
+    if remaining:
+        print(f"⚠️  {len(remaining)} executions still have incomplete scores:")
+        for exec_data in remaining[:5]:
+            missing = [m for m in exec_data["missing_metrics"] if m]
+            print(f"  - Execution {exec_data['execution_id']}: missing {', '.join(missing)}")
+    else:
+        print("✅ All executions now have complete RAGAS scores!")
 
 
 if __name__ == "__main__":

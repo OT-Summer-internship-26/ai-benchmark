@@ -2116,11 +2116,34 @@ def main() -> None:
                 use_container_width=True,
             )
 
+            # Create rich labels for execution selectbox
+            execution_options = filtered.sort_values("date_execution", ascending=False).copy()
+            execution_ids = execution_options["execution_id"].tolist()
+            
+            def format_execution_label(exec_id):
+                """Format execution selectbox label with rich context"""
+                row = execution_options[execution_options["execution_id"] == exec_id].iloc[0]
+                
+                # Truncate scenario name if too long
+                scenario = row["nom_cas_usage"]
+                if len(scenario) > 50:
+                    scenario = scenario[:47] + "..."
+                
+                # Format score with proper None handling
+                score = row.get("score_global_auto")
+                if score is not None and not pd.isna(score):
+                    score_display = f"({score*100:.1f}%)"
+                else:
+                    score_display = "(N/A)"
+                
+                return f"#{exec_id} | {row['departement']} | {scenario} | {row['modele_nom']} {score_display}"
+            
             selected_execution = st.selectbox(
                 "Sélectionner une exécution",
-                filtered["execution_id"].astype(str).tolist(),
+                options=execution_ids,
+                format_func=format_execution_label,
             )
-            execution_data = filtered[filtered["execution_id"] == int(selected_execution)].iloc[0]
+            execution_data = filtered[filtered["execution_id"] == selected_execution].iloc[0]
 
             st.divider()
             st.markdown("### Exécution sélectionnée")
