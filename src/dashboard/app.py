@@ -334,23 +334,13 @@ ROLE_DISPLAY = {
 
 ROLE_OPTIONS = list(ROLE_DISPLAY.keys())
 
-# Rappel visuel affiché comme placeholder du champ e-mail en mode démo.
-# À retirer une fois que de vrais comptes existent.
-DEMO_HINTS = {
-    "client": "client@ooredoo.com",
-    "admin": "admin@ooredoo.com",
-    "super_admin": "superadmin@ooredoo.com",
-}
 
-
-def do_login(email: str, password: str, expected_role: str) -> bool:
+def do_login(email: str, password: str) -> bool:
     """
     Vérifie les identifiants en base. Retourne True en cas de succès.
-    Vérifie aussi que le rôle réel du compte correspond au profil choisi
-    dans le menu déroulant.
+    Le rôle est lu directement depuis utilisateurs.role après bcrypt verification.
     """
-    # Enhanced logging to diagnose login issues
-    logger.info(f"Login attempt for email: {email}, expected_role: {expected_role}")
+    logger.info(f"Login attempt for email: {email}")
     
     # Clear any existing login error
     st.session_state["login_error"] = None
@@ -376,28 +366,19 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
             st.session_state["login_error"] = error_msg
             return False
         
-        logger.debug(f"User role verification: found={user.role}, expected={expected_role}")
-        
         if not verify_password(password, user.mot_de_passe_hash):
             error_msg = "Mot de passe incorrect."
             logger.warning(f"Login failed - incorrect password for user: {email}")
             st.session_state["login_error"] = error_msg
             return False
 
-        if user.role != expected_role:
-            error_msg = (
-                f"Ce compte est enregistré comme « {ROLE_DISPLAY.get(user.role, user.role)} », "
-                f"pas « {ROLE_DISPLAY.get(expected_role, expected_role)} ». "
-                "Choisissez le bon profil dans le menu."
-            )
-            logger.warning(f"Login failed - role mismatch: user_role={user.role}, expected={expected_role}")
-            st.session_state["login_error"] = error_msg
-            return False
-
-        # Login successful - set session state
+        # Login successful - set session state with role from database
         st.session_state["login_error"] = None
         st.session_state["auth_email"] = user.email
         st.session_state["auth_role"] = ROLE_DISPLAY.get(user.role, user.role)
+        st.session_state["auth_role_key"] = user.role  # Store DB role key for checks
+        st.session_state["auth_user_id"] = user.id
+        st.session_state["auth_department"] = user.departement
         
         logger.info(f"Login successful for user: {email} with role: {user.role}")
 
@@ -427,6 +408,94 @@ def do_login(email: str, password: str, expected_role: str) -> bool:
     finally:
         db.close()
     
+
+
+
+
+
+def change_password_form():
+    """Form for logged-in users to change their password."""
+    st.subheader("Changer mon mot de passe")
+    
+    with st.form("change_password_form"):
+        old_password = st.text_input("Mot de passe actuel", type="password")
+        new_password = st.text_input("Nouveau mot de passe", type="password")
+        confirm_password = st.text_input("Confirmer le nouveau mot de passe", type="password")
+        submitted = st.form_submit_button("Modifier le mot de passe")
+    
+    if submitted:
+        email = st.session_state.get("auth_email")
+        
+        if not old_password or not new_password or not confirm_password:
+            st.error("Tous les champs sont obligatoires.")
+            return
+        
+        if new_password != confirm_password:
+            st.error("Les nouveaux mots de passe ne correspondent pas.")
+            return
+        
+        # Validate new password
+        from src.utils.validation import validate_password
+        is_valid, error_msg = validate_password(new_password)
+        if not is_valid:
+            st.error(error_msg)
+            return
+        
+        db = SessionLocal()
+        try:
+            user = db.query(Utilisateur).filter(Utilisateur.email == email).first()
+            
+            if not user:
+                st.error("Utilisateur introuvable.")
+                return
+            
+            # Verify old password
+            if not verify_password(old_password, user.mot_de_passe_hash):
+                st.error("Mot de passe actuel incorrect.")
+                return
+            
+            # Update password
+            user.mot_de_passe_hash = hash_password(new_password)
+            db.commit()
+            
+            st.success("✅ Mot de passe modifié avec succès !")
+            logger.info(f"Password changed for user: {email}")
+            
+        except Exception as e:
+            db.rollback()
+            logger.error(f"Error changing password: {e}")
+            st.error("Une erreur est survenue lors de la modification du mot de passe.")
+        finally:
+            db.close()
+
+
+def admin_reset_user_password(user_email: str, new_password: str) -> tuple[bool, str]:
+    """Super admin function to reset any user's password (without requiring old password)."""
+    from src.utils.validation import validate_password
+    
+    is_valid, error_msg = validate_password(new_password)
+    if not is_valid:
+        return False, error_msg
+    
+    db = SessionLocal()
+    try:
+        user = db.query(Utilisateur).filter(Utilisateur.email == user_email).first()
+        
+        if not user:
+            return False, "Utilisateur introuvable."
+        
+        user.mot_de_passe_hash = hash_password(new_password)
+        db.commit()
+        
+        logger.info(f"Password reset by admin for user: {user_email}")
+        return True, "Mot de passe réinitialisé avec succès."
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error resetting password: {e}")
+        return False, "Erreur lors de la réinitialisation du mot de passe."
+    finally:
+        db.close()
 
 
 def do_signup(email: str, password: str, confirm_password: str) -> bool:
@@ -832,19 +901,6 @@ def admin_delete_model(model_id: int) -> tuple[bool, str]:
         db.close()
 
 
-ROLE_ICONS = {
-    "client": "👤",
-    "admin": "🛠️",
-    "super_admin": "🔐",
-}
-
-ROLE_TAGLINES = {
-    "client": "Consultez les indicateurs clés du benchmark.",
-    "admin": "Analysez, exportez et pilotez les résultats.",
-    "super_admin": "Accès complet, y compris les outils d'administration.",
-}
-
-
 def _inject_login_css() -> None:
     st.markdown(
         """
@@ -1003,229 +1059,143 @@ def _inject_login_css() -> None:
 
 
 def login_page():
-    """Écran de connexion plein écran, en un seul flux progressif :
-    accueil → choix du profil → connexion / création de compte.
-    """
+    """Single login form - role is determined from the database after authentication."""
     _inject_login_css()
 
-    st.session_state.setdefault("login_stage", "landing")
     st.session_state.setdefault("login_mode", "signin")
-    st.session_state.setdefault("login_role", None)
 
     st.markdown('<div class="oi-logo-wrap">'
                 f'<img src="data:image/png;base64,{LOGO_B64}"></div>', unsafe_allow_html=True)
 
-    stage = st.session_state["login_stage"]
+    st.markdown('<div class="oi-eyebrow">Ooredoo · Direction IA</div>', unsafe_allow_html=True)
+    st.markdown('<div class="oi-title">Benchmark IA</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="oi-subtitle">Évaluez, comparez et pilotez la performance des '
+        "modèles IA déployés au sein d'Ooredoo.</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown("<div style='height:34px;'></div>", unsafe_allow_html=True)
 
-    # -------------------------------------------------------------- landing
-    if stage == "landing":
-        st.markdown('<div class="oi-eyebrow">Ooredoo · Direction IA</div>', unsafe_allow_html=True)
-        st.markdown('<div class="oi-title">Benchmark IA</div>', unsafe_allow_html=True)
-        st.markdown(
-            '<div class="oi-subtitle">Évaluez, comparez et pilotez la performance des '
-            "modèles IA déployés au sein d'Ooredoo, sur des cas d'usage métier réels.</div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown("<div style='height:34px;'></div>", unsafe_allow_html=True)
+    _, mid, _ = st.columns([1, 2, 1])
+    with mid:
+        with st.container(key="oi_auth_card"):
+            st.markdown('<div class="oi-auth-heading">Connexion</div>', unsafe_allow_html=True)
+            st.markdown(
+                '<div class="oi-auth-caption">Connectez-vous avec vos identifiants</div>',
+                unsafe_allow_html=True
+            )
 
-        _, mid, _ = st.columns([1, 1.2, 1])
-        with mid:
-            with st.container(key="oi_cta"):
-                if st.button("Accéder à la plateforme  →", use_container_width=True):
-                    st.session_state["login_stage"] = "role"
-                    st.rerun()
+            mode_label = st.radio(
+                "Action",
+                options=["Se connecter", "Créer un compte client"],
+                horizontal=True,
+                index=0 if st.session_state["login_mode"] == "signin" else 1,
+                label_visibility="collapsed",
+            )
+            st.session_state["login_mode"] = "signin" if mode_label == "Se connecter" else "signup"
 
-    # ----------------------------------------------------------------- role
-    elif stage == "role":
-        with st.container(key="oi_back"):
-            if st.button("← Retour", key="oi_back_role"):
-                st.session_state["login_stage"] = "landing"
-                st.rerun()
+            st.markdown("<div style='height:16px;'></div>", unsafe_allow_html=True)
 
-        st.markdown('<div class="oi-eyebrow">Étape 1 / 2</div>', unsafe_allow_html=True)
-        st.markdown('<div class="oi-title oi-title-sub">Choisissez votre profil</div>', unsafe_allow_html=True)
-        st.markdown(
-            '<div class="oi-subtitle">L\'affichage et les données disponibles s\'adaptent '
-            "au profil sélectionné.</div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown("<div style='height:36px;'></div>", unsafe_allow_html=True)
-
-        cols = st.columns(3, gap="medium")
-        for col, role_key in zip(cols, ROLE_OPTIONS):
-            with col:
-                with st.container(key=f"oi_role_card_{role_key}"):
-                    label = f"{ROLE_ICONS[role_key]}\n\n**{ROLE_DISPLAY[role_key]}**\n\n{ROLE_TAGLINES[role_key]}"
-                    if st.button(label, key=f"role_btn_{role_key}", use_container_width=True):
-                        st.session_state["login_role"] = role_key
-                        st.session_state["login_stage"] = "auth"
-                        st.session_state["login_mode"] = "signin"
-                        st.rerun()
-
-    # ----------------------------------------------------------------- auth
-    elif stage == "auth":
-        role_key = st.session_state["login_role"] or "client"
-
-        with st.container(key="oi_back"):
-            if st.button("← Changer de profil", key="oi_back_auth"):
-                st.session_state["login_stage"] = "role"
-                st.rerun()
-
-        _, mid, _ = st.columns([1, 2, 1])
-        with mid:
-            with st.container(key="oi_auth_card"):
-                st.markdown(
-                    f'<div class="oi-role-chip">{ROLE_ICONS[role_key]} {ROLE_DISPLAY[role_key]}</div>',
-                    unsafe_allow_html=True,
-                )
-                st.markdown('<div class="oi-auth-heading">Accès à la plateforme</div>', unsafe_allow_html=True)
-
-                can_self_signup = role_key == "client"
-
-                if can_self_signup:
-                    st.markdown('<div class="oi-auth-caption">Connectez-vous ou créez un compte pour continuer</div>', unsafe_allow_html=True)
-                    mode_label = st.radio(
-                        "Action",
-                        options=["Se connecter", "Créer un compte"],
-                        horizontal=True,
-                        index=0 if st.session_state["login_mode"] == "signin" else 1,
-                        label_visibility="collapsed",
-                    )
-                    st.session_state["login_mode"] = "signin" if mode_label == "Se connecter" else "signup"
-                else:
-                    st.markdown(
-                        '<div class="oi-auth-caption">Les comptes Administrateur et Super Admin sont créés '
-                        "par un super admin déjà connecté, depuis l'onglet Administration.</div>",
-                        unsafe_allow_html=True,
-                    )
-                    st.session_state["login_mode"] = "signin"
-
-                st.markdown("<div style='height:16px;'></div>", unsafe_allow_html=True)
-
-                if st.session_state["login_mode"] == "signin":
-                    with st.form("signin_form"):
-                        email = st.text_input(
-                            "Adresse e-mail",
-                            placeholder="vous@exemple.com" if can_self_signup else DEMO_HINTS.get(role_key, ""),
-                        )
-                        password = st.text_input("Mot de passe", type="password")
-                        submitted = st.form_submit_button("Se connecter", use_container_width=True)
-                    
-                    # Enhanced error handling for login flow
-                    if submitted:
-                        logger.info(f"Login form submitted for email: {email}, role: {role_key}")
-                        
-                        try:
-                            st.info("🔄 Vérification des identifiants...")
-                            login_success = do_login(email, password, expected_role=role_key)
-                            
-                            if login_success:
-                                logger.info(f"Login successful, redirecting user: {email}")
-                                st.success("✅ Connexion réussie ! Redirection...")
-                                # Small delay to show success message
-                                import time
-                                time.sleep(0.5)
-                                st.rerun()
-                            else:
-                                logger.warning(f"Login failed for user: {email}")
-                                # Error message will be displayed below
-                                
-                        except Exception as e:
-                            logger.error(f"Unexpected error during login form processing: {e}", exc_info=True)
-                            st.error("Une erreur inattendue s'est produite. Veuillez réessayer.")
-                else:
-                    with st.form("signup_form"):
-                        email = st.text_input("Adresse e-mail")
-                        password = st.text_input("Mot de passe", type="password")
-                        confirm = st.text_input("Confirmer le mot de passe", type="password")
-                        submitted = st.form_submit_button("Créer un compte", use_container_width=True)
-                    
-                    # Enhanced error handling for signup flow
-                    if submitted:
-                        logger.info(f"Signup form submitted for email: {email}")
-                        
-                        try:
-                            st.info("🔄 Création du compte en cours...")
-                            signup_success = do_signup(email, password, confirm)
-                            
-                            if signup_success:
-                                logger.info(f"Signup successful for user: {email}")
-                                st.success("✅ Compte créé avec succès ! Redirection...")
-                                # Small delay to show success message
-                                import time
-                                time.sleep(0.5)
-                                st.rerun()
-                            else:
-                                logger.warning(f"Signup failed for user: {email}")
-                                # Error message will be displayed below
-                                
-                        except Exception as e:
-                            logger.error(f"Unexpected error during signup form processing: {e}", exc_info=True)
-                            st.error("Une erreur inattendue s'est produite lors de la création du compte.")
-
-                if st.session_state.get("login_error"):
-                    st.error(st.session_state["login_error"])
+            if st.session_state["login_mode"] == "signin":
+                with st.form("signin_form"):
+                    email = st.text_input("Adresse e-mail", placeholder="vous@ooredoo.tn")
+                    password = st.text_input("Mot de passe", type="password")
+                    submitted = st.form_submit_button("Se connecter", use_container_width=True)
                 
-                # Show debugging information in development
-                if st.session_state.get("login_error"):
-                    with st.expander("🔧 Informations de débogage"):
-                        st.write(f"**Email saisi:** {email if 'email' in locals() else 'N/A'}")
-                        st.write(f"**Rôle attendu:** {role_key}")
-                        st.write(f"**Mode login:** {st.session_state.get('login_mode')}")
-                        st.write(f"**Session auth_email:** {st.session_state.get('auth_email')}")
-                        st.write(f"**Session auth_role:** {st.session_state.get('auth_role')}")
-                        st.write(f"**API token présent:** {bool(st.session_state.get('api_token'))}")
-                        if st.session_state.get('api_token_error'):
-                            st.write(f"**API token error:** {st.session_state.get('api_token_error')}")
+                if submitted:
+                    logger.info(f"Login form submitted for email: {email}")
+                    
+                    try:
+                        st.info("🔄 Vérification des identifiants...")
+                        login_success = do_login(email, password)
+                        
+                        if login_success:
+                            logger.info(f"Login successful, redirecting user: {email}")
+                            st.success("✅ Connexion réussie ! Redirection...")
+                            import time
+                            time.sleep(0.5)
+                            st.rerun()
+                        else:
+                            logger.warning(f"Login failed for user: {email}")
+                            
+                    except Exception as e:
+                        logger.error(f"Unexpected error during login: {e}", exc_info=True)
+                        st.error("Une erreur inattendue s'est produite. Veuillez réessayer.")
+            else:
+                # Signup for client role only
+                with st.form("signup_form"):
+                    email = st.text_input("Adresse e-mail")
+                    password = st.text_input("Mot de passe", type="password")
+                    confirm = st.text_input("Confirmer le mot de passe", type="password")
+                    submitted = st.form_submit_button("Créer un compte", use_container_width=True)
+                
+                if submitted:
+                    logger.info(f"Signup form submitted for email: {email}")
+                    
+                    try:
+                        st.info("🔄 Création du compte en cours...")
+                        signup_success = do_signup(email, password, confirm)
+                        
+                        if signup_success:
+                            logger.info(f"Signup successful for user: {email}")
+                            st.success("✅ Compte créé avec succès ! Redirection...")
+                            import time
+                            time.sleep(0.5)
+                            st.rerun()
+                        else:
+                            logger.warning(f"Signup failed for user: {email}")
+                            
+                    except Exception as e:
+                        logger.error(f"Unexpected error during signup: {e}", exc_info=True)
+                        st.error("Une erreur inattendue s'est produite lors de la création du compte.")
+
+            if st.session_state.get("login_error"):
+                st.error(st.session_state["login_error"])
 
 
 def render_sidebar_identity(email: str, role: str) -> None:
-    with st.sidebar.container(key="brand_header"):
-        st.markdown(
-            f"<div style='text-align:center; padding:14px 0 10px 0;'>"
-            f"<img src='data:image/png;base64,{LOGO_B64}' style='width:96px;'></div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f"""
-            <div style='text-align:center; color:white; padding-bottom:14px;'>
-                <div style='font-weight:700; font-size:14px; margin-top:2px;'>{email}</div>
-                <div style='font-size:11px; letter-spacing:1px; opacity:0.85; margin-top:2px;'>
-                    {role.upper()}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    """Render user identity at the BOTTOM of sidebar (no top banner)"""
+    # This function now only handles the bottom identity section
+    # The banner has been removed to clean up the UI
+    pass  # Identity will be rendered at the end of sidebar in main()
 
-    st.markdown(
-        """
-        <style>
-        .st-key-brand_header {
-            background: linear-gradient(165deg, #ED1C29 0%, #A80F17 100%);
-            border-radius: 0 0 16px 16px;
-            margin: -1rem -1rem 0.8rem -1rem;
-        }
-        </style>
+
+def render_sidebar_user_bottom(email: str, role: str) -> None:
+    """Render user profile and logout at the very bottom of the sidebar"""
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(
+        f"""
+        <div style='text-align:center; padding:16px 0 8px 0;'>
+            <div style='font-weight:600; font-size:14px; color:#1a1a1a;'>{email}</div>
+            <div style='font-size:11px; letter-spacing:0.5px; color:#666; margin-top:4px;'>
+                {role.upper()}
+            </div>
+        </div>
         """,
         unsafe_allow_html=True,
     )
-
-    if st.sidebar.button("Se déconnecter", use_container_width=True):
+    
+    # Add password change button
+    if st.sidebar.button("🔑 Changer mon mot de passe", use_container_width=True):
+        st.session_state["show_password_change"] = True
+    
+    if st.sidebar.button("🚪 Se déconnecter", use_container_width=True):
         st.session_state.pop("auth_email", None)
         st.session_state.pop("auth_role", None)
+        st.session_state.pop("auth_role_key", None)
+        st.session_state.pop("auth_user_id", None)
+        st.session_state.pop("auth_department", None)
         st.session_state.pop("login_mode", None)
-        st.session_state.pop("login_role", None)
-        st.session_state.pop("login_stage", None)
+        st.session_state.pop("show_password_change", None)
         st.rerun()
-
+    
     role_messages = {
         "Client": "Vue simplifiée : indicateurs clés uniquement.",
         "Admin": "Accès complet aux données métier et aux exports.",
         "Super Admin": "Accès complet + outils d'administration.",
     }
-    st.sidebar.caption(role_messages.get(role, ""))
-    st.sidebar.divider()
+    if role in role_messages:
+        st.sidebar.caption(role_messages[role])
 
 # ---------------------------------------------------------------------------
 # Main app (post-login)
@@ -1240,11 +1210,21 @@ def main() -> None:
 
         email = st.session_state["auth_email"]
         role = st.session_state["auth_role"]
-        is_admin = role in ["Admin", "Administrateur", "Super Admin"]
-        is_super_admin = role == "Super Admin"
-        is_client = role in ["Client", "Utilisateur", "client"]
+        role_key = st.session_state.get("auth_role_key", "client")  # DB role key
+        is_admin = role_key in ["admin", "super_admin"]
+        is_super_admin = role_key == "super_admin"
+        is_client = role_key == "client"
         
-        logger.info(f"Dashboard accessed by user: {email} with role: {role}")
+        logger.info(f"Dashboard accessed by user: {email} with role: {role_key}")
+
+        # Show password change modal if requested
+        if st.session_state.get("show_password_change"):
+            with st.container():
+                change_password_form()
+                if st.button("← Retour au dashboard"):
+                    st.session_state["show_password_change"] = False
+                    st.rerun()
+            st.stop()
 
         # === ROUTAGE CLIENT STRICT ===
         # Le client n'a accès à AUCUNE donnée brute, ni filtres, ni onglets, ni vocabulaire technique.
@@ -1262,19 +1242,132 @@ def main() -> None:
                 st.sidebar.error(f"API token absent — erreur : {st.session_state.get('api_token_error')}")
                 logger.warning(f"Admin user {email} missing API token: {st.session_state.get('api_token_error')}")
 
+        # === CUSTOM CSS: Ooredoo Branding & Modern UI ===
         st.markdown(
             """
-            <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:6px;">
-                <span style="font-family:'Trebuchet MS',sans-serif; font-weight:800; font-size:26px; color:#ED1C29;">ooredoo</span>
-                <span style="font-size:22px; color:#1a1a1a; font-weight:600;">Benchmark IA</span>
-            </div>
+            <style>
+            /* Primary Ooredoo Red */
+            :root {
+                --ooredoo-red: #ED1C24;
+                --ooredoo-red-dark: #A80F17;
+                --card-bg: #F8F9FA;
+                --border-light: #E0E0E0;
+            }
+            
+            /* KPI Cards Styling */
+            div[data-testid="stMetric"] {
+                background: var(--card-bg);
+                border: 1px solid var(--border-light);
+                border-radius: 8px;
+                padding: 16px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            
+            div[data-testid="stMetric"] label {
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                color: #666 !important;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+                font-size: 28px !important;
+                font-weight: 700 !important;
+                color: #1a1a1a !important;
+            }
+            
+            /* Primary Buttons */
+            .stButton > button {
+                background-color: var(--ooredoo-red) !important;
+                color: white !important;
+                border: none !important;
+                font-weight: 600 !important;
+                transition: all 0.2s ease;
+            }
+            
+            .stButton > button:hover {
+                background-color: var(--ooredoo-red-dark) !important;
+                box-shadow: 0 4px 8px rgba(237, 28, 36, 0.3) !important;
+            }
+            
+            /* Tabs Styling */
+            .stTabs [data-baseweb="tab-list"] {
+                gap: 8px;
+            }
+            
+            .stTabs [data-baseweb="tab"] {
+                height: 50px;
+                padding: 0 24px;
+                font-weight: 600;
+                border-radius: 8px 8px 0 0;
+            }
+            
+            .stTabs [aria-selected="true"] {
+                background-color: var(--ooredoo-red) !important;
+                color: white !important;
+            }
+            
+            /* Sidebar Multiselect compact styling */
+            .stMultiSelect {
+                margin-bottom: 12px;
+            }
+            
+            /* Header pill styling */
+            .header-pill {
+                display: inline-block;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 6px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                margin-left: 16px;
+            }
+            </style>
             """,
             unsafe_allow_html=True,
         )
-        st.markdown(
-            "Ce dashboard permet de comparer les résultats de benchmark RAG + LLM, "
-            "d'analyser la performance des modèles et de consulter les exécutions détaillées."
-        )
+
+        # === HEADER ROW: Logo | Title | Last Execution Timestamp ===
+        header_col1, header_col2, header_col3 = st.columns([1, 3, 2])
+        
+        with header_col1:
+            st.markdown(
+                f'<img src="data:image/png;base64,{LOGO_B64}" style="width:120px; margin-top:8px;">',
+                unsafe_allow_html=True
+            )
+        
+        with header_col2:
+            st.markdown(
+                """
+                <div style="padding-top:16px;">
+                    <span style="font-size:28px; color:#1a1a1a; font-weight:700;">Benchmark IA</span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        
+        with header_col3:
+            # Get last execution timestamp
+            try:
+                with engine.connect() as conn:
+                    last_exec = pd.read_sql(
+                        text("SELECT MAX(date_execution) as last_date FROM executions"),
+                        conn
+                    )
+                    if not last_exec.empty and pd.notna(last_exec.iloc[0]["last_date"]):
+                        last_date = pd.to_datetime(last_exec.iloc[0]["last_date"])
+                        st.markdown(
+                            f'<div style="padding-top:20px; text-align:right;">'
+                            f'<span class="header-pill">📅 Dernière exécution: {last_date.strftime("%d/%m/%Y %H:%M")}</span>'
+                            f'</div>',
+                            unsafe_allow_html=True
+                        )
+            except Exception as e:
+                logger.error(f"Error fetching last execution date: {e}")
+
+        st.markdown("---")
 
         st.markdown(
             """
@@ -1407,35 +1500,65 @@ def main() -> None:
         modeles = df["modele_nom"].unique().tolist()
 
         scenario_catalog = load_scenario_catalog()
-        scenarios = scenario_catalog["nom_cas_usage"].tolist()
-        departement_par_scenario = dict(zip(scenario_catalog["nom_cas_usage"], scenario_catalog["departement"]))
+        
+        # === CASCADING FILTERS: Département -> Scénarios ===
+        st.sidebar.markdown("### 🔍 Filtres")
+        
+        # Step 1: Select Départements
+        all_departements = sorted(scenario_catalog["departement"].unique().tolist())
+        selected_departements = st.sidebar.multiselect(
+            "Départements",
+            all_departements,
+            default=all_departements,
+            help="Filtrer par département (cascade vers les scénarios)"
+        )
+        
+        # Step 2: Filter scenarios by selected departments
+        if selected_departements:
+            filtered_scenarios = scenario_catalog[
+                scenario_catalog["departement"].isin(selected_departements)
+            ]
+        else:
+            filtered_scenarios = scenario_catalog
+        
+        scenarios = filtered_scenarios["nom_cas_usage"].tolist()
+        departement_par_scenario = dict(zip(
+            filtered_scenarios["nom_cas_usage"], 
+            filtered_scenarios["departement"]
+        ))
 
-        selected_modeles = st.sidebar.multiselect("Modèles", modeles, default=modeles)
+        selected_modeles = st.sidebar.multiselect(
+            "Modèles", 
+            modeles, 
+            default=modeles,
+            help="Sélectionner les modèles à comparer"
+        )
+        
         selected_scenarios = st.sidebar.multiselect(
-           "Scénarios",
-          scenarios,
-          default=scenarios,
-          format_func=lambda nom: f"{nom} ({departement_par_scenario.get(nom, '?')})",
-    )
+            "Scénarios",
+            scenarios,
+            default=scenarios,
+            format_func=lambda nom: f"{nom[:40]}... ({departement_par_scenario.get(nom, '?')})" 
+                if len(nom) > 40 
+                else f"{nom} ({departement_par_scenario.get(nom, '?')})",
+            help="Scénarios filtrés par les départements sélectionnés ci-dessus"
+        )
   
         min_date = df["date_execution"].min().date()
         max_date = df["date_execution"].max().date()
         date_range = st.sidebar.date_input(
-           "Période d'exécution",
-          value=(min_date, max_date),
-          min_value=min_date,
-          max_value=max_date,
-    )
+            "Période d'exécution",
+            value=(min_date, max_date),
+            min_value=min_date,
+            max_value=max_date,
+            help="Filtrer les exécutions par période"
+        )
         if isinstance(date_range, tuple) and len(date_range) == 2:
-
-             start_date, end_date = date_range
+            start_date, end_date = date_range
         else:
-
             start_date, end_date = min_date, max_date
 
-
     else:
-
         # Client : pas de filtres avancés, vue simplifiée sur toutes les données disponibles
         selected_modeles = df["modele_nom"].unique().tolist()
         selected_scenarios = df["nom_cas_usage"].unique().tolist()
@@ -1473,6 +1596,9 @@ def main() -> None:
         selected_columns_for_export = st.sidebar.multiselect("Colonnes à exporter", options=all_columns, default=default_cols)
     else:
         selected_columns_for_export = ["date_execution", "modele_nom", "nom_cas_usage", "score_global_display"]
+
+    # === RENDER USER IDENTITY AT BOTTOM OF SIDEBAR ===
+    render_sidebar_user_bottom(email, role)
 
     if filtered.empty:
         st.warning("Aucun résultat pour les filtres sélectionnés et la période définie.")
