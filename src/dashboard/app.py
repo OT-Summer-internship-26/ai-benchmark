@@ -978,12 +978,7 @@ def admin_delete_model(model_id: int) -> tuple[bool, str]:
 
 
 def _inject_login_css() -> None:
-    """CSS pour page de login PLEIN ÉCRAN."""
-    # Charger les logos TRANSPARENTS depuis assets (PAS de LOGO_B64)
-    from src.dashboard.login_assets import get_wordmark_white_base64, get_emblem_base64
-    
-    wordmark_b64 = get_wordmark_white_base64()
-    emblem_b64 = get_emblem_base64()
+    """CSS pour page de login avec carte centrée moderne."""
     
     st.markdown(
         f"""
@@ -994,31 +989,34 @@ def _inject_login_css() -> None:
         footer {{visibility:hidden;}}
         section[data-testid="stSidebar"] {{ display: none !important; }}
 
-        /* Fond plein écran - BLANC (même couleur que la carte) */
+        /* Fond de page neutre */
         div[data-testid="stAppViewContainer"] {{
-            background: #FFFFFF;
+            background: linear-gradient(135deg, #F4F6F9 0%, #E8EAED 100%);
             background-attachment: fixed;
         }}
         
         div[data-testid="stMain"] {{ 
-            display: flex; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }}
         
-        /* Container PLEIN ÉCRAN - padding 0 */
+        /* Container centré avec padding */
         div.block-container {{
             max-width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
+            padding: 3rem 2rem !important;
+            margin: 0 auto !important;
         }}
 
-        /* Carte login PLEIN ÉCRAN 100vw x 100vh */
+        /* Carte login CENTRÉE et COMPACTE */
         .st-key-login_card {{
-            width: 100vw;
-            min-height: 100vh;
-            margin: 0;
+            max-width: 950px;
+            width: 90%;
+            margin: 0 auto;
             background: white;
-            border-radius: 0;
-            box-shadow: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             display: flex;
         }}
@@ -1033,13 +1031,13 @@ def _inject_login_css() -> None:
             gap: 0 !important;
         }}
         
-        /* Panneau GAUCHE - Branding Ooredoo PLEIN ÉCRAN */
+        /* Panneau GAUCHE - Branding Ooredoo */
         .st-key-login_left {{
             background: linear-gradient(165deg, #ED1C24 0%, #B30006 100%);
-            padding: 80px 60px;
+            padding: 60px 50px;
             position: relative;
             overflow: hidden;
-            min-height: 100vh;
+            min-height: 600px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -1082,40 +1080,42 @@ def _inject_login_css() -> None:
             max-width: 500px;
         }}
         
-        /* Logo Ooredoo officiel */
+        /* Logo Ooredoo officiel dans une BOÎTE BLANCHE propre */
         .login-left-content .wordmark {{
-            max-width: 280px;
+            max-width: 240px;
             width: 100%;
             height: auto;
-            margin-bottom: 50px;
             display: block;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 50px auto;
+            background: #FFFFFF !important;
+            padding: 20px 30px !important;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
         }}
         
         /* Titre principal */
         .login-left-content .brand-title {{
             color: white;
-            font-size: 44px;
+            font-size: 38px;
             font-weight: 800;
             line-height: 1.2;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             letter-spacing: -0.5px;
         }}
         
         /* Sous-titre */
         .login-left-content .brand-subtitle {{
             color: rgba(255,255,255,0.90);
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.6;
             font-weight: 400;
         }}
         
-        /* Panneau DROIT - Formulaire PLEIN ÉCRAN */
+        /* Panneau DROIT - Formulaire */
         .st-key-login_right {{
-            padding: 80px 60px;
+            padding: 60px 50px;
             background: #FFFFFF;
-            min-height: 100vh;
+            min-height: 600px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -1237,49 +1237,32 @@ def _inject_login_css() -> None:
         @media (max-width: 900px) {{
             .st-key-login_card {{
                 flex-direction: column;
+                width: 95%;
             }}
             
             .st-key-login_left {{
-                min-height: 40vh;
-                padding: 50px 30px;
+                min-height: 350px;
+                padding: 40px 30px;
             }}
             
             .login-left-content .wordmark {{
-                width: 200px;
+                max-width: 200px;
                 margin-bottom: 30px;
+                padding: 15px 20px !important;
             }}
             
             .login-left-content .brand-title {{
-                font-size: 32px;
+                font-size: 28px;
+                margin-bottom: 16px;
             }}
             
             .login-left-content .brand-subtitle {{
-                font-size: 16px;
-            }}
-            
-            /* Atténuer les bulles sur mobile */
-            .st-key-login_left::before {{
-                opacity: 0.5;
-            }}
-            
-            .st-key-login_left::after {{
-                opacity: 0.5;
-            }}
-            
-            .emblem-bubble {{
-                width: 120px;
-                height: 120px;
-                bottom: 30px;
-                right: 30px;
-            }}
-            
-            .emblem-bubble img {{
-                width: 60px;
+                font-size: 14px;
             }}
             
             .st-key-login_right {{
-                padding: 50px 30px;
-                min-height: 60vh;
+                min-height: auto;
+                padding: 40px 30px;
             }}
         }}
         </style>
