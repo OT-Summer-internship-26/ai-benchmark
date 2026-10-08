@@ -1,0 +1,50 @@
+RÉSUMÉ - REMPLACEMENT DU LOGO EMBLÈME
+======================================
+
+✅ MODIFICATION EFFECTUÉE
+
+Fichier: src/dashboard/app.py (fonction _inject_login_css)
+
+AVANT:
+------
+❌ Bulle blanche avec gradient radial
+❌ Logo petit (80px) à l'intérieur
+❌ border-radius: 50% + background
+
+APRÈS:
+------
+✅ Logo emblème Ooredoo affiché directement
+✅ Taille: 140x140px (desktop), 100x100px (mobile)
+✅ Opacité: 35% (effet watermark subtil)
+✅ Position: bottom 80px, right 80px
+✅ Pas de bulle blanche, pas de bordure
+✅ z-index: 2 (au-dessus des autres éléments)
+
+CODE CHANGÉ:
+------------
+.emblem-bubble {
+    - border-radius: 50%;                    (supprimé)
+    - background: radial-gradient(...);      (supprimé)
+    + width: 140px; height: 140px;          (augmenté)
+    + bottom: 80px; right: 80px;            (ajusté)
+    + z-index: 2;                            (augmenté)
+}
+
+.emblem-bubble img {
+    + width: 140px; height: 140px;          (augmenté de 80px)
+    + opacity: 0.35;                         (réduit de 0.85)
+    + object-fit: contain;                   (ajouté)
+}
+
+VÉRIFICATIONS:
+--------------
+✅ Compilation OK
+✅ Application lancée: http://localhost:8502
+✅ Logo assets/ooredoo_emblem.png présent (4.4 KB)
+
+À VÉRIFIER:
+-----------
+→ Ouvrir http://localhost:8502
+→ Le logo emblème (cercle rouge + point) doit être visible en bas à droite
+→ Pas de bulle blanche autour
+→ Effet subtil (opacité 35%)

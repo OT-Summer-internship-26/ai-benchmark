@@ -1,0 +1,89 @@
+FICHIERS MODIFIÉS - REFONTE PAGE DE CONNEXION CARTE SCINDÉE
+================================================================
+
+Date: 2026-08-24
+Objectif: Refaire la page de connexion en carte scindée aux couleurs Ooredoo
+
+FICHIERS MODIFIÉS:
+------------------
+
+1. src/dashboard/app.py
+   - Fonction _inject_login_css() : CSS complètement refondu pour carte scindée
+     * Nouveau fond clair gradient (#F8F9FA → #E8EAED)
+     * .st-key-login_card : carte centrée 960px max
+     * .st-key-login_left : panneau gauche dégradé rouge #ED1C24→#B30006
+     * .st-key-login_right : panneau droit blanc avec formulaire
+     * Cercles décoratifs CSS pur (::before/::after)
+     * Logo blanc via filter: brightness(0) invert(1)
+     * Responsive <900px : panneaux empilés
+   
+   - Fonction login_page() : structure complètement refaite
+     * Suppression de l'ancien layout centré avec logo grand format
+     * Nouveau layout : st.container(key="login_card") → st.columns([1,1])
+     * Panneau gauche : logo blanc + titre + subtitle en HTML
+     * Panneau droit : 3 modes (signin / signup / forgot)
+     * Liens "Mot de passe oublié ?" et "Demander un accès"
+     * st.session_state["show_forgot"] pour basculer sur message admin
+     * Suppression du st.radio() pour mode selection
+     * Formulaires avec type="primary" sur boutons submit
+
+STRUCTURE FINALE:
+-----------------
+
+Page de connexion:
+├── Container (login_card)
+│   ├── Colonne gauche (login_left) - Rouge gradient
+│   │   ├── Logo Ooredoo blanc
+│   │   ├── Titre "AI Benchmarking Dashboard"
+│   │   └── Subtitle descriptive
+│   │
+│   └── Colonne droite (login_right) - Blanc
+│       ├── Mode "signin" (défaut)
+│       │   ├── Formulaire email + password
+│       │   ├── Bouton "Se connecter" (rouge)
+│       │   └── Liens: "Mot de passe oublié?" | "Demander un accès"
+│       │
+│       ├── Mode "signup"
+│       │   ├── Formulaire: email, nom, département, password
+│       │   ├── Bouton "Créer un compte"
+│       │   └── Lien "← Retour à la connexion"
+│       │
+│       └── Mode "forgot"
+│           ├── Message: "Contactez votre administrateur..."
+│           └── Bouton "← Retour à la connexion"
+
+COULEURS UTILISÉES:
+-------------------
+- Rouge principal: #ED1C24
+- Rouge foncé: #B30006
+- Blanc: #FFFFFF
+- Fond inputs: #F3F4F7
+- Bordures: #E5E7EB
+- Texte gris: #6B7280
+
+AUTHENTIFICATION (inchangée):
+-----------------------------
+- Un seul formulaire universel
+- Rôle lu depuis utilisateurs.role après bcrypt
+- is_approved=FALSE → refus connexion
+- Inscription: role='client', is_approved=FALSE, pas d'auto-login
+- Routage: client → render_client_recommendation_page
+           admin/super_admin → dashboard complet
+
+RESPONSIVE:
+-----------
+- Desktop (>900px): 2 colonnes côte à côte
+- Mobile (<900px): colonnes empilées, padding réduit, logo plus petit
+
+VÉRIFICATIONS EFFECTUÉES:
+-------------------------
+✅ Compilation Python: python -m py_compile src/dashboard/app.py
+✅ Fichier secure_login_page.py : déjà supprimé (non trouvé)
+
+PROCHAINES ÉTAPES:
+------------------
+1. Lancer l'application: streamlit run src/dashboard/app.py
+2. Tester connexion avec les 3 rôles (client/admin/super_admin)
+3. Tester inscription client (nouveau compte non approuvé)
+4. Vérifier responsive sur écran <900px
+5. Tester "Mot de passe oublié?" → message admin

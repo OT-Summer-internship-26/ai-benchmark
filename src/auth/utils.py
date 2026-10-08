@@ -77,6 +77,12 @@ def login(email: str, password: str) -> tuple[Optional[dict], Optional[str]]:
             logger.warning(f"Failed login attempt for email: {email}")
             return None, msg
 
+        # Check approval status
+        if not user.is_approved:
+            msg = "Votre demande d'accès est en attente de validation par un administrateur."
+            logger.warning(f"Login attempt for non-approved account: {email}")
+            return None, msg
+
         logger.info(f"Successful login for user: {email}")
         return {"id": user.id, "email": user.email, "role": user.role}, None
     except Exception as e:

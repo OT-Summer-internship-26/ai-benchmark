@@ -65,4 +65,6 @@ class Utilisateur(Base):
     mot_de_passe_hash = Column(String, nullable=False)
     role = Column(String, nullable=False)
     departement = Column(String, nullable=True)  # For client role: which department they can access
+    is_approved = Column(Boolean, default=False, nullable=False)
+    nom_complet = Column(String, nullable=True)
     date_creation = Column(DateTime, default=datetime.utcnow)

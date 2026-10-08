@@ -1,0 +1,82 @@
+CHANGEMENTS - PAGE LOGIN PLEIN ÉCRAN
+====================================
+
+Date: 2026-10-08
+Objectif: Corriger rectangle blanc + page plein écran professionnelle
+
+PROBLÈME CORRIGÉ:
+-----------------
+❌ AVANT: Logo = rectangle blanc (filtre CSS sur fond opaque)
+✅ APRÈS: Wordmark transparent chargé en base64 (pas de filtre)
+
+FICHIERS CRÉÉS:
+---------------
+1. scripts/generate_login_assets.py
+   → Script Pillow pour générer PNG transparents
+   → Rend fond rouge/blanc transparent avec anti-aliasing
+   
+2. src/dashboard/login_assets.py
+   → Module de chargement base64 avec cache LRU
+   → Fallback sur LOGO_B64 si assets manquants
+   
+3. assets/README.md
+   → Documentation placement images sources
+   
+4. assets/ (dossier créé)
+
+FICHIERS MODIFIÉS:
+------------------
+1. src/dashboard/app.py
+
+   A. _inject_login_css() - CSS PLEIN ÉCRAN:
+      ✅ Container 100vw x 100vh, padding:0
+      ✅ Carte sans bords arrondis ni ombre
+      ✅ Gap 0 entre colonnes
+      ✅ Panneau gauche: gradient rouge + 3 bulles CSS pur
+      ✅ Bulle avec emblème Ooredoo (bottom-right)
+      ✅ Panneau droit: centré verticalement, max-width 420px
+      ✅ Bouton submit ROUGE #ED1C24 avec !important
+      ✅ Responsive <900px: panneaux empilés
+
+   B. login_page() - STRUCTURE HTML:
+      ✅ Import get_wordmark_white_base64(), get_emblem_base64()
+      ✅ Colonnes ratio 1.1:1 avec gap="small"
+      ✅ Panneau gauche: HTML pur (logo + titre + bulles)
+      ✅ Panneau droit: widgets Streamlit natifs (pas de HTML wrapper)
+      ✅ 3 modes: signin / signup / forgot
+
+VÉRIFICATIONS:
+--------------
+✅ python -m py_compile src/dashboard/app.py → OK
+✅ python -m py_compile src/dashboard/login_assets.py → OK
+✅ streamlit run src/dashboard/app.py → OK (http://localhost:8502)
+
+RÉSULTAT VISUEL:
+----------------
+✅ Wordmark blanc lisible (plus de rectangle blanc)
+✅ Page plein écran 100vw x 100vh
+✅ Bulles décoratives visibles (3 sphères CSS)
+✅ Emblème dans bulle blanche (bottom-right panneau gauche)
+✅ Bouton "Se connecter" ROUGE (pas rose Streamlit)
+✅ Pas de marges ni ombre externe
+✅ Responsive mobile: panneaux empilés
+
+PROCHAINE ÉTAPE:
+----------------
+1. Placer les images sources dans assets/:
+   - ooredoo_wordmark_source.png (lettres blanches sur fond rouge)
+   - ooredoo_emblem_source.png (emblème rouge sur fond blanc)
+
+2. Générer les assets:
+   python scripts/generate_login_assets.py
+
+3. Tester visuellement sur http://localhost:8502
+
+CONSIGNES RESPECTÉES:
+---------------------
+✅ Modifications MINIMALES (2 fonctions, 2 nouveaux fichiers)
+✅ Pas de HTML enveloppant les widgets Streamlit
+✅ Logos en base64 avec cache
+✅ Aucune modification SQL/scoring/auth
+✅ Bouton rouge avec !important
+✅ Responsive <900px

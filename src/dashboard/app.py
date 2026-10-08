@@ -498,21 +498,27 @@ def admin_reset_user_password(user_email: str, new_password: str) -> tuple[bool,
         db.close()
 
 
-def do_signup(email: str, password: str, confirm_password: str) -> bool:
+def do_signup(email: str, nom_complet: str, departement: str, password: str, confirm_password: str) -> bool:
     """
-    Crée un nouveau compte Utilisateur (toujours avec le rôle "client") et
-    connecte la personne immédiatement après.
-
-    Le libre-service de création de compte est volontairement limité au
-    rôle client : les comptes admin / super_admin ne peuvent pas être
-    auto-créés depuis cet écran, ils sont provisionnés par un super admin
-    déjà connecté (voir gestion des utilisateurs dans l'onglet Administration).
+    Crée un nouveau compte client (role='client', is_approved=FALSE).
+    L'utilisateur doit attendre l'approbation d'un admin avant de se connecter.
+    Pas de connexion automatique.
     """
     email = email.strip()
+    nom_complet = nom_complet.strip() if nom_complet else ""
 
     if not email or not password:
         st.session_state["login_error"] = "Merci de remplir tous les champs."
         return False
+    
+    if not nom_complet:
+        st.session_state["login_error"] = "Le nom complet est obligatoire."
+        return False
+    
+    if not departement:
+        st.session_state["login_error"] = "Veuillez sélectionner un département."
+        return False
+        
     if password != confirm_password:
         st.session_state["login_error"] = "Les mots de passe ne correspondent pas."
         return False
@@ -529,18 +535,30 @@ def do_signup(email: str, password: str, confirm_password: str) -> bool:
 
         user = Utilisateur(
             email=email,
+            nom_complet=nom_complet,
+            departement=departement,
             mot_de_passe_hash=hash_password(password),
             role="client",
+            is_approved=False,  # Awaiting approval
         )
         db.add(user)
         db.commit()
+        
+        st.session_state["login_error"] = None
+        st.session_state["signup_success"] = (
+            "Votre demande d'accès a été soumise. "
+            "Un administrateur doit valider votre compte avant votre première connexion."
+        )
+        logger.info(f"New signup pending approval: {email} (dept: {departement})")
+        return True
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Signup error: {e}")
+        st.session_state["login_error"] = "Erreur lors de la création du compte."
+        return False
     finally:
         db.close()
-
-    st.session_state["login_error"] = None
-    st.session_state["auth_email"] = email
-    st.session_state["auth_role"] = ROLE_DISPLAY.get("client", "client")
-    return True
 
 
 # ---------------------------------------------------------------------------
@@ -556,6 +574,64 @@ def admin_list_users():
             .order_by(Utilisateur.role, Utilisateur.email)
             .all()
         )
+    finally:
+        db.close()
+
+
+def admin_list_pending_approvals():
+    """Retourne les comptes clients en attente d'approbation."""
+    db = SessionLocal()
+    try:
+        return (
+            db.query(Utilisateur)
+            .filter(Utilisateur.role == "client", Utilisateur.is_approved == False)
+            .order_by(Utilisateur.date_creation.desc())
+            .all()
+        )
+    finally:
+        db.close()
+
+
+def admin_approve_user(user_id: int, final_departement: str) -> tuple[bool, str]:
+    """Approuve un compte client et assigne le département final."""
+    db = SessionLocal()
+    try:
+        user = db.query(Utilisateur).filter(Utilisateur.id == user_id).first()
+        if not user:
+            return False, "Utilisateur introuvable."
+        
+        user.is_approved = True
+        user.departement = final_departement
+        db.commit()
+        
+        logger.info(f"User approved: {user.email} (dept: {final_departement})")
+        return True, f"Compte {user.email} approuvé avec succès."
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error approving user: {e}")
+        return False, "Erreur lors de l'approbation."
+    finally:
+        db.close()
+
+
+def admin_reject_user(user_id: int) -> tuple[bool, str]:
+    """Refuse et supprime un compte en attente d'approbation."""
+    db = SessionLocal()
+    try:
+        user = db.query(Utilisateur).filter(Utilisateur.id == user_id).first()
+        if not user:
+            return False, "Utilisateur introuvable."
+        
+        email = user.email
+        db.delete(user)
+        db.commit()
+        
+        logger.info(f"User rejected and deleted: {email}")
+        return True, f"Compte {email} refusé et supprimé."
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error rejecting user: {e}")
+        return False, "Erreur lors du refus."
     finally:
         db.close()
 
@@ -902,156 +978,310 @@ def admin_delete_model(model_id: int) -> tuple[bool, str]:
 
 
 def _inject_login_css() -> None:
+    """CSS pour page de login PLEIN ÉCRAN."""
+    # Charger les logos TRANSPARENTS depuis assets (PAS de LOGO_B64)
+    from src.dashboard.login_assets import get_wordmark_white_base64, get_emblem_base64
+    
+    wordmark_b64 = get_wordmark_white_base64()
+    emblem_b64 = get_emblem_base64()
+    
     st.markdown(
-        """
+        f"""
         <style>
-        header {visibility:hidden;}
-        #MainMenu {visibility:hidden;}
-        footer {visibility:hidden;}
-        section[data-testid="stSidebar"] { display: none; }
+        /* Masquer header/footer/sidebar */
+        header {{visibility:hidden;}}
+        #MainMenu {{visibility:hidden;}}
+        footer {{visibility:hidden;}}
+        section[data-testid="stSidebar"] {{ display: none !important; }}
 
-        div[data-testid="stAppViewContainer"] {
-            background:
-                radial-gradient(circle at 15% 12%, rgba(255,255,255,0.10), transparent 45%),
-                radial-gradient(circle at 85% 88%, rgba(0,0,0,0.25), transparent 55%),
-                linear-gradient(155deg, #F2323D 0%, #ED1C29 30%, #B4121C 68%, #6E0A10 100%);
+        /* Fond plein écran - BLANC (même couleur que la carte) */
+        div[data-testid="stAppViewContainer"] {{
+            background: #FFFFFF;
             background-attachment: fixed;
-        }
-        div[data-testid="stMain"] { display:flex; }
-        div.block-container {
-            min-height: 100vh;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            padding: 4vh 3rem !important;
-            max-width: 1080px !important;
-            margin: 0 auto;
-        }
+        }}
+        
+        div[data-testid="stMain"] {{ 
+            display: flex; 
+        }}
+        
+        /* Container PLEIN ÉCRAN - padding 0 */
+        div.block-container {{
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }}
 
-        /* Logo + heading */
-        .oi-logo-wrap {
+        /* Carte login PLEIN ÉCRAN 100vw x 100vh */
+        .st-key-login_card {{
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            background: white;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: hidden;
+            display: flex;
+        }}
+        
+        /* Gap 0 entre les colonnes */
+        .st-key-login_card > div[data-testid="column"] {{
+            padding: 0 !important;
+            gap: 0 !important;
+        }}
+        
+        .st-key-login_card > div {{
+            gap: 0 !important;
+        }}
+        
+        /* Panneau GAUCHE - Branding Ooredoo PLEIN ÉCRAN */
+        .st-key-login_left {{
+            background: linear-gradient(165deg, #ED1C24 0%, #B30006 100%);
+            padding: 80px 60px;
             position: relative;
-            display:flex; justify-content:center; align-items:center;
-            margin-bottom: 38px;
-        }
-        .oi-logo-wrap::before {
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }}
+        
+        /* Bulles décoratives - grande sphère blanche top-right */
+        .st-key-login_left::before {{
             content: "";
             position: absolute;
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.08) 55%, transparent 75%);
-            filter: blur(6px);
-            z-index: 0;
-        }
-        .oi-logo-wrap img {
-            position: relative;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.08) 50%, transparent 75%);
+            top: -180px;
+            right: -150px;
+            pointer-events: none;
             z-index: 1;
-            width: 230px;
-            padding: 38px;
-            background: white;
-            border-radius: 40px;
-            box-shadow:
-                0 30px 70px rgba(0,0,0,0.38),
-                0 0 0 8px rgba(255,255,255,0.10);
-        }
-        .oi-eyebrow {
-            text-align:center; color: rgba(255,255,255,0.78); font-size: 15px;
-            letter-spacing: 4px; text-transform: uppercase; font-weight: 700; margin-bottom: 14px;
-        }
-        .oi-title {
-            text-align:center; color:white; font-weight: 800; font-size: 64px;
-            line-height: 1.12; letter-spacing: -1px;
-        }
-        .oi-title.oi-title-sub { font-size: 42px; }
-        .oi-subtitle {
-            text-align:center; color: rgba(255,255,255,0.85); font-size: 20px;
-            max-width: 620px; margin: 20px auto 0 auto; line-height: 1.6;
-        }
-
-        /* Generic glass card used for the CTA / role tiles / auth card */
-        .st-key-oi_cta button,
-        div[class*="st-key-oi_role_card_"] button,
-        .st-key-oi_back button {
-            background: rgba(255,255,255,0.10) !important;
-            border: 1px solid rgba(255,255,255,0.28) !important;
-            color: white !important;
-            backdrop-filter: blur(6px);
-        }
-        .st-key-oi_cta { max-width: 460px; margin: 0 auto; }
-        .st-key-oi_cta button {
-            border-radius: 999px !important;
-            padding: 20px 10px !important;
-            font-weight: 700 !important;
-            font-size: 19px !important;
-            background: white !important;
-            color: #B4121C !important;
-            border: none !important;
-            box-shadow: 0 16px 36px rgba(0,0,0,0.28);
-            transition: transform .15s ease;
-        }
-        .st-key-oi_cta button:hover { transform: translateY(-2px); background:#fff !important; }
-        .st-key-oi_cta button p { font-size: 19px !important; }
-
-        div[class*="st-key-oi_role_card_"] button {
-            border-radius: 22px !important;
-            padding: 38px 26px !important;
-            min-height: 240px;
-            white-space: pre-wrap;
-            text-align: left !important;
-            font-weight: 600 !important;
-            font-size: 17px !important;
-            line-height: 1.5 !important;
-            transition: transform .15s ease, background .15s ease;
-        }
-        div[class*="st-key-oi_role_card_"] button p { font-size: 17px !important; line-height: 1.5 !important; }
-        div[class*="st-key-oi_role_card_"] button:hover {
-            background: rgba(255,255,255,0.20) !important;
-            border-color: rgba(255,255,255,0.5) !important;
-            transform: translateY(-4px);
-        }
-
-        .st-key-oi_back { max-width: 160px; margin-bottom: 18px; }
-        .st-key-oi_back button {
-            border-radius: 999px !important;
-            padding: 6px 18px !important;
-            font-size: 14px !important;
-            font-weight: 600 !important;
-        }
-
-        /* Auth card */
-        .st-key-oi_auth_card {
-            background: rgba(255,255,255,0.98);
-            border-radius: 26px;
-            padding: 48px 52px 34px 52px;
-            box-shadow: 0 26px 64px rgba(0,0,0,0.32);
-            margin-top: 10px;
-            max-width: 520px;
+        }}
+        
+        /* Bulle rouge foncé bottom-left */
+        .st-key-login_left::after {{
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, rgba(179,0,6,0.6) 0%, rgba(139,0,5,0.4) 60%, transparent 80%);
+            bottom: -120px;
+            left: -100px;
+            pointer-events: none;
+            z-index: 1;
+        }}
+        
+        /* Contenu du panneau gauche */
+        .login-left-content {{
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 500px;
+        }}
+        
+        /* Logo Ooredoo officiel */
+        .login-left-content .wordmark {{
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 50px;
+            display: block;
             margin-left: auto;
             margin-right: auto;
-        }
-        .oi-role-chip {
-            display:inline-flex; align-items:center; gap:6px;
-            background:#FDECEC; color:#B4121C; font-weight:700; font-size:13px;
-            letter-spacing: 0.5px; padding: 7px 16px; border-radius: 999px; margin-bottom: 16px;
-        }
-        .oi-auth-heading { font-weight: 800; font-size: 28px; color:#1a1a1a; margin-bottom: 4px; }
-        .oi-auth-caption { color:#8A93A8; font-size: 15px; margin-bottom: 22px; }
-
-        .st-key-oi_auth_card div[role="radiogroup"] {
-            background:#F3F4F7; padding: 4px; border-radius: 12px; gap: 0 !important;
-        }
-        .st-key-oi_auth_card div[role="radiogroup"] label {
-            flex:1; justify-content:center; padding: 9px 0; border-radius: 9px; margin:0 !important;
-        }
-        .st-key-oi_auth_card div[data-testid="stForm"] button {
-            background: #ED1C29; color: white; font-weight: 700; border: none;
-            border-radius: 10px; padding: 13px 0; margin-top: 12px; font-size: 16px;
-        }
-        .st-key-oi_auth_card div[data-testid="stForm"] button:hover { background: #C8161F; }
-
-        @media (max-width: 900px) {
-            .oi-title { font-size: 42px; }
-            .st-key-oi_auth_card { padding: 34px 26px 24px 26px; }
-        }
+        }}
+        
+        /* Titre principal */
+        .login-left-content .brand-title {{
+            color: white;
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }}
+        
+        /* Sous-titre */
+        .login-left-content .brand-subtitle {{
+            color: rgba(255,255,255,0.90);
+            font-size: 18px;
+            line-height: 1.6;
+            font-weight: 400;
+        }}
+        
+        /* Panneau DROIT - Formulaire PLEIN ÉCRAN */
+        .st-key-login_right {{
+            padding: 80px 60px;
+            background: #FFFFFF;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }}
+        
+        /* Conteneur du formulaire */
+        .login-form-container {{
+            max-width: 420px;
+            width: 100%;
+        }}
+        
+        .st-key-login_right h2 {{
+            color: #1a1a1a;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }}
+        
+        .st-key-login_right .form-subtitle {{
+            color: #6B7280;
+            font-size: 15px;
+            margin-bottom: 36px;
+        }}
+        
+        /* Inputs du formulaire - bordures arrondies propres */
+        .st-key-login_right input {{
+            background: #F3F4F7 !important;
+            border: 1px solid #E5E7EB !important;
+            border-radius: 12px !important;
+            padding: 14px 18px !important;
+            font-size: 15px !important;
+            transition: all 0.2s ease;
+        }}
+        
+        .st-key-login_right input:focus {{
+            border-color: #ED1C24 !important;
+            box-shadow: 0 0 0 3px rgba(237,28,36,0.08) !important;
+            background: #FFFFFF !important;
+        }}
+        
+        .st-key-login_right label {{
+            font-weight: 500 !important;
+            color: #374151 !important;
+            font-size: 14px !important;
+        }}
+        
+        /* Bouton submit ROUGE */
+        .st-key-login_right div[data-testid="stFormSubmitButton"] button,
+        .st-key-login_right button[kind="primary"] {{
+            background: #ED1C24 !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 16px !important;
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            width: 100%;
+            transition: background 0.2s ease, transform 0.1s ease;
+            margin-top: 8px;
+        }}
+        
+        .st-key-login_right div[data-testid="stFormSubmitButton"] button:hover,
+        .st-key-login_right button[kind="primary"]:hover {{
+            background: #B30006 !important;
+            transform: translateY(-1px);
+        }}
+        
+        .st-key-login_right div[data-testid="stFormSubmitButton"] button:active {{
+            transform: translateY(0);
+        }}
+        
+        /* Liens sous le formulaire */
+        .form-links {{
+            margin-top: 24px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }}
+        
+        .form-links button {{
+            color: #ED1C24 !important;
+            background: transparent !important;
+            border: none !important;
+            text-decoration: none;
+            font-size: 14px !important;
+            padding: 8px 4px !important;
+            font-weight: 500 !important;
+            transition: opacity 0.2s ease;
+        }}
+        
+        .form-links button:hover {{
+            opacity: 0.8;
+            text-decoration: underline;
+        }}
+        
+        /* Bouton retour */
+        .back-button {{
+            margin-top: 20px;
+        }}
+        
+        .back-button button {{
+            color: #6B7280 !important;
+            background: transparent !important;
+            border: none !important;
+            font-size: 14px !important;
+            padding: 8px 4px !important;
+        }}
+        
+        /* Selectbox département */
+        .st-key-login_right div[data-baseweb="select"] {{
+            background: #F3F4F7 !important;
+            border-radius: 12px !important;
+            border: 1px solid #E5E7EB !important;
+        }}
+        
+        /* Responsive - Mobile */
+        @media (max-width: 900px) {{
+            .st-key-login_card {{
+                flex-direction: column;
+            }}
+            
+            .st-key-login_left {{
+                min-height: 40vh;
+                padding: 50px 30px;
+            }}
+            
+            .login-left-content .wordmark {{
+                width: 200px;
+                margin-bottom: 30px;
+            }}
+            
+            .login-left-content .brand-title {{
+                font-size: 32px;
+            }}
+            
+            .login-left-content .brand-subtitle {{
+                font-size: 16px;
+            }}
+            
+            /* Atténuer les bulles sur mobile */
+            .st-key-login_left::before {{
+                opacity: 0.5;
+            }}
+            
+            .st-key-login_left::after {{
+                opacity: 0.5;
+            }}
+            
+            .emblem-bubble {{
+                width: 120px;
+                height: 120px;
+                bottom: 30px;
+                right: 30px;
+            }}
+            
+            .emblem-bubble img {{
+                width: 60px;
+            }}
+            
+            .st-key-login_right {{
+                padding: 50px 30px;
+                min-height: 60vh;
+            }}
+        }}
         </style>
         """,
         unsafe_allow_html=True,
@@ -1059,98 +1289,144 @@ def _inject_login_css() -> None:
 
 
 def login_page():
-    """Single login form - role is determined from the database after authentication."""
+    """Page de login plein écran avec carte scindée - role déterminé depuis la DB."""
     _inject_login_css()
 
     st.session_state.setdefault("login_mode", "signin")
+    st.session_state.setdefault("show_forgot", False)
+    
+    # Utiliser le vrai logo Ooredoo officiel
+    from src.dashboard.logo import LOGO_B64
 
-    st.markdown('<div class="oi-logo-wrap">'
-                f'<img src="data:image/png;base64,{LOGO_B64}"></div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="oi-eyebrow">Ooredoo · Direction IA</div>', unsafe_allow_html=True)
-    st.markdown('<div class="oi-title">Benchmark IA</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="oi-subtitle">Évaluez, comparez et pilotez la performance des '
-        "modèles IA déployés au sein d'Ooredoo.</div>",
-        unsafe_allow_html=True,
-    )
-    st.markdown("<div style='height:34px;'></div>", unsafe_allow_html=True)
-
-    _, mid, _ = st.columns([1, 2, 1])
-    with mid:
-        with st.container(key="oi_auth_card"):
-            st.markdown('<div class="oi-auth-heading">Connexion</div>', unsafe_allow_html=True)
-            st.markdown(
-                '<div class="oi-auth-caption">Connectez-vous avec vos identifiants</div>',
-                unsafe_allow_html=True
-            )
-
-            mode_label = st.radio(
-                "Action",
-                options=["Se connecter", "Créer un compte client"],
-                horizontal=True,
-                index=0 if st.session_state["login_mode"] == "signin" else 1,
-                label_visibility="collapsed",
-            )
-            st.session_state["login_mode"] = "signin" if mode_label == "Se connecter" else "signup"
-
-            st.markdown("<div style='height:16px;'></div>", unsafe_allow_html=True)
-
-            if st.session_state["login_mode"] == "signin":
-                with st.form("signin_form"):
-                    email = st.text_input("Adresse e-mail", placeholder="vous@ooredoo.tn")
-                    password = st.text_input("Mot de passe", type="password")
-                    submitted = st.form_submit_button("Se connecter", use_container_width=True)
+    with st.container(key="login_card"):
+        left, right = st.columns([1.1, 1], gap="small")
+        
+        # PANNEAU GAUCHE - Branding
+        with left:
+            with st.container(key="login_left"):
+                # Contenu du panneau gauche en HTML pur
+                st.markdown(f'''
+                <div class="login-left-content">
+                    <img src="data:image/png;base64,{LOGO_B64}" alt="Ooredoo" class="wordmark">
+                    <div class="brand-title">AI Benchmarking Dashboard</div>
+                    <div class="brand-subtitle">
+                        Évaluez, comparez et pilotez la performance des modèles IA 
+                        sur des cas d'usage métier réels.
+                    </div>
+                </div>
+                ''', unsafe_allow_html=True)
+        
+        # PANNEAU DROIT - Formulaire (widgets Streamlit)
+        with right:
+            with st.container(key="login_right"):
+                # Wrapper pour centrer le formulaire
+                st.markdown('<div class="login-form-container">', unsafe_allow_html=True)
                 
-                if submitted:
-                    logger.info(f"Login form submitted for email: {email}")
+                if st.session_state.get("show_forgot"):
+                    # Mode "Mot de passe oublié"
+                    st.markdown("## Mot de passe oublié ?")
+                    st.markdown('<div class="form-subtitle">Contactez votre administrateur pour réinitialiser votre mot de passe.</div>', unsafe_allow_html=True)
                     
-                    try:
-                        st.info("🔄 Vérification des identifiants...")
-                        login_success = do_login(email, password)
-                        
-                        if login_success:
-                            logger.info(f"Login successful, redirecting user: {email}")
-                            st.success("✅ Connexion réussie ! Redirection...")
-                            import time
-                            time.sleep(0.5)
-                            st.rerun()
-                        else:
-                            logger.warning(f"Login failed for user: {email}")
-                            
-                    except Exception as e:
-                        logger.error(f"Unexpected error during login: {e}", exc_info=True)
-                        st.error("Une erreur inattendue s'est produite. Veuillez réessayer.")
-            else:
-                # Signup for client role only
-                with st.form("signup_form"):
-                    email = st.text_input("Adresse e-mail")
-                    password = st.text_input("Mot de passe", type="password")
-                    confirm = st.text_input("Confirmer le mot de passe", type="password")
-                    submitted = st.form_submit_button("Créer un compte", use_container_width=True)
+                    st.markdown('<div class="back-button">', unsafe_allow_html=True)
+                    if st.button("← Retour à la connexion", key="back_from_forgot"):
+                        st.session_state["show_forgot"] = False
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
                 
-                if submitted:
-                    logger.info(f"Signup form submitted for email: {email}")
-                    
-                    try:
-                        st.info("🔄 Création du compte en cours...")
-                        signup_success = do_signup(email, password, confirm)
-                        
-                        if signup_success:
-                            logger.info(f"Signup successful for user: {email}")
-                            st.success("✅ Compte créé avec succès ! Redirection...")
-                            import time
-                            time.sleep(0.5)
-                            st.rerun()
-                        else:
-                            logger.warning(f"Signup failed for user: {email}")
-                            
-                    except Exception as e:
-                        logger.error(f"Unexpected error during signup: {e}", exc_info=True)
-                        st.error("Une erreur inattendue s'est produite lors de la création du compte.")
+                elif st.session_state["login_mode"] == "signin":
+                    # Mode CONNEXION
+                    st.markdown('## Connexion')
+                    st.markdown('<div class="form-subtitle">Connectez-vous avec vos identifiants</div>', unsafe_allow_html=True)
 
-            if st.session_state.get("login_error"):
-                st.error(st.session_state["login_error"])
+                    with st.form("signin_form"):
+                        email = st.text_input("Adresse e-mail", placeholder="vous@ooredoo.tn")
+                        password = st.text_input("Mot de passe", type="password")
+                        submitted = st.form_submit_button("Se connecter", use_container_width=True)
+                    
+                    if submitted:
+                        logger.info(f"Login form submitted for email: {email}")
+                        
+                        try:
+                            login_success = do_login(email, password)
+                            
+                            if login_success:
+                                logger.info(f"Login successful, redirecting user: {email}")
+                                st.success("✅ Connexion réussie !")
+                                import time
+                                time.sleep(0.3)
+                                st.rerun()
+                            else:
+                                logger.warning(f"Login failed for user: {email}")
+                                
+                        except Exception as e:
+                            logger.error(f"Unexpected error during login: {e}", exc_info=True)
+                            st.error("Une erreur inattendue s'est produite.")
+                    
+                    # Liens "Mot de passe oublié" et "Demander un accès"
+                    st.markdown('<div class="form-links">', unsafe_allow_html=True)
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("Mot de passe oublié ?", key="forgot_btn"):
+                            st.session_state["show_forgot"] = True
+                            st.rerun()
+                    with col2:
+                        if st.button("Demander un accès", key="signup_btn"):
+                            st.session_state["login_mode"] = "signup"
+                            st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                else:
+                    # Mode INSCRIPTION
+                    st.markdown('## Demander un accès')
+                    st.markdown('<div class="form-subtitle">Créez votre compte client</div>', unsafe_allow_html=True)
+                    
+                    # Récupérer les départements depuis la table scenarios
+                    with engine.connect() as conn:
+                        departments_result = conn.execute(text(
+                            "SELECT DISTINCT departement FROM scenarios ORDER BY departement"
+                        )).fetchall()
+                        departments = [row[0] for row in departments_result]
+                    
+                    with st.form("signup_form"):
+                        email = st.text_input("Adresse e-mail")
+                        nom_complet = st.text_input("Nom complet")
+                        departement = st.selectbox("Département", options=departments)
+                        password = st.text_input("Mot de passe", type="password")
+                        confirm = st.text_input("Confirmer le mot de passe", type="password")
+                        submitted = st.form_submit_button("Créer un compte", use_container_width=True)
+                    
+                    if submitted:
+                        logger.info(f"Signup form submitted for email: {email}")
+                        
+                        try:
+                            signup_success = do_signup(email, nom_complet, departement, password, confirm)
+                            
+                            if signup_success:
+                                # Pas de connexion automatique, message affiché par do_signup
+                                pass
+                            else:
+                                logger.warning(f"Signup failed for user: {email}")
+                                
+                        except Exception as e:
+                            logger.error(f"Unexpected error during signup: {e}", exc_info=True)
+                            st.error("Une erreur inattendue s'est produite lors de la création du compte.")
+                    
+                    # Bouton retour
+                    st.markdown('<div class="back-button">', unsafe_allow_html=True)
+                    if st.button("← Retour à la connexion", key="back_signin"):
+                        st.session_state["login_mode"] = "signin"
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+                # Messages d'erreur/succès
+                if st.session_state.get("login_error"):
+                    st.error(st.session_state["login_error"])
+                
+                if st.session_state.get("signup_success"):
+                    st.success(st.session_state["signup_success"])
+                    st.session_state["signup_success"] = None
+                
+                st.markdown('</div>', unsafe_allow_html=True)  # Fermer login-form-container
 
 
 def render_sidebar_identity(email: str, role: str) -> None:
@@ -2645,6 +2921,58 @@ def main() -> None:
                 mime="text/csv",
             )
 
+            st.divider()
+            st.markdown("### Demandes d'accès en attente")
+            
+            pending = admin_list_pending_approvals()
+            
+            if pending:
+                st.write(f"**{len(pending)} demande(s)** en attente de validation.")
+                
+                for user in pending:
+                    with st.container(border=True):
+                        col1, col2, col3 = st.columns([3, 2, 2])
+                        
+                        with col1:
+                            st.markdown(f"**{user.nom_complet or user.email}**")
+                            st.caption(f"Email: {user.email}")
+                            st.caption(f"Département demandé: {user.departement}")
+                            st.caption(f"Créé le: {user.date_creation.strftime('%d/%m/%Y %H:%M')}")
+                        
+                        with col2:
+                            # Allow modifying department before approval
+                            with engine.connect() as conn:
+                                departments_result = conn.execute(text(
+                                    "SELECT DISTINCT departement FROM scenarios ORDER BY departement"
+                                )).fetchall()
+                                departments = [row[0] for row in departments_result]
+                            
+                            final_dept = st.selectbox(
+                                "Département final",
+                                options=departments,
+                                index=departments.index(user.departement) if user.departement in departments else 0,
+                                key=f"dept_{user.id}"
+                            )
+                        
+                        with col3:
+                            if st.button("✅ Approuver", key=f"approve_{user.id}", use_container_width=True):
+                                ok, msg = admin_approve_user(user.id, final_dept)
+                                if ok:
+                                    st.success(msg)
+                                    st.rerun()
+                                else:
+                                    st.error(msg)
+                            
+                            if st.button("❌ Refuser", key=f"reject_{user.id}", use_container_width=True):
+                                ok, msg = admin_reject_user(user.id)
+                                if ok:
+                                    st.success(msg)
+                                    st.rerun()
+                                else:
+                                    st.error(msg)
+            else:
+                st.info("Aucune demande en attente.")
+            
             st.divider()
             st.markdown("### Gestion des utilisateurs")
             st.write(
