@@ -1641,6 +1641,53 @@ def main() -> None:
                 font-weight: 600;
                 margin-left: 16px;
             }
+            
+            /* Admin Dashboard Cards - Modern Executive Style */
+            div[data-testid="stVerticalBlockBorderWrapper"] {
+                background: #FFFFFF !important;
+                border: 1px solid #EAECEF !important;
+                border-radius: 14px !important;
+                padding: 20px !important;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+                transition: all 0.3s ease !important;
+                margin-bottom: 20px !important;
+            }
+            
+            div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+            }
+            
+            /* Card avec clé CSS */
+            .st-key-card_overview_kpi,
+            .st-key-card_trend,
+            .st-key-card_donut,
+            .st-key-card_top_models {
+                background: #FFFFFF;
+                border: 1px solid #EAECEF;
+                border-radius: 14px;
+                padding: 20px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            }
+            
+            /* Page background admin */
+            .main .block-container {
+                background-color: #F4F6FA;
+            }
+            
+            /* Titres de section */
+            .section-title {
+                color: #1a1a1a;
+                font-size: 20px;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+            
+            .section-subtitle {
+                color: #6B7280;
+                font-size: 14px;
+                margin-bottom: 16px;
+            }
             </style>
             """,
             unsafe_allow_html=True,
@@ -2036,216 +2083,202 @@ def main() -> None:
             st.divider()
             build_client_department_comparison(filtered)
         else:
-            build_metric_cards(filtered, client_mode=False, total_executions_in_db=total_exec)
-            daily_mean = (
-                filtered.dropna(subset=["score_global_display"])
-                .groupby(pd.Grouper(key="date_execution", freq="D"))["score_global_display"]
-                .mean()
-                .reset_index()
+            # === ADMIN/SUPER ADMIN: MODERN EXECUTIVE DASHBOARD ===
+            from src.dashboard.admin_charts import (
+                build_daily_trend_chart,
+                build_execution_donut_chart,
+                build_heatmap_chart,
+                build_score_histogram,
+                build_latency_histogram
             )
-            if not daily_mean.empty:
-                st.markdown("#### Tendance moyenne des scores")
-                st.vega_lite_chart(
-                    data=daily_mean,
-                    spec={
-                        # Point-only mark: avoids connecting lines between sparse
-                        # dates which would imply false continuity between days
-                        # that have zero executions in between.
-                        "mark": {"type": "point", "filled": True, "size": 80},
-                        "encoding": {
-                            "x": {"field": "date_execution", "type": "temporal", "title": "Date"},
-                            "y": {
-                                "field": "score_global_display",
-                                "type": "quantitative",
-                                "title": "Score moyen",
-                                "scale": {"domain": [0, 1]},
-                            },
-                            "tooltip": [
-                                {"field": "date_execution", "type": "temporal", "title": "Date"},
-                                {"field": "score_global_display", "type": "quantitative",
-                                 "title": "Score moyen", "format": ".1%"},
-                            ],
-                        },
-                    },
-                    use_container_width=True,
-                )
-            st.divider()
-
-            if best_model is not None and best_scenario is not None:
-                rec_col1, rec_col2, rec_col3 = st.columns([3, 3, 2])
-                second_score = summary_model.iloc[1]["score_global_display"] if len(summary_model) > 1 else 0
+            
+            st.markdown('<p class="section-title">📊 Vue d\'ensemble</p>', unsafe_allow_html=True)
+            st.markdown('<p class="section-subtitle">Tableau de bord exécutif — Performance globale des modèles IA</p>', unsafe_allow_html=True)
+            
+            # ROW 1: KPI CARDS (4 métriques clés)
+            kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+            
+            # KPI 1: Modèle recommandé avec delta ou ex æquo
+            if best_model is not None and len(summary_model) > 1:
+                second_score = summary_model.iloc[1]["score_global_display"]
+                second_model = summary_model.iloc[1]["modele_nom"]
                 delta = best_model["score_global_display"] - second_score
-                rec_col1.metric(
-                    "Modèle recommandé",
-                    f"{best_model['modele_nom']} ({best_model['score_global_display']:.3f})",
-                    delta=f"{delta:+.3f}",
-                )
-                rec_col2.metric(
-                    "Scénario recommandé",
-                    best_scenario["nom_cas_usage"],
-                    f"{best_scenario['score_global_display']:.3f}",
-                )
-                rec_col3.metric(
-                    "Scores évalués",
-                    int(filtered[["faithfulness", "answer_relevancy", "context_precision", "context_recall"]].count().sum()),
-                )
-            st.divider()
-
-            st.markdown("#### Top 3 modèles")
-            top3 = summary_model.head(3).copy()
-            if not top3.empty:
-                top3 = top3.reset_index(drop=True)
-                top3.index = top3.index + 1
-                for _score_col in ["score_global_display", "faithfulness", "answer_relevancy",
-                                   "context_precision", "context_recall"]:
-                    if _score_col in top3.columns:
-                        top3[_score_col] = top3[_score_col].apply(safe_format_score)
-                top3["latence_secondes"] = top3["latence_secondes"].map(lambda v: f"{v:.2f}s")
-                st.table(
-                    top3.rename(
-                        columns={
-                            "modele_nom": "Modèle",
-                            "score_global_display": "Score global",
-                            "faithfulness": "Faithfulness",
-                            "answer_relevancy": "Answer relevancy",
-                            "context_precision": "Context precision",
-                            "context_recall": "Context recall",
-                            "latence_secondes": "Latence (s)",
-                        }
+                
+                if abs(delta) < 0.0001:  # Ex æquo (pratiquement égal)
+                    kpi_col1.metric(
+                        "🏆 Modèle recommandé",
+                        best_model["modele_nom"]
                     )
-                )
+                    kpi_col1.markdown(
+                        f'<p style="color:#6B7280; font-size:13px; margin-top:-10px;">= ex æquo avec {second_model}</p>',
+                        unsafe_allow_html=True
+                    )
+                else:
+                    kpi_col1.metric(
+                        "🏆 Modèle recommandé",
+                        best_model["modele_nom"],
+                        delta=f"{delta:+.1%}",
+                        delta_color="normal"
+                    )
+            elif best_model is not None:
+                kpi_col1.metric("🏆 Modèle recommandé", best_model["modele_nom"])
             else:
-                st.info("Pas de modèles à afficher pour le Top 3.")
-
-            st.markdown("#### Meilleur modèle par scénario")
-            best_per_scenario = (
-                filtered.dropna(subset=["score_global_display"])
-                .groupby(["nom_cas_usage", "modele_nom"])["score_global_display"]
-                .mean()
-                .reset_index()
-                .sort_values(["nom_cas_usage", "score_global_display"], ascending=[True, False])
-                .groupby("nom_cas_usage")
-                .first()
-                .reset_index()
-            )
-            if not best_per_scenario.empty:
-                best_per_scenario["score_global_display"] = best_per_scenario["score_global_display"].apply(safe_format_score)
-                st.table(best_per_scenario.rename(columns={"nom_cas_usage": "Scénario", "modele_nom": "Meilleur modèle", "score_global_display": "Score"}))
+                kpi_col1.metric("🏆 Modèle recommandé", "N/A")
+            
+            # KPI 2: Latence moyenne
+            avg_latency = filtered["latence_secondes"].mean()
+            if pd.notna(avg_latency):
+                kpi_col2.metric("⚡ Latence moyenne", f"{avg_latency:.2f}s")
             else:
-                st.info("Pas assez de données pour déterminer le meilleur modèle par scénario.")
-            st.divider()
-
-            csv = filtered.to_csv(index=False).encode("utf-8")
-            st.download_button(
-                "Exporter CSV des exécutions filtrées",
-                data=csv,
-                file_name="executions_filtered.csv",
-                mime="text/csv",
-            )
-            if is_admin:
-                try:
-                    excel_buffer = io.BytesIO()
-                    with pd.ExcelWriter(excel_buffer, engine="openpyxl") as writer:
-                        if selected_columns_for_export:
-                            filtered[selected_columns_for_export].to_excel(writer, index=False, sheet_name="executions")
-                        else:
-                            filtered.to_excel(writer, index=False, sheet_name="executions")
-                        summary_model.to_excel(writer, index=False, sheet_name="summary_model")
-                        summary_scenario.to_excel(writer, index=False, sheet_name="summary_scenario")
-                    excel_bytes = excel_buffer.getvalue()
+                kpi_col2.metric("⚡ Latence moyenne", "N/A")
+            
+            # KPI 3: Score global moyen
+            avg_score = filtered["score_global_display"].mean()
+            if pd.notna(avg_score):
+                kpi_col3.metric("📈 Score global moyen", f"{avg_score:.1%}")
+            else:
+                kpi_col3.metric("📈 Score global moyen", "N/A")
+            
+            # KPI 4: Exécutions
+            n_filtered = len(filtered)
+            kpi_col4.metric("🎯 Exécutions", f"{n_filtered} / {total_exec}")
+            
+            # ROW 2: TREND CHART (2/3) + DONUT CHART (1/3)
+            chart_col1, chart_col2 = st.columns([2, 1])
+            
+            with chart_col1:
+                with st.container(border=True):
+                    st.markdown("**📉 Tendance des scores**")
+                    daily_mean = (
+                        filtered.dropna(subset=["score_global_display"])
+                        .groupby(pd.Grouper(key="date_execution", freq="D"))["score_global_display"]
+                        .mean()
+                        .reset_index()
+                    )
+                    if not daily_mean.empty:
+                        fig_trend = build_daily_trend_chart(daily_mean)
+                        st.plotly_chart(fig_trend, use_container_width=True)
+                    else:
+                        st.info("Pas de données de tendance disponibles.")
+            
+            with chart_col2:
+                with st.container(border=True):
+                    st.markdown("**📊 Répartition par modèle**")
+                    if not filtered.empty:
+                        fig_donut = build_execution_donut_chart(summary_model, filtered)
+                        st.plotly_chart(fig_donut, use_container_width=True)
+                    else:
+                        st.info("Pas de données disponibles.")
+            
+            # ROW 3: TOP 3 MODELS TABLE
+            with st.container(border=True):
+                st.markdown("**🏅 Top 3 modèles**")
+                top3 = summary_model.head(3).copy()
+                if not top3.empty:
+                    top3 = top3.reset_index(drop=True)
+                    top3.index = top3.index + 1
+                    for _score_col in ["score_global_display", "faithfulness", "answer_relevancy",
+                                       "context_precision", "context_recall"]:
+                        if _score_col in top3.columns:
+                            top3[_score_col] = top3[_score_col].apply(safe_format_score)
+                    top3["latence_secondes"] = top3["latence_secondes"].map(lambda v: f"{v:.2f}s")
+                    st.table(
+                        top3.rename(
+                            columns={
+                                "modele_nom": "Modèle",
+                                "score_global_display": "Score global",
+                                "faithfulness": "Faithfulness",
+                                "answer_relevancy": "Answer relevancy",
+                                "context_precision": "Context precision",
+                                "context_recall": "Context recall",
+                                "latence_secondes": "Latence (s)",
+                            }
+                        )
+                    )
+                else:
+                    st.info("Pas de modèles à afficher pour le Top 3.")
+            
+            
+            # EXPORT DANS UNE CARTE DÉDIÉE
+            with st.container(border=True):
+                st.markdown("**📥 Export des données**")
+                export_col1, export_col2 = st.columns(2)
+                with export_col1:
+                    csv = filtered.to_csv(index=False).encode("utf-8")
                     st.download_button(
-                        "Exporter Excel multi-feuilles (xlsx)",
-                        data=excel_bytes,
-                        file_name="executions_filtered_multi.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "📥 Exporter CSV",
+                        data=csv,
+                        file_name="executions_filtered.csv",
+                        mime="text/csv",
+                        use_container_width=True
                     )
-                except Exception:
-                    st.info("Export Excel non disponible (vérifiez que 'openpyxl' est installé).")
-
-            st.markdown("#### Répartition des métriques RAGAS par modèle (stacked)")
-            stacked_df = model_metrics_long.rename(columns={"modele_nom": "Modèle", "critere": "Critère", "note": "Note"})
-            if not stacked_df.empty:
-                stacked_spec = {
-                    "mark": "bar",
-                    "encoding": {
-                        "y": {"field": "Modèle", "type": "nominal", "sort": "-x"},
-                        "x": {"aggregate": "sum", "field": "Note", "type": "quantitative"},
-                        "color": {"field": "Critère", "type": "nominal", "scale": {"scheme": palette}},
-                        "tooltip": [
-                            {"field": "Modèle", "type": "nominal"},
-                            {"field": "Critère", "type": "nominal"},
-                            {"field": "Note", "type": "quantitative"},
-                        ],
-                    },
-                }
-                if normalize_stacked:
-                    stacked_spec["encoding"]["x"]["stack"] = "normalize"
-                st.vega_lite_chart(data=stacked_df, spec=stacked_spec, use_container_width=True)
-            else:
-                st.info("Aucune donnée RAGAS disponible pour le stacked chart.")
-
-            st.markdown("#### Heatmap : score global (scénarios × modèles)")
-            heat_order = st.selectbox("Trier heatmap par", options=["Aucun", "Moyenne modèle", "Moyenne scénario"], index=1)
-            heat_df = (
-                filtered.pivot_table(
-                    index="nom_cas_usage", columns="modele_nom", values="score_global_display", aggfunc="mean"
-                )
-                .reset_index()
-                .melt(id_vars=["nom_cas_usage"], var_name="modele_nom", value_name="score")
-            )
-            heat_df = heat_df.rename(columns={"nom_cas_usage": "Scénario", "modele_nom": "Modèle", "score": "Score"})
-            if not heat_df["Score"].isna().all():
-                if heat_order == "Moyenne modèle":
-                    order = summary_model["modele_nom"].tolist()
-                    heat_df["Modèle"] = pd.Categorical(heat_df["Modèle"], categories=order, ordered=True)
-                elif heat_order == "Moyenne scénario":
-                    scen_order = summary_scenario["nom_cas_usage"].tolist()
-                    heat_df["Scénario"] = pd.Categorical(heat_df["Scénario"], categories=scen_order, ordered=True)
-                heat_spec = {
-                    "mark": "rect",
-                    "encoding": {
-                        "x": {"field": "Modèle", "type": "nominal"},
-                        "y": {"field": "Scénario", "type": "nominal"},
-                        "color": {"field": "Score", "type": "quantitative", "scale": {"scheme": palette}},
-                        "tooltip": [
-                            {"field": "Modèle", "type": "nominal"},
-                            {"field": "Scénario", "type": "nominal"},
-                            {"field": "Score", "type": "quantitative"},
-                        ],
-                    },
-                }
-                st.vega_lite_chart(data=heat_df, spec=heat_spec, use_container_width=True)
-            else:
-                st.info("Aucune donnée de score global pour produire la heatmap.")
-
-            st.markdown("#### Distributions : score global et latence")
-            hist_col1, hist_col2 = st.columns(2)
-            score_hist_df = filtered["score_global_display"].dropna().to_frame(name="Score")
-            latency_hist_df = filtered["latence_secondes"].dropna().to_frame(name="Latence")
-            if not score_hist_df.empty:
-                hist_col1.vega_lite_chart(
-                    data=score_hist_df,
-                    spec={
-                        "mark": "bar",
-                        "encoding": {"x": {"field": "Score", "type": "quantitative", "bin": True}, "y": {"aggregate": "count", "type": "quantitative"}},
-                    },
-                    use_container_width=True,
-                )
-            else:
-                hist_col1.info("Pas de scores pour l'histogramme.")
-
-            if not latency_hist_df.empty:
-                hist_col2.vega_lite_chart(
-                    data=latency_hist_df,
-                    spec={
-                        "mark": "bar",
-                        "encoding": {"x": {"field": "Latence", "type": "quantitative", "bin": True}, "y": {"aggregate": "count", "type": "quantitative"}},
-                    },
-                    use_container_width=True,
-                )
-            else:
-                hist_col2.info("Pas de latences pour l'histogramme.")
-            st.divider()
+                
+                with export_col2:
+                    if is_admin:
+                        try:
+                            excel_buffer = io.BytesIO()
+                            with pd.ExcelWriter(excel_buffer, engine="openpyxl") as writer:
+                                if selected_columns_for_export:
+                                    filtered[selected_columns_for_export].to_excel(writer, index=False, sheet_name="executions")
+                                else:
+                                    filtered.to_excel(writer, index=False, sheet_name="executions")
+                                summary_model.to_excel(writer, index=False, sheet_name="summary_model")
+                                summary_scenario.to_excel(writer, index=False, sheet_name="summary_scenario")
+                            excel_bytes = excel_buffer.getvalue()
+                            st.download_button(
+                                "📥 Exporter Excel",
+                                data=excel_bytes,
+                                file_name="executions_filtered_multi.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                use_container_width=True
+                            )
+                        except Exception:
+                            st.info("Export Excel non disponible (vérifiez que 'openpyxl' est installé).")
+            
+            # HEATMAP MODERNE: Plotly avec options d'affichage
+            with st.container(border=True):
+                st.markdown("**🔥 Heatmap : score global (scénarios × modèles)**")
+                st.caption("Cases vides = scénario non évalué pour ce modèle")
+                
+                heat_col1, heat_col2 = st.columns([1, 1])
+                with heat_col1:
+                    view_mode = st.radio(
+                        "Afficher",
+                        options=["dept", "top15", "bottom15"],
+                        format_func=lambda x: {
+                            "dept": "Agrégé par département",
+                            "top15": "Top 15 scénarios",
+                            "bottom15": "Bottom 15 scénarios"
+                        }[x],
+                        index=0,
+                        horizontal=True,
+                        key="heatmap_view"
+                    )
+                with heat_col2:
+                    heat_order = st.selectbox(
+                        "Trier par",
+                        options=["Aucun", "Moyenne modèle", "Moyenne scénario"],
+                        index=1,
+                        key="heatmap_sort"
+                    )
+                
+                fig_heatmap = build_heatmap_chart(filtered, summary_model, summary_scenario, view_mode, heat_order)
+                st.plotly_chart(fig_heatmap, use_container_width=True)
+            
+            # HISTOGRAMS MODERNES: Plotly avec statistiques
+            with st.container(border=True):
+                st.markdown("**📊 Distributions : score global et latence**")
+                hist_col1, hist_col2 = st.columns(2)
+                
+                with hist_col1:
+                    fig_score_hist = build_score_histogram(filtered)
+                    st.plotly_chart(fig_score_hist, use_container_width=True)
+                
+                with hist_col2:
+                    fig_latency_hist, latency_caption = build_latency_histogram(filtered)
+                    st.plotly_chart(fig_latency_hist, use_container_width=True)
+                    if latency_caption:
+                        st.caption(latency_caption)
 
     with scenarios_tab:
 
