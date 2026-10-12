@@ -1017,35 +1017,49 @@ def _inject_login_css() -> None:
             background: white;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            display: flex;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: stretch !important;
         }}
         
-        /* Gap 0 entre les colonnes */
-        .st-key-login_card > div[data-testid="column"] {{
+        /* ÉTAPE 1: Container horizontal Streamlit - FORCE STRETCH */
+        .st-key-login_card div[data-testid="stHorizontalBlock"] {{
+            display: flex !important;
+            align-items: stretch !important;
+            height: 100% !important;
+            gap: 0 !important;
+        }}
+        
+        /* ÉTAPE 2: Colonnes Streamlit - flex vertical containers */
+        .st-key-login_card div[data-testid="stColumn"],
+        .st-key-login_card div[data-testid="column"] {{
             padding: 0 !important;
             gap: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
         }}
         
-        .st-key-login_card > div {{
-            gap: 0 !important;
+        /* ÉTAPE 3: Propager la hauteur aux conteneurs internes (stVerticalBlock) */
+        .st-key-login_card div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"],
+        .st-key-login_card div[data-testid="column"] > div[data-testid="stVerticalBlock"] {{
+            flex: 1 1 auto !important;
+            height: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
         }}
         
-        /* Panneau GAUCHE - Branding Ooredoo */
-        .st-key-login_left {{
-            background: linear-gradient(165deg, #ED1C24 0%, #B30006 100%);
-            padding: 60px 50px;
+        /* SOLUTION DE REPLI: Appliquer le gradient rouge sur la colonne gauche */
+        .st-key-login_card div[data-testid="stColumn"]:has(.st-key-login_left),
+        .st-key-login_card div[data-testid="column"]:has(.st-key-login_left) {{
+            background: linear-gradient(165deg, #ED1C24 0%, #B30006 100%) !important;
             position: relative;
-            overflow: hidden;
-            min-height: 600px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            overflow: hidden !important;
+            border-radius: 20px 0 0 20px !important;
         }}
         
-        /* Bulles décoratives - grande sphère blanche top-right */
-        .st-key-login_left::before {{
+        /* Bulles décoratives sur la colonne gauche - grande sphère blanche top-right */
+        .st-key-login_card div[data-testid="stColumn"]:has(.st-key-login_left)::before,
+        .st-key-login_card div[data-testid="column"]:has(.st-key-login_left)::before {{
             content: "";
             position: absolute;
             width: 420px;
@@ -1058,8 +1072,9 @@ def _inject_login_css() -> None:
             z-index: 1;
         }}
         
-        /* Bulle rouge foncé bottom-left */
-        .st-key-login_left::after {{
+        /* Bulle rouge foncé bottom-left sur la colonne gauche */
+        .st-key-login_card div[data-testid="stColumn"]:has(.st-key-login_left)::after,
+        .st-key-login_card div[data-testid="column"]:has(.st-key-login_left)::after {{
             content: "";
             position: absolute;
             width: 350px;
@@ -1072,7 +1087,39 @@ def _inject_login_css() -> None:
             z-index: 1;
         }}
         
-        /* Contenu du panneau gauche */
+        /* Panneau GAUCHE - Branding Ooredoo - ÉTAPE 4: flex 1 1 auto */
+        .st-key-login_left {{
+            background: transparent !important;
+            padding: 60px 50px;
+            position: relative;
+            overflow: hidden !important;
+            flex: 1 1 auto !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }}
+        
+        /* Panneau GAUCHE - Branding Ooredoo - ÉTAPE 4: flex 1 1 auto */
+        .st-key-login_left {{
+            background: transparent !important;
+            padding: 60px 50px;
+            position: relative;
+            overflow: visible !important;
+            flex: 1 1 auto !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }}
+        
+        /* Contenu du panneau gauche - position relative pour z-index */
         .login-left-content {{
             position: relative;
             z-index: 2;
@@ -1111,15 +1158,19 @@ def _inject_login_css() -> None:
             font-weight: 400;
         }}
         
-        /* Panneau DROIT - Formulaire */
+        /* Panneau DROIT - Formulaire - flex 1 1 auto */
         .st-key-login_right {{
             padding: 60px 50px;
             background: #FFFFFF;
-            min-height: 600px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            flex: 1 1 auto !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            border-radius: 0 20px 20px 0 !important;
         }}
         
         /* Conteneur du formulaire */
@@ -1240,6 +1291,12 @@ def _inject_login_css() -> None:
                 width: 95%;
             }}
             
+            /* Colonne gauche sur mobile - pas de coins arrondis en haut seulement */
+            .st-key-login_card div[data-testid="stColumn"]:has(.st-key-login_left),
+            .st-key-login_card div[data-testid="column"]:has(.st-key-login_left) {{
+                border-radius: 20px 20px 0 0 !important;
+            }}
+            
             .st-key-login_left {{
                 min-height: 350px;
                 padding: 40px 30px;
@@ -1263,6 +1320,7 @@ def _inject_login_css() -> None:
             .st-key-login_right {{
                 min-height: auto;
                 padding: 40px 30px;
+                border-radius: 0 0 20px 20px !important;
             }}
         }}
         </style>
