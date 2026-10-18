@@ -38,7 +38,10 @@ from src.dashboard.formatting import (
     safe_format_cost,
     safe_format_latency,
 )
-from src.dashboard.client_recommendation_page import render_client_recommendation_page
+from src.dashboard.client_recommendation_page import (
+    render_client_recommendation_page,
+    render_client_header,
+)
 
 
 def format_executions_for_display(df, display_columns):
@@ -1518,6 +1521,12 @@ def render_sidebar_user_bottom(email: str, role: str) -> None:
 # Main app (post-login)
 # ---------------------------------------------------------------------------
 
+def render_header(is_client: bool = False, department: str = "", last_date=None) -> None:
+    """Render the standard Ooredoo logo & branding header for Client or Admin views."""
+    if is_client:
+        render_client_header(department=department, last_date=last_date)
+
+
 def main() -> None:
     """Main dashboard application with comprehensive error handling."""
     try:
@@ -1544,9 +1553,10 @@ def main() -> None:
             st.stop()
 
         # === ROUTAGE CLIENT STRICT ===
-        # Le client n'a accès à AUCUNE donnée brute, ni filtres, ni onglets, ni vocabulaire technique.
-        # Il est immédiatement redirigé vers sa page dédiée et isolée par requête SQL.
-        if is_client:
+        # Le client (ou tout rôle non-admin : user_role != 'admin') n'a accès à AUCUNE donnée brute,
+        # ni filtres, ni onglets, ni vocabulaire technique.
+        # Il est immédiatement redirigé vers sa page dédiée avec branding officiel Ooredoo.
+        if not is_admin:
             render_client_recommendation_page(email)
             st.stop()
 
@@ -2296,90 +2306,123 @@ def main() -> None:
                 )[["Scénario", "Qualité"]]
             )
         else:
-            st.markdown("## Comparaison des scénarios")
-            st.write("Comparez les scénarios par score global, métriques dimensions et pertinence.")
-            _display_scenario = summary_scenario.copy()
-            for _col in ["score_global_display", "faithfulness", "answer_relevancy", "context_precision", "context_recall"]:
-                if _col in _display_scenario.columns:
-                    _display_scenario[_col] = _display_scenario[_col].apply(lambda x: safe_format_score(x, as_percentage=True))
-            if "latence_secondes" in _display_scenario.columns:
-                _display_scenario["latence_secondes"] = _display_scenario["latence_secondes"].apply(safe_format_latency)
-            st.dataframe(_display_scenario, use_container_width=True)
-            st.divider()
-            st.markdown("### Top scénarios par score global")
-            st.vega_lite_chart(
-                data=summary_scenario.rename(columns={"nom_cas_usage": "Scénario", "score_global_display": "Score global"}).head(5),
-                spec={
-                    "mark": "bar",
-                    "encoding": {
-                        "x": {"field": "Score global", "type": "quantitative"},
-                        "y": {"field": "Scénario", "type": "nominal", "sort": "-x"},
-                        "tooltip": [
-                            {"field": "Scénario", "type": "nominal"},
-                            {"field": "Score global", "type": "quantitative"},
-                        ],
-                    },
-                },
-                use_container_width=True,
+            # === ADMIN / SUPER ADMIN: MODERN CARD GRID ===
+            from src.dashboard.admin_charts import (
+                build_scenario_top10_bar,
+                build_scenario_ragas_top_grouped,
             )
-            st.divider()
-            st.markdown("### Comparaison des critères RAGAS par scénario")
-            metrics_by_scenario = summary_scenario.melt(
-                id_vars=["nom_cas_usage"],
-                value_vars=["faithfulness", "answer_relevancy", "context_precision", "context_recall"],
-                var_name="Critère",
-                value_name="Note",
-            ).rename(columns={"nom_cas_usage": "Scénario"})
-            st.vega_lite_chart(
-                data=metrics_by_scenario,
-                spec={
-                    "mark": "bar",
-                    "encoding": {
-                        "x": {
-                            "field": "Note",
-                            "type": "quantitative",
-                            "scale": {"domain": [0, 1]},
-                            "title": "Score (0–1)",
-                        },
-                        "y": {"field": "Scénario", "type": "nominal", "sort": "-x"},
-                        # xOffset groups bars by Critère instead of stacking them.
-                        # Without this, Vega-Lite stacks the 4 metrics by default,
-                        # producing x-axis totals up to 4.0.
-                        "xOffset": {"field": "Critère"},
-                        "color": {
-                            "field": "Critère",
-                            "type": "nominal",
-                            "scale": {"scheme": palette},
-                        },
-                        "tooltip": [
-                            {"field": "Scénario", "type": "nominal"},
-                            {"field": "Critère", "type": "nominal"},
-                            {"field": "Note", "type": "quantitative", "format": ".1%"},
-                        ],
-                    },
-                },
-                use_container_width=True,
+
+            st.markdown(
+                '<p class="section-title">📊 Comparaison des scénarios</p>',
+                unsafe_allow_html=True,
             )
-            st.divider()
-            st.markdown("### Top 3 scénarios")
-            _top3_scen = summary_scenario.head(3).copy()
-            for _score_col in ["score_global_display", "faithfulness", "answer_relevancy",
-                               "context_precision", "context_recall"]:
-                if _score_col in _top3_scen.columns:
-                    _top3_scen[_score_col] = _top3_scen[_score_col].apply(safe_format_score)
-            if "latence_secondes" in _top3_scen.columns:
-                _top3_scen["latence_secondes"] = _top3_scen["latence_secondes"].apply(safe_format_latency)
-            st.table(_top3_scen.rename(
-                columns={
-                    "nom_cas_usage": "Scénario",
-                    "score_global_display": "Score global",
-                    "faithfulness": "Faithfulness",
-                    "answer_relevancy": "Answer relevancy",
-                    "context_precision": "Context precision",
-                    "context_recall": "Context recall",
-                    "latence_secondes": "Latence (s)",
-                }
-            ))
+            st.markdown(
+                '<p class="section-subtitle">'
+                "Classement, métriques RAGAS et meilleur modèle par scénario"
+                "</p>",
+                unsafe_allow_html=True,
+            )
+
+            # ── CARD 1 ── Top 10 scénarios par score global ─────────────
+            with st.container(border=True):
+                st.markdown("**🏆 Top 10 scénarios par score global**")
+                if not summary_scenario.empty:
+                    fig_top10 = build_scenario_top10_bar(summary_scenario)
+                    st.plotly_chart(
+                        fig_top10,
+                        use_container_width=True,
+                        key="sc_top10_bar",
+                    )
+                else:
+                    st.info("Aucun scénario disponible.")
+
+            # ── CARD 2 ── Comparaison des critères RAGAS par scénario ───
+            with st.container(border=True):
+                st.markdown(
+                    "**📐 Comparaison des critères RAGAS par scénario**"
+                )
+                ragas_n = st.radio(
+                    "Nombre de scénarios",
+                    options=[10, 15],
+                    index=0,
+                    horizontal=True,
+                    key="sc_ragas_top_n",
+                )
+                if not summary_scenario.empty:
+                    fig_ragas = build_scenario_ragas_top_grouped(
+                        summary_scenario, top_n=ragas_n
+                    )
+                    st.plotly_chart(
+                        fig_ragas,
+                        use_container_width=True,
+                        key="sc_ragas_grouped",
+                    )
+                else:
+                    st.info("Aucun scénario disponible.")
+
+            # ── CARD 3 ── Meilleur modèle par scénario ──────────────────
+            with st.container(border=True):
+                st.markdown("**🥇 Meilleur modèle par scénario**")
+
+                if not filtered.empty:
+                    best_per_sc = (
+                        filtered.dropna(subset=["score_global_display"])
+                        .sort_values("score_global_display", ascending=False)
+                        .groupby("nom_cas_usage", sort=False)
+                        .first()
+                        .reset_index()
+                    )
+                    best_per_sc = best_per_sc.sort_values(
+                        "score_global_display", ascending=False
+                    ).head(15)
+
+                    # Build an HTML table with green score pills
+                    _rows_html = ""
+                    for _, r in best_per_sc.iterrows():
+                        sc_name = r["nom_cas_usage"]
+                        if len(sc_name) > 55:
+                            sc_name = sc_name[:52] + "…"
+                        score_val = r["score_global_display"]
+                        score_pct = (
+                            f"{score_val:.1%}" if pd.notna(score_val) else "N/A"
+                        )
+                        # Colour badge: green ≥0.7, orange ≥0.4, red otherwise
+                        if pd.notna(score_val) and score_val >= 0.7:
+                            badge_bg = "#00D27A"
+                            badge_fg = "#fff"
+                        elif pd.notna(score_val) and score_val >= 0.4:
+                            badge_bg = "#F5803E"
+                            badge_fg = "#fff"
+                        else:
+                            badge_bg = "#ED1C24"
+                            badge_fg = "#fff"
+                        _rows_html += (
+                            "<tr>"
+                            f'<td style="padding:6px 10px;">{sc_name}</td>'
+                            f'<td style="padding:6px 10px;">{r.get("modele_nom", "—")}</td>'
+                            f'<td style="padding:6px 10px; text-align:center;">'
+                            f'<span style="background:{badge_bg};color:{badge_fg};'
+                            f'padding:3px 10px;border-radius:12px;font-size:13px;'
+                            f'font-weight:600;">{score_pct}</span></td>'
+                            "</tr>"
+                        )
+
+                    table_html = (
+                        '<div style="overflow-x:auto;">'
+                        '<table style="width:100%;border-collapse:collapse;'
+                        'font-family:Inter,system-ui,sans-serif;font-size:14px;">'
+                        "<thead><tr>"
+                        '<th style="text-align:left;padding:8px 10px;border-bottom:2px solid #E5E7EB;">Scénario</th>'
+                        '<th style="text-align:left;padding:8px 10px;border-bottom:2px solid #E5E7EB;">Modèle</th>'
+                        '<th style="text-align:center;padding:8px 10px;border-bottom:2px solid #E5E7EB;">Score global</th>'
+                        "</tr></thead>"
+                        f"<tbody>{_rows_html}</tbody>"
+                        "</table></div>"
+                    )
+                    st.markdown(table_html, unsafe_allow_html=True)
+                else:
+                    st.info("Aucune exécution disponible pour ce filtre.")
+
 
 
     with models_tab:

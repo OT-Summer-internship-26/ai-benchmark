@@ -11734,3 +11734,298 @@ LINE 2: ... SELECT id, departement, prompt, sortie_attendue, complexite
 2026-10-12 22:12:50 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
 2026-10-12 22:12:51 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
 2026-10-12 22:12:55 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 16:54:10 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 16:54:10 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 16:54:10 - src.api.main - INFO - Environment: development
+2026-10-18 16:55:06 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 16:55:06 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 16:55:06 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 16:55:07 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 16:55:08 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 16:55:08 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 16:55:08 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 16:55:08 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 16:55:08 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-10-18 16:55:09 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 16:55:09 - __main__ - DEBUG - Loading executions with limit: 300
+2026-10-18 16:55:09 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-10-18 16:55:09 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 16:55:09 - __main__ - DEBUG - Loading scenario catalog
+2026-10-18 16:55:09 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-10-18 17:08:46 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 17:08:46 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 17:08:46 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 17:08:47 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 17:08:48 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 17:08:48 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 17:08:48 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 17:08:48 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 17:08:48 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-10-18 17:08:48 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 17:08:48 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 17:19:25 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 17:20:03 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 17:20:03 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 17:20:03 - src.api.main - INFO - Environment: development
+2026-10-18 17:29:14 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 17:29:14 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 17:29:15 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 17:29:16 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 17:29:17 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 17:29:17 - __main__ - WARNING - Admin user superadmin@ooredoo.com missing API token: None
+2026-10-18 17:29:17 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 17:29:18 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 17:29:18 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 17:29:18 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 17:45:41 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 17:45:41 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 17:45:41 - src.api.main - INFO - Environment: development
+2026-10-18 17:46:20 - __main__ - INFO - Login form submitted for email: admin@ooredoo.com
+2026-10-18 17:46:20 - __main__ - INFO - Login attempt for email: admin@ooredoo.com
+2026-10-18 17:46:21 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 17:46:21 - __main__ - INFO - Login successful for user: admin@ooredoo.com with role: admin
+2026-10-18 17:46:22 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-10-18 17:46:22 - src.api.auth - DEBUG - Token created for user: admin@ooredoo.com
+2026-10-18 17:46:22 - src.api.routes.auth - INFO - User logged in: admin@ooredoo.com
+2026-10-18 17:46:23 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 17:46:23 - __main__ - INFO - Login successful, redirecting user: admin@ooredoo.com
+2026-10-18 17:46:23 - __main__ - INFO - Dashboard accessed by user: admin@ooredoo.com with role: admin
+2026-10-18 17:46:23 - __main__ - DEBUG - Loading executions with limit: 300
+2026-10-18 17:46:23 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-10-18 17:46:23 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 17:46:24 - __main__ - DEBUG - Loading scenario catalog
+2026-10-18 17:46:24 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-10-18 17:46:41 - __main__ - INFO - Dashboard accessed by user: admin@ooredoo.com with role: admin
+2026-10-18 17:46:41 - __main__ - DEBUG - Loading executions with limit: None
+2026-10-18 17:46:41 - __main__ - INFO - Successfully loaded 408 executions with scores
+2026-10-18 17:46:41 - __main__ - INFO - Loaded 408 executions for dashboard display
+2026-10-18 17:46:54 - __main__ - INFO - Dashboard accessed by user: admin@ooredoo.com with role: admin
+2026-10-18 17:46:54 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 17:47:26 - __main__ - INFO - Login form submitted for email: admin@ooredoo.com
+2026-10-18 17:47:26 - __main__ - INFO - Login attempt for email: admin@ooredoo.com
+2026-10-18 17:47:26 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 17:47:27 - __main__ - INFO - Login successful for user: admin@ooredoo.com with role: admin
+2026-10-18 17:47:28 - src.auth.utils - INFO - Successful login for user: admin@ooredoo.com
+2026-10-18 17:47:28 - src.api.auth - DEBUG - Token created for user: admin@ooredoo.com
+2026-10-18 17:47:28 - src.api.routes.auth - INFO - User logged in: admin@ooredoo.com
+2026-10-18 17:47:28 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 17:47:28 - __main__ - INFO - Login successful, redirecting user: admin@ooredoo.com
+2026-10-18 17:47:28 - __main__ - INFO - Dashboard accessed by user: admin@ooredoo.com with role: admin
+2026-10-18 17:47:28 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 17:49:38 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 17:49:38 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 17:49:38 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 17:49:39 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 17:49:40 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 17:49:40 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 17:49:40 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 17:49:40 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 17:49:40 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-10-18 17:49:40 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 17:49:40 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 18:05:51 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 18:06:15 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 18:06:15 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 18:06:15 - src.api.main - INFO - Environment: development
+2026-10-18 18:06:31 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 18:06:51 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 18:06:51 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 18:06:51 - src.api.main - INFO - Environment: development
+2026-10-18 18:08:42 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 18:08:42 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 18:08:42 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 18:08:43 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:08:44 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 18:08:44 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 18:08:44 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 18:08:44 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 18:08:44 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-10-18 18:08:44 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:08:44 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 18:10:47 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 18:10:47 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 18:10:47 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 18:10:48 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:10:49 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 18:10:49 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 18:10:49 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 18:10:49 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 18:10:49 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-10-18 18:10:49 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:10:50 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 18:13:09 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 18:13:09 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 18:13:09 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 18:13:10 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:13:11 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 18:13:11 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 18:13:11 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 18:13:11 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 18:13:11 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-10-18 18:13:11 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:13:12 - __main__ - DEBUG - Loading executions with limit: 300
+2026-10-18 18:13:12 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-10-18 18:13:12 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 18:13:12 - __main__ - DEBUG - Loading scenario catalog
+2026-10-18 18:13:12 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-10-18 18:14:01 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:14:01 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 18:14:04 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:14:04 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 18:20:02 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 18:20:02 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 18:20:09 - __main__ - INFO - Login form submitted for email: client@ooredoo.com
+2026-10-18 18:20:09 - __main__ - INFO - Login attempt for email: client@ooredoo.com
+2026-10-18 18:20:09 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 18:20:10 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-10-18 18:20:11 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-10-18 18:20:12 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-10-18 18:20:12 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-10-18 18:20:12 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 18:20:12 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
+2026-10-18 18:20:12 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 18:55:19 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 18:56:21 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 18:56:21 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 18:56:21 - src.api.main - INFO - Environment: development
+2026-10-18 18:56:36 - __main__ - INFO - Login form submitted for email: client@ooredoo.com
+2026-10-18 18:56:36 - __main__ - INFO - Login attempt for email: client@ooredoo.com
+2026-10-18 18:56:36 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 18:56:37 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-10-18 18:56:38 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-10-18 18:56:38 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-10-18 18:56:38 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-10-18 18:56:38 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 18:56:38 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
+2026-10-18 18:56:39 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:01:13 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:01:39 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:01:46 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:01:46 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:01:46 - src.api.main - INFO - Environment: development
+2026-10-18 19:01:46 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:02:05 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:02:05 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:02:05 - src.api.main - INFO - Environment: development
+2026-10-18 19:02:06 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:02:26 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:02:26 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:02:26 - src.api.main - INFO - Environment: development
+2026-10-18 19:02:47 - __main__ - INFO - Login form submitted for email: client@ooredoo.com
+2026-10-18 19:02:47 - __main__ - INFO - Login attempt for email: client@ooredoo.com
+2026-10-18 19:02:47 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 19:02:48 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-10-18 19:02:49 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-10-18 19:02:49 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-10-18 19:02:49 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-10-18 19:02:49 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 19:02:49 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
+2026-10-18 19:02:49 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:03:06 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:03:27 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:11:56 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:13:00 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:13:00 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:13:00 - src.api.main - INFO - Environment: development
+2026-10-18 19:13:00 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:14:01 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:14:01 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:14:01 - src.api.main - INFO - Environment: development
+2026-10-18 19:14:01 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:14:27 - __main__ - INFO - Login form submitted for email: client@ooredoo.com
+2026-10-18 19:14:27 - __main__ - INFO - Login attempt for email: client@ooredoo.com
+2026-10-18 19:14:27 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 19:14:28 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-10-18 19:14:40 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:14:49 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:14:49 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:14:49 - src.api.main - INFO - Environment: development
+2026-10-18 19:14:50 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-10-18 19:14:50 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-10-18 19:14:50 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-10-18 19:14:57 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:15:15 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:15:23 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:15:34 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:15:44 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:16:49 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:17:22 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:17:47 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:18:20 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:20:12 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:21:50 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:22:48 - __main__ - INFO - Login form submitted for email: client@ooredoo.com
+2026-10-18 19:22:48 - __main__ - INFO - Login attempt for email: client@ooredoo.com
+2026-10-18 19:22:48 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 19:22:49 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-10-18 19:23:03 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:23:09 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:23:15 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:23:15 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:23:15 - src.api.main - INFO - Environment: development
+2026-10-18 19:23:15 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:23:42 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:23:55 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:24:10 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:24:10 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:24:10 - src.api.main - INFO - Environment: development
+2026-10-18 19:24:11 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-10-18 19:24:11 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-10-18 19:24:11 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-10-18 19:24:52 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:25:50 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:25:50 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:25:50 - src.api.main - INFO - Environment: development
+2026-10-18 19:25:54 - __main__ - INFO - Login form submitted for email: client@ooredoo.com
+2026-10-18 19:25:54 - __main__ - INFO - Login attempt for email: client@ooredoo.com
+2026-10-18 19:25:54 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 19:25:54 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-10-18 19:25:55 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-10-18 19:25:55 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-10-18 19:25:55 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-10-18 19:25:55 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 19:25:55 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
+2026-10-18 19:25:56 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:26:01 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:26:06 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:26:11 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:26:16 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:26:24 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:31:14 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:32:10 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:32:11 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:32:11 - src.api.main - INFO - Environment: development
+2026-10-18 19:32:11 - src.api.main - INFO - Benchmark API shutting down...
+2026-10-18 19:33:08 - src.evaluation.metrics - INFO - [JUDGE] Juge actif: Groq (openai/gpt-oss-20b)
+2026-10-18 19:33:08 - src.api.main - INFO - Benchmark API starting up...
+2026-10-18 19:33:08 - src.api.main - INFO - Environment: development
+2026-10-18 19:33:41 - __main__ - INFO - Login form submitted for email: client@ooredoo.com
+2026-10-18 19:33:41 - __main__ - INFO - Login attempt for email: client@ooredoo.com
+2026-10-18 19:33:41 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 19:33:41 - __main__ - INFO - Login successful for user: client@ooredoo.com with role: client
+2026-10-18 19:33:42 - src.auth.utils - INFO - Successful login for user: client@ooredoo.com
+2026-10-18 19:33:42 - src.api.auth - DEBUG - Token created for user: client@ooredoo.com
+2026-10-18 19:33:42 - src.api.routes.auth - INFO - User logged in: client@ooredoo.com
+2026-10-18 19:33:43 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 19:33:43 - __main__ - INFO - Login successful, redirecting user: client@ooredoo.com
+2026-10-18 19:33:43 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:33:57 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:34:03 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:34:07 - __main__ - INFO - Dashboard accessed by user: client@ooredoo.com with role: client
+2026-10-18 19:34:12 - __main__ - INFO - Login form submitted for email: superadmin@ooredoo.com
+2026-10-18 19:34:12 - __main__ - INFO - Login attempt for email: superadmin@ooredoo.com
+2026-10-18 19:34:12 - __main__ - DEBUG - Database query completed - user found: True
+2026-10-18 19:34:12 - __main__ - INFO - Login successful for user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 19:34:13 - src.auth.utils - INFO - Successful login for user: superadmin@ooredoo.com
+2026-10-18 19:34:13 - src.api.auth - DEBUG - Token created for user: superadmin@ooredoo.com
+2026-10-18 19:34:13 - src.api.routes.auth - INFO - User logged in: superadmin@ooredoo.com
+2026-10-18 19:34:13 - __main__ - DEBUG - API token obtained successfully
+2026-10-18 19:34:13 - __main__ - INFO - Login successful, redirecting user: superadmin@ooredoo.com
+2026-10-18 19:34:14 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 19:34:14 - __main__ - DEBUG - Loading executions with limit: 300
+2026-10-18 19:34:14 - __main__ - INFO - Successfully loaded 300 executions with scores
+2026-10-18 19:34:14 - __main__ - INFO - Loaded 300 executions for dashboard display
+2026-10-18 19:34:14 - __main__ - DEBUG - Loading scenario catalog
+2026-10-18 19:34:14 - __main__ - INFO - Successfully loaded 100 scenarios from catalog
+2026-10-18 19:34:49 - __main__ - INFO - Dashboard accessed by user: superadmin@ooredoo.com with role: super_admin
+2026-10-18 19:34:49 - __main__ - INFO - Loaded 300 executions for dashboard display

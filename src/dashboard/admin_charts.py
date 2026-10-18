@@ -286,13 +286,15 @@ def build_ragas_radar_chart(summary_model: pd.DataFrame) -> go.Figure:
             values.append(val if pd.notna(val) else None)
         
         # Fermer le radar en ajoutant le premier point à la fin
-        values_closed = values + [values[0]] if values[0] is not None else values
+        # Toujours fermer le polygone (même si values[0] est None)
+        values_closed = values + [values[0]]
         labels_closed = metric_labels + [metric_labels[0]]
         
         fig.add_trace(go.Scatterpolar(
             r=values_closed,
             theta=labels_closed,
             fill='toself',
+            connectgaps=False,  # None = gap, jamais 0
             name=row['modele_nom'],
             marker=dict(color=colors[i % len(colors)]),
             line=dict(color=colors[i % len(colors)], width=2),
@@ -820,3 +822,147 @@ def build_latency_histogram(filtered: pd.DataFrame) -> tuple[go.Figure, Optional
         caption = f"⚠️ {n_outliers} exécution(s) > {p95:.1f}s non affichée(s)"
     
     return fig, caption
+
+
+def build_scenario_top10_bar(summary_scenario: pd.DataFrame) -> go.Figure:
+    """
+    Clean horizontal bar chart of Top 10 scenarios by global score
+    with Ooredoo branding colors and concise labels.
+
+    Args:
+        summary_scenario: DataFrame résumé par scénario (sorted desc by score)
+
+    Returns:
+        Figure Plotly
+    """
+    if summary_scenario.empty:
+        fig = go.Figure()
+        fig.add_annotation(
+            text="Aucune donnée disponible",
+            xref="paper", yref="paper", x=0.5, y=0.5,
+            showarrow=False, font=dict(size=16, color="#6B7280")
+        )
+        apply_card_layout(fig)
+        return fig
+
+    top10 = summary_scenario.head(10).copy()
+    # Sort ascending so highest score is at top of horizontal bar chart
+    top10 = top10.sort_values("score_global_display", ascending=True)
+
+    # Truncate long scenario names for readability
+    top10["label"] = top10["nom_cas_usage"].apply(
+        lambda x: (x[:45] + "…") if len(x) > 45 else x
+    )
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=top10["score_global_display"],
+        y=top10["label"],
+        orientation="h",
+        marker=dict(
+            color=top10["score_global_display"],
+            colorscale=[
+                [0, "#F5803E"],
+                [0.5, OOREDOO_RED],
+                [1, "#00D27A"],
+            ],
+            line=dict(width=0),
+        ),
+        text=top10["score_global_display"].apply(lambda v: f"{v:.1%}"),
+        textposition="outside",
+        textfont=dict(size=11, color="#1a1a1a"),
+        hovertemplate=(
+            "<b>%{customdata}</b><br>"
+            "Score global : %{x:.1%}<extra></extra>"
+        ),
+        customdata=top10["nom_cas_usage"],  # full name in hover
+    ))
+
+    fig.update_layout(
+        xaxis=dict(
+            tickformat=".0%", range=[0, 1.12],
+            gridcolor="#EAECEF", title=None,
+        ),
+        yaxis=dict(title=None),
+        height=380,
+    )
+    apply_card_layout(fig)
+    fig.update_layout(margin=dict(l=20, r=40, t=10, b=10))
+    return fig
+
+
+def build_scenario_ragas_top_grouped(
+    summary_scenario: pd.DataFrame,
+    top_n: int = 10,
+) -> go.Figure:
+    """
+    Compact grouped horizontal bar chart showing the 4 RAGAS criteria
+    for the Top N scenarios.  Fixed reasonable height for executive readability.
+
+    Args:
+        summary_scenario: DataFrame résumé par scénario (sorted desc)
+        top_n: Number of scenarios to show (10 or 15)
+
+    Returns:
+        Figure Plotly
+    """
+    if summary_scenario.empty:
+        fig = go.Figure()
+        fig.add_annotation(
+            text="Aucune donnée disponible",
+            xref="paper", yref="paper", x=0.5, y=0.5,
+            showarrow=False, font=dict(size=16, color="#6B7280")
+        )
+        apply_card_layout(fig)
+        return fig
+
+    top = summary_scenario.head(top_n).copy()
+
+    # Truncate labels
+    top["label"] = top["nom_cas_usage"].apply(
+        lambda x: (x[:42] + "…") if len(x) > 42 else x
+    )
+
+    metrics = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+    metric_labels = {
+        "faithfulness": "Faithfulness",
+        "answer_relevancy": "Answer Relevancy",
+        "context_precision": "Context Precision",
+        "context_recall": "Context Recall",
+    }
+    colors = [OOREDOO_RED, "#2C7BE5", "#00D27A", "#F5803E"]
+
+    fig = go.Figure()
+    for i, metric in enumerate(metrics):
+        if metric in top.columns:
+            fig.add_trace(go.Bar(
+                name=metric_labels.get(metric, metric),
+                x=top[metric],
+                y=top["label"],
+                orientation="h",
+                marker=dict(color=colors[i]),
+                hovertemplate=(
+                    "<b>%{customdata}</b><br>"
+                    + metric_labels.get(metric, metric)
+                    + " : %{x:.1%}<extra></extra>"
+                ),
+                customdata=top["nom_cas_usage"],
+            ))
+
+    bar_height = max(380, min(560, top_n * 38))
+    fig.update_layout(
+        barmode="group",
+        xaxis=dict(
+            tickformat=".0%", range=[0, 1],
+            gridcolor="#EAECEF", title=None,
+        ),
+        yaxis=dict(autorange="reversed", title=None),
+        legend=dict(
+            orientation="h", yanchor="bottom", y=1.02,
+            xanchor="right", x=1,
+        ),
+        height=bar_height,
+    )
+    apply_card_layout(fig)
+    fig.update_layout(margin=dict(l=20, r=20, t=40, b=10))
+    return fig
